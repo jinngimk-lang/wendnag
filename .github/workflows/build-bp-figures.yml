@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - bp/code-drawn-figures-v1
+      - bp/svg-table-layout-v2
     paths:
       - '04-assets/figures/src/draw_bp_figures.py'
       - '.github/workflows/build-bp-figures.yml'
@@ -27,12 +27,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk
           python -m pip install --upgrade pip
-          python -m pip install matplotlib
+          python -m pip install matplotlib pillow
 
       - name: Render deterministic figures
         run: python 04-assets/figures/src/draw_bp_figures.py
 
-      - name: Verify expected outputs
+      - name: Verify editable SVG and projection PNG outputs
         run: |
           test "$(find 04-assets/figures/png -maxdepth 1 -name '*.png' | wc -l)" -eq 8
           test "$(find 04-assets/figures/svg -maxdepth 1 -name '*.svg' | wc -l)" -eq 8
@@ -40,29 +40,34 @@ jobs:
           from pathlib import Path
           from PIL import Image
           expected = {
-            'fig01-three-layer-enterprise-intelligence-base.png': (3194,1758),
-            'fig02-enterprise-agentic-ai-market.png': (2360,1840),
-            'fig03-enterprise-ai-four-level-ladder.png': (3194,1636),
-            'fig10-three-delivery-models.png': (3194,1450),
-            'fig11-legallens-four-layer-architecture.png': (3194,1820),
-            'fig12-revenue-and-customer-replication.png': (3194,1636),
-            'fig15-funding-use-structure.png': (2716,1004),
-            'fig16-three-year-milestones.png': (3194,1020),
+            'fig01-three-layer-enterprise-intelligence-base.png': (2034,1188),
+            'fig02-enterprise-agentic-ai-market.png': (1962,1242),
+            'fig03-enterprise-ai-four-level-ladder.png': (2034,1152),
+            'fig10-three-delivery-models.png': (2034,979),
+            'fig11-legallens-four-layer-architecture.png': (2034,1170),
+            'fig12-revenue-and-customer-replication.png': (2034,1134),
+            'fig15-funding-use-structure.png': (2034,756),
+            'fig16-three-year-milestones.png': (2034,738),
           }
           for name, size in expected.items():
               got = Image.open(Path('04-assets/figures/png') / name).size
               assert got == size, (name, got, size)
+          for svg in Path('04-assets/figures/svg').glob('*.svg'):
+              text = svg.read_text(encoding='utf-8')
+              assert '<text' in text, f'{svg.name}: SVG text was converted to paths and is not text-editable'
+              assert 'InkClaw' not in text, f'{svg.name}: obsolete product name remains'
           print('figure verification passed')
           PY
 
-      - name: Commit rendered figures
+      - name: Commit rendered assets
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add 04-assets/figures/png 04-assets/figures/svg
           if git diff --cached --quiet; then
-            echo 'No figure changes to commit.'
-          else
-            git commit -m 'build: render code-drawn BP figures'
-            git push
+            echo 'No rendered asset changes.'
+            exit 0
           fi
+          git commit -m 'build: render editable SVG BP figures'
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
