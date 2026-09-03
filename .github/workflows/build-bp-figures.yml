@@ -8,12 +8,10 @@ on:
       - bp/svg-table-layout-v2
     paths:
       - '04-assets/figures/src/draw_bp_figures.py'
-      - '04-assets/figures/svg/**'
-      - '04-assets/figures/png/**'
       - '.github/workflows/build-bp-figures.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   render:
@@ -21,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install drawing dependencies
         run: |
@@ -58,3 +58,16 @@ jobs:
               assert 'InkClaw' not in text, f'{svg.name}: obsolete product name remains'
           print('figure verification passed')
           PY
+
+      - name: Commit rendered assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 04-assets/figures/png 04-assets/figures/svg
+          if git diff --cached --quiet; then
+            echo 'No rendered asset changes.'
+            exit 0
+          fi
+          git commit -m 'build: render editable SVG BP figures'
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
