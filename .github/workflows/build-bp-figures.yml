@@ -47,7 +47,7 @@ jobs:
             'fig11-legallens-four-layer-architecture.png': (2034,1170),
             'fig12-revenue-and-customer-replication.png': (2034,1134),
             'fig15-funding-use-structure.png': (2034,756),
-            'fig16-three-year-milestones.png': (2034,737),
+            'fig16-three-year-milestones.png': (2034,738),
           }
           for name, size in expected.items():
               got = Image.open(Path('04-assets/figures/png') / name).size
