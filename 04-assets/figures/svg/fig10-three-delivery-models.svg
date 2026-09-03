@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-03T09:00:58.867210</dc:date>
+    <dc:date>2026-09-03T09:08:38.234817</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 12.204 36.2304 12.204 38.58048
 L 12.204 143.55072 
 Q 12.204 145.9008 17.0856 145.9008 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 25.6284 137.088 
@@ -53,7 +53,7 @@ Q 22.374 116.5248 22.374 118.09152
 L 22.374 135.52128 
 Q 22.374 137.088 25.6284 137.088 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 148.0752 145.9008 
@@ -66,7 +66,7 @@ Q 143.1936 36.2304 143.1936 38.58048
 L 143.1936 143.55072 
 Q 143.1936 145.9008 148.0752 145.9008 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 156.618 137.088 
@@ -79,7 +79,7 @@ Q 153.3636 116.5248 153.3636 118.09152
 L 153.3636 135.52128 
 Q 153.3636 137.088 156.618 137.088 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 279.0648 145.9008 
@@ -92,7 +92,7 @@ Q 274.1832 36.2304 274.1832 38.58048
 L 274.1832 143.55072 
 Q 274.1832 145.9008 279.0648 145.9008 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #ffffff; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 287.6076 137.088 
@@ -105,27 +105,27 @@ Q 284.3532 116.5248 284.3532 118.09152
 L 284.3532 135.52128 
 Q 284.3532 137.088 287.6076 137.088 
 z
-" clip-path="url(#pbe0254a4ab)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
+" clip-path="url(#pdc7552fc82)" style="fill: #eaf2f8; stroke: #a9c4dc; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 187.128 21.93408 
 L 219.672 21.93408 
-" clip-path="url(#pbe0254a4ab)" style="fill: none; stroke: #2f75b5; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#pdc7552fc82)" style="fill: none; stroke: #2f75b5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="line2d_2">
     <path d="M 22.374 57.7728 
 L 122.8536 57.7728 
-" clip-path="url(#pbe0254a4ab)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
+" clip-path="url(#pdc7552fc82)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
    </g>
    <g id="line2d_3">
     <path d="M 153.3636 57.7728 
 L 253.8432 57.7728 
-" clip-path="url(#pbe0254a4ab)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
+" clip-path="url(#pdc7552fc82)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
    </g>
    <g id="line2d_4">
     <path d="M 284.3532 57.7728 
 L 384.8328 57.7728 
-" clip-path="url(#pbe0254a4ab)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
+" clip-path="url(#pdc7552fc82)" style="fill: none; stroke: #a9c4dc; stroke-width: 0.7; stroke-linecap: square"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 18px; font-family: 'Noto Sans CJK JP'; text-anchor: middle; fill: #17365d" x="203.4" y="18.5904" transform="rotate(-0 203.4 18.5904)">公司层面的三种交付形态</text>
@@ -175,7 +175,7 @@ L 384.8328 57.7728
   </g>
  </g>
  <defs>
-  <clipPath id="pbe0254a4ab">
+  <clipPath id="pdc7552fc82">
    <rect x="0" y="0" width="406.8" height="195.84"/>
   </clipPath>
  </defs>

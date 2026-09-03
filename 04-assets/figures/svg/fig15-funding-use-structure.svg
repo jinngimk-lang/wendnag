@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-03T09:00:59.232983</dc:date>
+    <dc:date>2026-09-03T09:08:38.515964</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 165.9744 65.016
 L 165.9744 39.312 
 L 16.272 39.312 
 z
-" clip-path="url(#p3378ca9b4e)" style="fill: #dcebf7; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#peb26e37b01)" style="fill: #dcebf7; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 165.9744 65.016 
@@ -43,7 +43,7 @@ L 240.8256 65.016
 L 240.8256 39.312 
 L 165.9744 39.312 
 z
-" clip-path="url(#p3378ca9b4e)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#peb26e37b01)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 240.8256 65.016 
@@ -51,7 +51,7 @@ L 315.6768 65.016
 L 315.6768 39.312 
 L 240.8256 39.312 
 z
-" clip-path="url(#p3378ca9b4e)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#peb26e37b01)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 315.6768 65.016 
@@ -59,7 +59,7 @@ L 360.58752 65.016
 L 360.58752 39.312 
 L 315.6768 39.312 
 z
-" clip-path="url(#p3378ca9b4e)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#peb26e37b01)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 360.58752 65.016 
@@ -67,12 +67,12 @@ L 390.528 65.016
 L 390.528 39.312 
 L 360.58752 39.312 
 z
-" clip-path="url(#p3378ca9b4e)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
+" clip-path="url(#peb26e37b01)" style="fill: #eaf2f8; stroke: #2f75b5; stroke-width: 0.8; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 187.128 22.9824 
 L 219.672 22.9824 
-" clip-path="url(#p3378ca9b4e)" style="fill: none; stroke: #2f75b5; stroke-width: 2; stroke-linecap: square"/>
+" clip-path="url(#peb26e37b01)" style="fill: none; stroke: #2f75b5; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 16.5px; font-family: 'Noto Sans CJK JP'; text-anchor: middle; fill: #17365d" x="203.4" y="21.39" transform="rotate(-0 203.4 21.39)">融资资金用途结构（合计 1000 万元）</text>
@@ -129,7 +129,7 @@ L 219.672 22.9824
   </g>
  </g>
  <defs>
-  <clipPath id="p3378ca9b4e">
+  <clipPath id="peb26e37b01">
    <rect x="0" y="0" width="406.8" height="151.2"/>
   </clipPath>
  </defs>
