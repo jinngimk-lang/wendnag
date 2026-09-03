@@ -6,6 +6,7 @@
 |---|---:|---|
 | `01-source/original/西安智瞳安宇科技有限公司商业计划书-20260903A.docx` | 4034991 | `e26dc71c8a651162ff4d4bf2eb13359452fbacc77aae30d4bfc925136400f5d3` |
 | `08-output/西安智瞳安宇科技有限公司商业计划书-20260903A-图表高清替换版.docx` | 22347060 | `df8145285b8a98c27bde06635b8d7d575f3697fee15366632a4c4e777c6d10d4` |
+| `08-output/西安智瞳安宇科技有限公司商业计划书-20260903A-Word内部可直接编辑版.docx` | 2810887 | `a126f3f4a9da8da16dde5af7f4f61ba13f0504d91410921d86a0462cebe085dd` |
 | `08-output/BP内容修改建议-第一轮.docx` | 42791 | `f1f2e26a40925840a5b11a5d722e4b07434c69e6eb76745f04c07b0d789f95fe` |
 | `04-assets/diagrams/redraw/fig01-three-layer-enterprise-intelligence-base.png` | 2966714 | `02361716ca350e6a89a326ed44014f1639aeac5db07dd5eb1c5c39b478f685ce` |
 | `04-assets/diagrams/redraw/fig02-enterprise-agentic-ai-market.png` | 2526191 | `ca199a81aee771f06ed58a654a1cbb51cd569e7822e3820433c79a5f5ff3813d` |
