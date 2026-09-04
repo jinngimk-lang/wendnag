@@ -1,0 +1,12 @@
+company,stage_or_material,investment_thesis,wedge_focus,traction_evidence,problem_urgency,product_demo,market_method,business_model,icp_gtm,moat_proof,team_fit,funding_milestone,visual_scanability,sw_hw_integration,weighted_score,notes
+Aegiston / 智瞳安宇,Current Pre-A/A BP,2.3,2.0,4.2,3.5,3.4,2.2,2.6,2.5,3.1,3.6,2.2,2.1,2.4,2.801,"真实交付证据强，但主投资命题、单一楔子、融资里程碑、商业模式收束和视觉扫描性明显弱于样本中位数"
+LinkedIn,2004 Series B,4.8,4.8,3.7,4.4,3.7,3.5,4.2,4.2,4.4,4.1,4.7,3.8,3.0,4.207,"投资 thesis + 单一主下注 + 下一轮证明点"
+Figma,2013 Seed,4.2,4.0,2.2,3.8,5.0,2.5,1.5,2.0,4.8,4.7,3.0,4.3,3.0,3.416,"技术 feasibility demo 极强，商业/GTM 当时弱；适合学 show-don't-tell，不适合学商业缺失"
+Toutiao / ByteDance,2013 Series B,4.3,4.8,4.4,4.0,4.5,3.1,3.2,3.7,4.2,4.0,3.8,3.7,3.0,4.006,"ML-first 单一产品价值 + DAU 证明技术商业价值"
+Front,2016 Series A,4.2,4.4,4.8,3.8,4.2,3.2,4.6,3.0,3.5,4.0,2.7,4.0,3.0,3.917,"MRR/低 churn/land-and-expand 强；buyer/channel/use-of-funds 是创始人自己承认的弱项"
+Intercom,2011 First Pitch,4.5,4.7,2.5,4.4,4.2,2.8,3.2,3.4,3.5,4.0,3.5,4.7,3.0,3.732,"极简问题-产品-差异-融资请求；证明主 deck 与 diligence 文档应分离"
+Agility Robotics,2026 Investor Presentation,4.8,4.6,5.0,4.4,4.8,4.2,4.6,4.5,4.8,4.7,4.7,4.6,5.0,4.681,"真实部署/运营小时/订单/ROI + Digit/Physical AI/Arc 一体化"
+Berkshire Grey,2021 Investor Presentation,4.8,4.3,4.7,4.7,4.5,4.5,4.6,4.4,4.7,4.3,4.4,4.3,5.0,4.570,"客户目标→自动化系统→2–3 年 ROI；pipeline/backlog 分层证据"
+Matterport,2021 Investor Presentation,4.8,4.6,5.0,4.2,4.7,5.0,5.0,4.5,5.0,4.5,4.7,4.5,5.0,4.751,"硬件采集入口→空间数据资产→SaaS/数据飞轮；bottom-up TAM 和单位经济"
+Sarcos Robotics,2021 Investor Presentation,4.4,4.4,3.1,4.7,4.8,4.6,4.7,4.0,4.8,4.7,4.1,4.2,5.0,4.361,"RaaS 把机器人与人工成本/生产率直接比较；同时是硬件远期预测风险的反例"
+Symbotic,2025 Investor Presentation,4.8,4.7,5.0,4.6,4.8,4.6,4.8,4.6,5.0,4.5,4.4,4.7,5.0,4.756,"AI软件+机器人+系统架构统一到供应链结果；财务/部署/客户/IP 四组证明"
