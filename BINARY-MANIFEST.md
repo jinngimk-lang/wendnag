@@ -17,3 +17,5 @@
 | `04-assets/diagrams/redraw/fig12-revenue-and-customer-replication.png` | 2714568 | `700d4efad4dce2bd6deb8acabf4259a01b24830969c0cfec6c9570ab94122bce` |
 | `04-assets/diagrams/redraw/fig15-funding-use-structure.png` | 1786585 | `41093d6904781ddd95871feae04f7060cfc3d1efd90fae7aaffb1a5d706f8ec9` |
 | `04-assets/diagrams/redraw/fig16-three-year-milestones.png` | 1769729 | `3befe9b55b5f034957c8ace316783e42d94d1acecfce6347dcb28d885452762a` |
+| `08-output/智瞳安宇_PreA_投资人主Deck_v1.pptx` | 10541690 | `f4e81a3643ae6aae25033de3e445fdccb13f3c96a9848cc428b4df1fc18fab4f` |
+| `08-output/智瞳安宇_PreA_投资人主Deck_v1.pdf` | 1645509 | `0a935679bd06854286acccb7963ba78d699a9efe992546ce6a4078720569a362` |

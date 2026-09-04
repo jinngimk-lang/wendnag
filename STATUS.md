@@ -16,23 +16,35 @@
 - BP 对标研究层已建立 10 家国际/AI/机器人样本、严格来源校验层和详细改版建议。
 - 新增华擎（武汉）通信科技 22 页 Pre-A BP 作为**主 Deck 内容介绍流程的核心结构参考**；逐页拆解见 `05-benchmark/sources/11-huaengine-2019-prea.md`，原始 PDF 快捷入口见 `05-benchmark/materials/huaengine-2019/`。
 - 已将 `Panniantong/Agent-Reach` 的项目级互联网研究 skill 集成到 `.agents/skills/agent-reach/`，保留 MIT License、上游 commit、网页/搜索/GitHub/视频/社交等路由规则和 wendnag 专用安全/版权规则；运行时依赖、Cookie、Token 不进入仓库。
+- 已完成第一版 **16 页 Pre-A 投资人主 Deck**：以华擎线性融资结构为骨架、吸收 Notion 2013 的低文字密度与单页单结论表达；LegalLens 作为商业楔子，通信/交通量化证据前置，一个底座连接 AragonTeam / AegisClaw 两条扩张路径。
+- V1 摄影背景采用低饱和企业实拍摄影感生成资产；客户事实、产品能力、融资数据全部由文字和原生 PPT 图表承载，生成背景不冒充真实客户现场。
+- `智瞳安宇_PreA_投资人主Deck_v1.pptx` 已通过 LibreOffice → PDF 导出与 16 页逐页渲染检查；`slides_test.py` 通过，无检测到文本溢出。PPTX/PDF 二进制在对话中交付，SHA-256 已写入 `BINARY-MANIFEST.md`。
+- V1 逐页结构、背景设计规则与后续待补事实写入 `07-investor-deck/`。
 
 ## 当前工作分支
-`bp/word-native-editable-shapes-v4`
+`bp/prea-investor-deck-v1`
 
-> 2026-09-04 的华擎参考与 Agent-Reach 研究集成在 `research/huaengine-agent-reach-reference` 独立分支完成；合并后以 `main` 中对应文件为准。
+> 华擎参考与 Agent-Reach 研究集成已经进入 `main`；本轮 Pre-A 主 Deck V1 在独立分支完成并等待最终差异复核。
 
 ## 当前交付物
+
+### 长版尽调 BP
 `西安智瞳安宇科技有限公司商业计划书-20260903A-Word原生可编辑兼容版.docx`
 
 - 文件大小：2,819,089 bytes
 - SHA-256：`c65060e88cec743862760f9bef8502a344b30bce0ca1ce4f040444b9fe7c530b`
 
-## 后续正文修改优先级
-1. 投资命题首页
-2. 最强客户验证前置
-3. 一个底座 + 一个商业楔子 + 两条扩张路径
-4. 已实现 / 已签约 / 已部署 / 规划测算口径统一
-5. 融资里程碑重构
-6. 目录 / 正文结构一致性修复
-7. 按华擎 Pre-A 的线性融资流程重排主 Deck，但用智瞳安宇真实客户证据、软件商业模式与 18 个月里程碑替换其行业特定内容
+### Pre-A 投资人主 Deck V1
+- `智瞳安宇_PreA_投资人主Deck_v1.pptx` — 16 页，16:9，PPT 原生可编辑图表 + 摄影背景。
+- `智瞳安宇_PreA_投资人主Deck_v1.pdf` — 快速审阅版。
+- 哈希与文件大小见 `BINARY-MANIFEST.md`。
+
+## 下一轮主 Deck 优先级
+1. 用户实际审阅 V1 的内容顺序与视觉节奏；
+2. 将真实产品截图有选择地放入 LegalLens / AragonTeam / AegisClaw 页面，避免“全图表无产品”；
+3. 管理层确认当前签约收入、回款、软件/实施收入占比、续费/运维数据；
+4. 补 PoC 转化率、销售周期、交付周期与典型实施人天；
+5. 把 18 个月里程碑改成明确数量型 KPI；
+6. 逐家核验具名竞争对手后替换 V1 类别象限；
+7. 核实一体机 BOM / 售价 / 毛利 / 首批交付目标；
+8. 继续区分公司自有 IP 与团队/高校历史专利归属。
