@@ -5,23 +5,26 @@
 - 第一轮内容修改建议已形成 16 项队列；正文投资叙事暂不批量改写。
 - 图4-9、图13-14 保持真实产品截图，不做 AI 重绘。
 - 正文、图题、表格统一使用 `AegisClaw`，删除“曾用名 InkClaw”说明；产品真实截图像素不修改。
-- 已安装并记录两套项目级图形 skill：`.agents/skills/drawio-skill/` 与 `.agents/skills/excalidraw-diagram-generator/`，用于后续图形结构、布局、样式与可编辑性治理。
-- 图1、2、3、10、11、12、15、16 已按淡蓝、稳重、咨询风格重构为 **Word 原生 DrawingML 图形组**，不是截图、SVG 或表格模拟。
-- 8 张咨询型图合计保留 8 个 Word 原生图形组、276 个原生子图形对象；圆角卡片、箭头、柱形、阶梯、分层架构、复制路径、资金结构与时间轴造型均保留。
-- 图4-9、图13-14 仍为 8 张真实产品截图。
-- 已定位上一版 Microsoft Word 无法打开的根因：直接生成的 Word 2010 DrawingML 图形组未经过 Office DOCX 兼容性规范化，LibreOffice 可渲染但 Microsoft Word 更严格。
-- 新增 `tools/normalize_word_native_docx.py`，将原生图形版 DOCX 经 LibreOffice 的 `MS Word 2007 XML` writer 重新保存，并自动校验 DrawingML/VML 兼容结构。
-- 兼容版验证结果：8 个 `wpg` 图形组、276 个 `wps` 原生图形、8 个 `mc:Fallback`、8 个 VML fallback group、8 张产品截图、12 个原正文表格，`InkClaw` = 0。
-- 兼容版保持 31 页；已使用标准 `render_docx.py` 重新渲染全部页面并逐页检查，无裁切、重叠、图表跨页或图形退化为表格的问题。
+- 已安装并记录两套项目级图形 skill：`.agents/skills/drawio-skill/` 与 `.agents/skills/excalidraw-diagram-generator/`。
+- Microsoft Word 实机验证后，咨询型图的正式实现已切换为 **VML 原生可编辑 Word 图形**；不再使用兼容性不稳定的 `wpg/wps` DrawingML 图形组。
+- 图1、2、3、10、11、12、15、16 继续保留圆角卡片、箭头、柱形、阶梯、分层架构、复制路径、比例结构与时间轴造型，不退化为表格或图片。
+- 用户已确认 `BP_EDITABLE_VML.docx` 能在 Microsoft Word 中打开且图形可直接编辑。
+- 本轮进一步统一了图内标题层级、字号、行距、对齐、留白和卡片密度；重点修正图1、3、10、11、12、15、16 的文字拥挤与不齐问题。
+- 图11 的长标签采用受控换行；图12 中央实施方法拆为三个可编辑子卡片；图16 三个里程碑卡片统一为标题 + 三行可编辑子项。
+- 最新 VML 版结构校验：8 个 VML 图形组、210 个 VML 图形对象（68 个圆角框、84 个矩形、55 条线/箭头、3 个圆形节点），`wpg/wps = 0`，保留 8 张真实产品截图与 12 个正文表格，`InkClaw = 0`。
+- 最新版本保持 31 页，已用 `render_docx.py` 渲染并逐页完成最终视觉检查，无裁切、文字重叠、图表跨页或图形退化问题。
 
 ## 当前工作分支
-`bp/word-native-editable-shapes-v4`
+`bp/word-vml-compat-final`
 
 ## 当前交付物
-`西安智瞳安宇科技有限公司商业计划书-20260903A-Word原生可编辑兼容版.docx`
+`BP_EDITABLE_VML_POLISHED.docx`
 
-- 文件大小：2,819,089 bytes
-- SHA-256：`c65060e88cec743862760f9bef8502a344b30bce0ca1ce4f040444b9fe7c530b`
+- 文件大小：2,799,989 bytes
+- SHA-256：`b17a8e6abed167f62831052003851944cc352849a0a1819e4c02811f07cb3f73`
+
+## 图形生成器
+`tools/build_bp_vml_compat.py`
 
 ## 后续正文修改优先级
 1. 投资命题首页
