@@ -34,10 +34,26 @@ https://www.kicchina.org/uploadfile/2019/1224/20191224094617365.pdf
 
 智瞳安宇后续主 Deck 优先吸收这种“投资人一路读到底就能完成判断”的线性结构，同时保留我们已经确定的 LegalLens 真实客户证据前置、企业 Agent 底座、可复制商业模式和 18 个月里程碑表达。
 
+### 1.2 中国 Pre-A BP 网站索引
+
+为持续寻找与华擎结构相近的中国 AI / Agent / 机器人 / 智能硬件早期融资材料，新增：
+
+- `CHINA_PREA_REFERENCE_WEBSITES.md`
+
+该索引按用途区分：
+- **KIC China / 创业邦 Cyzone**：优先找公开原 PDF / 路演附件；
+- **1c9u**：按 Pre-A、AI、Agent、SaaS 快速发现真实项目候选；
+- **36氪 PitchHub**：核验轮次、融资历史和项目定位；
+- **搜弘文库**：研究第三方完整预览的页面结构与版式，需额外核验版权；
+- **高校/政府竞赛附件**：只做 BP 模块完整性检查，不作为 VC 主 Deck 信息密度模板。
+
+新材料进入核心参考前，以华擎为结构尺，至少检查：阶段可比、原文件可见、前 3–5 页判断效率、融资/资金用途/里程碑是否进入主线。
+
 ## 2. 核心交付文件
 
 - `BENCHMARK_MATRIX.md`：10 家公司横向对比，回答每家公司最值得智瞳安宇借鉴什么。
 - `AEGISTON_BP_REWRITE_RECOMMENDATIONS.md`：逐模块、P0/P1/P2 改版建议，包含定位、前 3–5 页、产品、技术、GTM、竞争、融资、视觉等。
+- `CHINA_PREA_REFERENCE_WEBSITES.md`：中国 AI / Agent / 机器人 Pre-A 原 BP 与融资材料网站索引，以华擎结构为筛选基准。
 - `PACKAGE_MANIFEST.md`：可下载资料包内容与版权边界。
 - `sources/`：逐公司研究卡，包含来源、材料性质、结构观察、英文核心表达与中文释义。
 - `materials/huaengine-2019/`：华擎原始 PDF 快捷入口与来源处理说明（不复制无明确再分发许可的 PDF 本体）。
