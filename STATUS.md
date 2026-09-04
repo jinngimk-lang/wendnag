@@ -20,7 +20,7 @@
 ## 当前工作分支
 `bp/word-native-editable-shapes-v4`
 
-> 研究集成分支：`research/huaengine-agent-reach-reference`（待验证并合并后删除/保留按仓库策略处理）。
+> 2026-09-04 的华擎参考与 Agent-Reach 研究集成在 `research/huaengine-agent-reach-reference` 独立分支完成；合并后以 `main` 中对应文件为准。
 
 ## 当前交付物
 `西安智瞳安宇科技有限公司商业计划书-20260903A-Word原生可编辑兼容版.docx`
