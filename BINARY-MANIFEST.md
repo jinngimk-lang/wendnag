@@ -19,3 +19,7 @@
 | `04-assets/diagrams/redraw/fig16-three-year-milestones.png` | 1769729 | `3befe9b55b5f034957c8ace316783e42d94d1acecfce6347dcb28d885452762a` |
 | `08-output/智瞳安宇_PreA_投资人主Deck_v1.pptx` | 10541690 | `f4e81a3643ae6aae25033de3e445fdccb13f3c96a9848cc428b4df1fc18fab4f` |
 | `08-output/智瞳安宇_PreA_投资人主Deck_v1.pdf` | 1645509 | `0a935679bd06854286acccb7963ba78d699a9efe992546ce6a4078720569a362` |
+| `01-source/incoming/2026-09-04/BP_EDITABLE_VML_AUTOFIT(1).docx` *(pending binary upload)* | 2983722 | `20b049996876037827e38a89a057a250b9a347f54d9d185ad1452229d93c8a2f` |
+| `01-source/incoming/2026-09-04/智瞳安宇-总体产品介绍-V6-202608(1).pdf` *(pending binary upload)* | 9058533 | `d20635c9dab0af1d5704fc021f2fb9bbc82d8a4948e9bd2dc6306c4784eab28d` |
+| `08-output/智瞳安宇_PreA_投资人主Deck_V2_内容增强版.pptx` | 1933865 | `8b9aba6693b447beb45a31f955101a45239a4f0473f8908a61ebedbc6ffecf67` |
+| `08-output/智瞳安宇_PreA_投资人主Deck_V2_内容增强版.pdf` | 1276840 | `2231a2f64fbb453d4e03eb29aeda24f4b45eccde44481da3b4707115a1ea6d21` |
