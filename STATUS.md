@@ -13,9 +13,14 @@
 - 新增 `tools/normalize_word_native_docx.py`，将原生图形版 DOCX 经 LibreOffice 的 `MS Word 2007 XML` writer 重新保存，并自动校验 DrawingML/VML 兼容结构。
 - 兼容版验证结果：8 个 `wpg` 图形组、276 个 `wps` 原生图形、8 个 `mc:Fallback`、8 个 VML fallback group、8 张产品截图、12 个原正文表格，`InkClaw` = 0。
 - 兼容版保持 31 页；已使用标准 `render_docx.py` 重新渲染全部页面并逐页检查，无裁切、重叠、图表跨页或图形退化为表格的问题。
+- BP 对标研究层已建立 10 家国际/AI/机器人样本、严格来源校验层和详细改版建议。
+- 新增华擎（武汉）通信科技 22 页 Pre-A BP 作为**主 Deck 内容介绍流程的核心结构参考**；逐页拆解见 `05-benchmark/sources/11-huaengine-2019-prea.md`，原始 PDF 快捷入口见 `05-benchmark/materials/huaengine-2019/`。
+- 已将 `Panniantong/Agent-Reach` 的项目级互联网研究 skill 集成到 `.agents/skills/agent-reach/`，保留 MIT License、上游 commit、网页/搜索/GitHub/视频/社交等路由规则和 wendnag 专用安全/版权规则；运行时依赖、Cookie、Token 不进入仓库。
 
 ## 当前工作分支
 `bp/word-native-editable-shapes-v4`
+
+> 研究集成分支：`research/huaengine-agent-reach-reference`（待验证并合并后删除/保留按仓库策略处理）。
 
 ## 当前交付物
 `西安智瞳安宇科技有限公司商业计划书-20260903A-Word原生可编辑兼容版.docx`
@@ -30,3 +35,4 @@
 4. 已实现 / 已签约 / 已部署 / 规划测算口径统一
 5. 融资里程碑重构
 6. 目录 / 正文结构一致性修复
+7. 按华擎 Pre-A 的线性融资流程重排主 Deck，但用智瞳安宇真实客户证据、软件商业模式与 18 个月里程碑替换其行业特定内容
