@@ -2,49 +2,48 @@
 
 ## 已完成
 - 原始 BP 正文按实际章节拆分为 Markdown 基线，保留原始措辞与数据口径。
-- 第一轮内容修改建议已形成 16 项队列；正文投资叙事暂不批量改写。
-- 图4-9、图13-14 保持真实产品截图，不做 AI 重绘。
-- 正文、图题、表格统一使用 `AegisClaw`，删除“曾用名 InkClaw”说明；产品真实截图像素不修改。
-- 已安装并记录两套项目级图形 skill：`.agents/skills/drawio-skill/` 与 `.agents/skills/excalidraw-diagram-generator/`，用于后续图形结构、布局、样式与可编辑性治理。
-- 图1、2、3、10、11、12、15、16 已按淡蓝、稳重、咨询风格重构为 **Word 原生 DrawingML 图形组**，不是截图、SVG 或表格模拟。
-- 8 张咨询型图合计保留 8 个 Word 原生图形组、276 个原生子图形对象；圆角卡片、箭头、柱形、阶梯、分层架构、复制路径、资金结构与时间轴造型均保留。
-- 图4-9、图13-14 仍为 8 张真实产品截图。
-- 已定位上一版 Microsoft Word 无法打开的根因：直接生成的 Word 2010 DrawingML 图形组未经过 Office DOCX 兼容性规范化，LibreOffice 可渲染但 Microsoft Word 更严格。
-- 新增 `tools/normalize_word_native_docx.py`，将原生图形版 DOCX 经 LibreOffice 的 `MS Word 2007 XML` writer 重新保存，并自动校验 DrawingML/VML 兼容结构。
-- 兼容版验证结果：8 个 `wpg` 图形组、276 个 `wps` 原生图形、8 个 `mc:Fallback`、8 个 VML fallback group、8 张产品截图、12 个原正文表格，`InkClaw` = 0。
-- 兼容版保持 31 页；已使用标准 `render_docx.py` 重新渲染全部页面并逐页检查，无裁切、重叠、图表跨页或图形退化为表格的问题。
-- BP 对标研究层已建立 10 家国际/AI/机器人样本、严格来源校验层和详细改版建议。
-- 新增华擎（武汉）通信科技 22 页 Pre-A BP 作为**主 Deck 内容介绍流程的核心结构参考**；逐页拆解见 `05-benchmark/sources/11-huaengine-2019-prea.md`，原始 PDF 快捷入口见 `05-benchmark/materials/huaengine-2019/`。
-- 已将 `Panniantong/Agent-Reach` 的项目级互联网研究 skill 集成到 `.agents/skills/agent-reach/`，保留 MIT License、上游 commit、网页/搜索/GitHub/视频/社交等路由规则和 wendnag 专用安全/版权规则；运行时依赖、Cookie、Token 不进入仓库。
-- 已完成第一版 **16 页 Pre-A 投资人主 Deck**：以华擎线性融资结构为骨架、吸收 Notion 2013 的低文字密度与单页单结论表达；LegalLens 作为商业楔子，通信/交通量化证据前置，一个底座连接 AragonTeam / AegisClaw 两条扩张路径。
-- V1 摄影背景采用低饱和企业实拍摄影感生成资产；客户事实、产品能力、融资数据全部由文字和原生 PPT 图表承载，生成背景不冒充真实客户现场。
-- `智瞳安宇_PreA_投资人主Deck_v1.pptx` 已通过 LibreOffice → PDF 导出与 16 页逐页渲染检查；`slides_test.py` 通过，无检测到文本溢出。PPTX/PDF 二进制在对话中交付，SHA-256 已写入 `BINARY-MANIFEST.md`。
-- V1 逐页结构、背景设计规则与后续待补事实写入 `07-investor-deck/`。
+- 第一轮内容修改建议已形成 16 项队列；图4-9、图13-14 保持真实产品截图，不做 AI 重绘。
+- 正文、图题、表格统一使用 `AegisClaw`；产品真实截图像素不篡改。
+- 图1、2、3、10、11、12、15、16 已重构为 Word 原生 DrawingML 图形组，并通过 Office 兼容性规范化与逐页渲染检查。
+- BP 对标研究层已建立 10 家国际/AI/机器人样本；华擎（武汉）通信科技 22 页 Pre-A BP 作为主 Deck 线性融资流程参考，Notion 2013 仅作为信息层级/单页主结论参考。
+- 已完成 V1 16 页 Pre-A 投资人主 Deck，并将结构、背景规则、QA 写入 `07-investor-deck/`。
+
+## 2026-09-04 — V2 源材料重读与主 Deck 重构
+
+用户反馈 V1 存在两个问题：**人物背景过多、内容不足**。本轮按该反馈重新执行源材料阅读与视觉资产审计：
+
+1. 完整解析并阅读用户新上传的长版 BP `BP_EDITABLE_VML_AUTOFIT(1).docx`；
+2. 完整解析并阅读 98 页 `智瞳安宇-总体产品介绍-V6-202608(1).pdf`，并重点检查产品、团队、客户章节的页面渲染与嵌入截图；
+3. 检查官网仓库 `jinngimk-lang/AegistonWEB`，确认 `frontend/public/media/product/` 已有大量 AragonTeam 等真实产品 WebP，`frontend/public/media/stock/` 已有 about / deployment / contact 等官网背景素材；
+4. 检查官网 `search-index.json`，补充 AragonTeam 的“可管理、可执行、可进化”、四重困境、研发协作功能等官网正式表达；同时发现官网搜索索引仍保留 `InkClaw` 历史命名，因此主 Deck 继续按项目规则使用当前正文名 `AegisClaw`，不把旧命名重新带回正文；
+5. 在虚拟环境从 98 页 PDF 中提取真实产品界面图，用于 LegalLens / AragonTeam 产品证据页，替代大量通用人物摄影背景；
+6. 生成 **21 页 V2 内容增强版主 Deck**：`智瞳安宇_PreA_投资人主Deck_V2_内容增强版.pptx`，并成功导出 21 页 PDF；
+7. V2 叙事增加：组织 OS、四重困境、LegalLens 产品证据、AragonTeam 完整研发闭环、AegisClaw 安全运行、私有化/一体机准入、复制飞轮、独立 GTM 等内容；
+8. V2 封面/结尾改为品牌化抽象网络视觉，正文以轻背景 + 原生图表 + 真实产品截图为主，**不再使用多人会议/商务合影作为主要背景语言**。
 
 ## 当前工作分支
-`bp/prea-investor-deck-v1`
-
-> 华擎参考与 Agent-Reach 研究集成已经进入 `main`；本轮 Pre-A 主 Deck V1 在独立分支完成并等待最终差异复核。
+`bp/prea-investor-deck-v2-source-grounded`
 
 ## 当前交付物
 
 ### 长版尽调 BP
 `西安智瞳安宇科技有限公司商业计划书-20260903A-Word原生可编辑兼容版.docx`
 
-- 文件大小：2,819,089 bytes
-- SHA-256：`c65060e88cec743862760f9bef8502a344b30bce0ca1ce4f040444b9fe7c530b`
+### Pre-A 投资人主 Deck V2
+- `智瞳安宇_PreA_投资人主Deck_V2_内容增强版.pptx` — 21 页，16:9，内容增强、真实产品证据前置、少人物背景。
+- `智瞳安宇_PreA_投资人主Deck_V2_内容增强版.pdf` — 21 页快速审阅版。
+- SHA-256 与文件大小写入 `BINARY-MANIFEST.md`。
+- 逐页结构写入 `07-investor-deck/SLIDE_OUTLINE_V2.md`。
+- 用户补充原始材料登记写入 `01-source/incoming/2026-09-04/README.md`。
 
-### Pre-A 投资人主 Deck V1
-- `智瞳安宇_PreA_投资人主Deck_v1.pptx` — 16 页，16:9，PPT 原生可编辑图表 + 摄影背景。
-- `智瞳安宇_PreA_投资人主Deck_v1.pdf` — 快速审阅版。
-- 哈希与文件大小见 `BINARY-MANIFEST.md`。
+## 二进制源文件状态
+当前 GitHub 连接器没有“从沙箱文件路径直接上传二进制文件”的接口，因此用户新上传的 DOCX/PDF 原件不能在本轮安全地伪装为已提交到仓库；仓库已保存其文件名、大小、SHA-256、用途和阅读状态。获得认证二进制 Git 上传路径后，应按登记信息原样补入 `01-source/incoming/2026-09-04/`。
 
 ## 下一轮主 Deck 优先级
-1. 用户实际审阅 V1 的内容顺序与视觉节奏；
-2. 将真实产品截图有选择地放入 LegalLens / AragonTeam / AegisClaw 页面，避免“全图表无产品”；
-3. 管理层确认当前签约收入、回款、软件/实施收入占比、续费/运维数据；
-4. 补 PoC 转化率、销售周期、交付周期与典型实施人天；
-5. 把 18 个月里程碑改成明确数量型 KPI；
-6. 逐家核验具名竞争对手后替换 V1 类别象限；
-7. 核实一体机 BOM / 售价 / 毛利 / 首批交付目标；
-8. 继续区分公司自有 IP 与团队/高校历史专利归属。
+1. 管理层确认当前签约收入、回款、软件/实施收入占比、续费/运维数据；
+2. 补 PoC 转化率、销售周期、首单/复制单交付周期与典型实施人天，验证“复制飞轮”；
+3. 把 18 个月融资里程碑改成明确数量型 KPI；
+4. 从 AegistonWEB 官网正式资产中进一步选择无人物的 deployment / product / abstract 视觉替换通用底纹；
+5. 逐家核验具名竞争对手后再进入正式路演版竞争矩阵；
+6. 核实一体机 BOM / 售价 / 毛利 / 首批交付目标；
+7. 继续区分公司自有 IP 与团队/高校历史专利归属。
