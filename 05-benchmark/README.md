@@ -19,12 +19,28 @@
 
 > 重要：OpenAI 与 Anthropic 未发现可核验的官方早期公开 Pitch Deck，因此本项目明确将其标记为“官方融资叙事/融资公告”，而不是伪称为官方 BP 原件。字节、Figma、Scale AI、Perplexity 的完整历史 deck 主要依赖第三方归档，研究卡已标记可信边界。
 
+### 1.1 新增中国 Pre-A 结构锚点：华擎（武汉）通信科技
+
+2026-09-04 起，华擎（武汉）通信科技 22 页《光通信核心器件项目融资 BP》被提升为**主 Deck 内容介绍流程的核心结构参考**。
+
+原始 PDF：
+https://www.kicchina.org/uploadfile/2019/1224/20191224094617365.pdf
+
+逐页研究：`sources/11-huaengine-2019-prea.md`
+
+它最值得迁移的不是行业内容，而是直接的 Pre-A 路线：
+
+> **项目总览 → 产品/应用 → 市场/痛点 → 技术能力 → 竞品/壁垒 → 团队/客户 → 融资 → 资金用途 → 经济结果 → 里程碑**
+
+智瞳安宇后续主 Deck 优先吸收这种“投资人一路读到底就能完成判断”的线性结构，同时保留我们已经确定的 LegalLens 真实客户证据前置、企业 Agent 底座、可复制商业模式和 18 个月里程碑表达。
+
 ## 2. 核心交付文件
 
 - `BENCHMARK_MATRIX.md`：10 家公司横向对比，回答每家公司最值得智瞳安宇借鉴什么。
 - `AEGISTON_BP_REWRITE_RECOMMENDATIONS.md`：逐模块、P0/P1/P2 改版建议，包含定位、前 3–5 页、产品、技术、GTM、竞争、融资、视觉等。
 - `PACKAGE_MANIFEST.md`：可下载资料包内容与版权边界。
-- `sources/`：10 家逐公司研究卡，包含来源、材料性质、结构观察、英文核心表达与中文释义。
+- `sources/`：逐公司研究卡，包含来源、材料性质、结构观察、英文核心表达与中文释义。
+- `materials/huaengine-2019/`：华擎原始 PDF 快捷入口与来源处理说明（不复制无明确再分发许可的 PDF 本体）。
 
 ## 3. 严谨来源校验层
 
@@ -63,7 +79,18 @@
 - 保留原始来源 URL、材料身份、页面/结构研究、必要短引文和中文释义；
 - 明确允许再分发的材料才进入 `materials/`。
 
-## 6. 长任务恢复
+## 6. 外部研究工具：Agent Reach
+
+项目已在 `.agents/skills/agent-reach/` 集成 `Panniantong/Agent-Reach` 的项目级 skill 路由，并保留 MIT License、上游 commit 和项目专用安全规则。
+
+它用于网页、搜索、GitHub、视频、社交/社区等外部证据采集；实际运行时遵循上游设计，把 runtime、Cookie、Token 和临时文件留在 `~/.agent-reach/` / `/tmp/`，**绝不写进本仓库**。
+
+详见：
+- `.agents/skills/agent-reach/SKILL.md`
+- `.agents/skills/agent-reach/PROJECT_USAGE.md`
+- `.agents/skills/agent-reach/UPSTREAM.md`
+
+## 7. 长任务恢复
 
 如上下文丢失或任务跨轮次，先读取：
 
