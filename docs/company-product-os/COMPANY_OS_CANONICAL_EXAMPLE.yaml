@@ -1,0 +1,255 @@
+# Example canonical instance for Company Product OS v0.1
+# This is an implementation-oriented example, not yet a formal JSON Schema.
+# Recommended next step: derive JSON Schema validation from this canonical form.
+
+company_os:
+  id: "acme-company-os"
+  version: "0.1.0"
+  status: "draft"
+
+  identity:
+    company_name: "Example Company"
+    purpose: "Help expert teams make high-stakes decisions with confidence."
+    desired_product_feeling:
+      - "calm"
+      - "precise"
+      - "trustworthy"
+
+  principles:
+    - id: "principle.user-agency.001"
+      domain: "product"
+      statement: "Users remain in control of consequential actions."
+      strength: "principle"
+      scope:
+        products: ["*"]
+        platforms: ["*"]
+      rationale:
+        - "The company treats trust as a product behavior, not only a brand claim."
+      evidence_refs:
+        - "evidence:leadership-interview:2026-09-18:00:42:15"
+        - "evidence:security-policy:v4:section-6"
+      confidence: 0.96
+      authority: "approved"
+      owner: "product-council"
+      lifecycle:
+        introduced_in: "0.1.0"
+        status: "active"
+
+    - id: "interaction.high-impact-preview.001"
+      domain: "interaction"
+      statement: "Before a high-impact AI action executes, show the intended action, scope and affected objects."
+      strength: "must"
+      scope:
+        products: ["*"]
+        platforms: ["web", "desktop"]
+      applies_when:
+        - "action.risk >= high"
+        - "actor == ai_agent"
+      evidence_refs:
+        - "evidence:product-a:workflow:bulk-change"
+      owner: "interaction-platform"
+      exceptions:
+        allowed: true
+        approval_role: "product-os-council"
+        reason_required: true
+        expiry_required: true
+      checks:
+        - "eval:ai-action-preview"
+        - "eval:affected-object-count"
+      lifecycle:
+        introduced_in: "0.1.0"
+        status: "active"
+
+  design:
+    tokens:
+      format: "DTCG-2025.10"
+      source: "./design/tokens.json"
+
+    component_registry:
+      source: "./components/registry.yaml"
+
+  engineering:
+    defaults:
+      frontend_stack: "nextjs"
+      api_style: "rest"
+      auth: "oidc"
+      observability: "required"
+
+    policies:
+      - id: "engineering.audit.high-impact.001"
+        strength: "must"
+        statement: "High-impact user or agent actions must emit an audit event."
+        policy_engine: "opa"
+        policy_ref: "./policies/audit/high-impact.rego"
+
+  content:
+    voice:
+      default:
+        - "clear"
+        - "specific"
+        - "non-promotional"
+    terminology:
+      canonical:
+        "workspace": "Workspace"
+        "project": "Project"
+      forbidden_synonyms:
+        "workspace":
+          - "Hub"
+          - "Center"
+
+  patterns:
+    - id: "pattern.destructive-action.v2"
+      maturity: "validated"
+      solves: "Prevent accidental irreversible changes."
+      use_when:
+        - "action.destructive == true"
+      avoid_when:
+        - "action.reversible == true and risk <= low"
+      components:
+        - "component:confirmation-dialog:v3"
+        - "component:undo-toast:v2"
+      evidence_refs:
+        - "evidence:user-research:study-14"
+        - "evidence:support-analysis:incident-92"
+
+evidence:
+  - id: "evidence:leadership-interview:2026-09-18:00:42:15"
+    type: "meeting_transcript"
+    source_uri: "vault://customer-a/meetings/2026-09-18"
+    timestamp: "00:42:15"
+    speaker_role: "chief-product-officer"
+    classification: "principle_statement"
+    access:
+      classification: "confidential"
+      roles:
+        - "product-os-admin"
+        - "product-council"
+    retention:
+      raw_audio_days: 30
+      transcript_days: 365
+    integrity:
+      content_hash: "sha256:REPLACE_ME"
+
+exceptions:
+  - id: "exception:mobile-delete-flow:001"
+    rule_id: "interaction.high-impact-preview.001"
+    scope:
+      product: "field-mobile"
+      feature: "offline-delete-draft"
+    reason: "The object is local-only and fully recoverable for 30 days."
+    approved_by: "product-os-council"
+    approved_at: "2026-09-18"
+    expires_at: "2027-03-18"
+
+product_context_pack:
+  id: "context-pack:new-maintenance-ai:v1"
+  company_os_version: "0.1.0"
+  target:
+    product_family: "enterprise-operations"
+    platform: "web"
+    users:
+      - "maintenance-engineer"
+  intent:
+    job_to_be_done: "Diagnose equipment incidents using operational evidence."
+    innovation_goal: "Create a causal incident timeline with AI-assisted recommendations."
+  resolved_rules:
+    must:
+      - "interaction.high-impact-preview.001"
+      - "engineering.audit.high-impact.001"
+    defaults:
+      - "pattern.destructive-action.v2"
+  innovation_zones:
+    - "incident-causal-timeline"
+    - "evidence-grounded-ai-recommendation"
+  frozen_zones:
+    - "auth"
+    - "audit"
+    - "severity-semantics"
+    - "primary-navigation"
+  examples:
+    canonical:
+      - "example:product-a:incident-table"
+    anti_patterns:
+      - "anti-pattern:chat-only-expert-workflow"
+
+product_ir:
+  id: "product-ir:new-maintenance-ai:v1"
+  context_pack_id: "context-pack:new-maintenance-ai:v1"
+
+  goals:
+    - id: "goal.001"
+      statement: "Reduce time required to assemble evidence during incident diagnosis."
+
+  navigation:
+    shell_pattern: "pattern:enterprise-left-nav:v4"
+
+  workflows:
+    - id: "workflow.incident-diagnosis"
+      entry: "incident-list"
+      states:
+        - "triage"
+        - "evidence-review"
+        - "hypothesis"
+        - "recommendation"
+        - "approved-action"
+      actions:
+        - id: "action.ai-recommend"
+          actor: "ai_agent"
+          requires:
+            - "provenance"
+            - "confidence"
+            - "human-approval-if-high-impact"
+
+  screens:
+    - id: "screen.incident-list"
+      primary_job: "Find and prioritize incidents."
+      component_bindings:
+        - "component:data-table:v6"
+        - "component:severity-badge:v3"
+      required_states:
+        - "loading"
+        - "empty"
+        - "error"
+        - "no-permission"
+
+  ai_behaviors:
+    - id: "ai.recommendation"
+      must_show:
+        - "source_evidence"
+        - "confidence"
+        - "affected_assets"
+      forbidden:
+        - "silent_high_impact_execution"
+
+  acceptance_tests:
+    - "eval:company-terminology"
+    - "eval:interaction-transfer"
+    - "eval:accessibility"
+    - "eval:security-baseline"
+    - "eval:audit-coverage"
+
+conformance_result:
+  product_ir_id: "product-ir:new-maintenance-ai:v1"
+  company_os_version: "0.1.0"
+  checks:
+    - rule_id: "interaction.high-impact-preview.001"
+      status: "pass"
+      evidence:
+        - "screen:recommendation-preview"
+    - rule_id: "engineering.audit.high-impact.001"
+      status: "fail"
+      severity: "release_blocking"
+      message: "Approval action has no audit event binding."
+
+  semantic_evals:
+    - eval_id: "eval:interaction-transfer"
+      status: "warning"
+      confidence: 0.82
+      finding: "Filter placement differs from the canonical products."
+      supporting_rules:
+        - "pattern:incident-table-filter:v2"
+
+  release_gate:
+    status: "blocked"
+    blocking_findings:
+      - "engineering.audit.high-impact.001"
