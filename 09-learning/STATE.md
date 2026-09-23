@@ -18,6 +18,7 @@
 - Checkpoint A 已提交：基础 → 概率 → Cross Entropy/KL → Attention/QKV。
 - Checkpoint A 后已按要求从 Git 重新读取 `STATE.md` 与主文档，再继续工作。
 - 最终版在重新读取后完成了去重、术语纠偏和高浓缩重构。
+- Final QA 已再次检查公式渲染并修复转义问题；主文档当前为可审阅版本。
 
 ## 最终主文档
 `09-learning/LLM_FROM_ZERO_TO_ONE.md`
