@@ -6,7 +6,7 @@
 ## 仓库隔离
 - 学习流仅写入 `09-learning/`。
 - 不修改 BP、投资人 Deck、公司事实或既有业务材料。
-- 工作分支：`docs/llm-zero-to-one-20260923`。
+- 工作分支：`docs/llm-zero-to-one-final-20260923`。
 
 ## 已确认的用户学习重点
 1. 交叉熵正反方向差异，以及为什么是 `-log q`。
@@ -19,6 +19,7 @@
 - Checkpoint A 后已按要求从 Git 重新读取 `STATE.md` 与主文档，再继续工作。
 - 最终版在重新读取后完成了去重、术语纠偏和高浓缩重构。
 - Final QA 已再次检查公式渲染并修复转义问题；主文档当前为可审阅版本。
+- 最终交付分支已基于最新 `main` 重新建立，避免旧 checkpoint 分支落后于主分支。
 
 ## 最终主文档
 `09-learning/LLM_FROM_ZERO_TO_ONE.md`
