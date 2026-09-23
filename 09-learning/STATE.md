@@ -6,7 +6,7 @@
 ## 仓库隔离
 - 学习流仅写入 `09-learning/`。
 - 不修改 BP、投资人 Deck、公司事实或既有业务材料。
-- 工作分支：`docs/llm-zero-to-one-final-20260923`。
+- 当前稳定版本已合并至 `main`。
 
 ## 已确认的用户学习重点
 1. 交叉熵正反方向差异，以及为什么是 `-log q`。
@@ -15,6 +15,7 @@
 4. 自回归与半自回归 / 块并行 / speculative decoding 的优势与代价。
 
 ## 持久化节点
+- 2026-09-23：最终学习文档通过 PR #14 合并至 `main`，合并提交 `cf24def97a59a72f88e4537f41c21ea2853434ff`。
 - Checkpoint A 已提交：基础 → 概率 → Cross Entropy/KL → Attention/QKV。
 - Checkpoint A 后已按要求从 Git 重新读取 `STATE.md` 与主文档，再继续工作。
 - 最终版在重新读取后完成了去重、术语纠偏和高浓缩重构。
