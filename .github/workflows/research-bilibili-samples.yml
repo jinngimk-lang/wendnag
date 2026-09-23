@@ -1,0 +1,62 @@
+name: Research Bilibili comparator samples
+
+on:
+  push:
+    branches:
+      - research/video-content-deep-dive-20260923
+    paths:
+      - ".github/workflows/research-bilibili-samples.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  sample-comparators:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Install
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg jq curl
+          python -m pip install --upgrade yt-dlp
+          mkdir -p "$GITHUB_WORKSPACE/results"
+
+      - name: Download first 90 seconds and extract frames
+        shell: bash
+        run: |
+          set +e
+          OUT="$GITHUB_WORKSPACE/results"
+          printf '%s\n'             'ai_hotspot|BV1KWrHBrEdi'             'auto_edit_agent|BV1pRF7zzE9x'             'workbuddy_office|BV16uj266EET'             'vibe_first_project|BV1SRM86xEPE'             'vibe_workbench|BV1H1eH6DExE' > /tmp/videos.txt
+
+          while IFS='|' read -r id bvid; do
+            mkdir -p "$OUT/$id"
+            url="https://www.bilibili.com/video/$bvid/"
+            printf '%s\n' "$url" > "$OUT/$id/url.txt"
+
+            curl -LsS -A 'Mozilla/5.0' --max-time 20               "https://api.bilibili.com/x/web-interface/view?bvid=$bvid"               -o "$OUT/$id/api.json"
+            jq '{code,message,data:{bvid:.data.bvid,title:.data.title,desc:.data.desc,duration:.data.duration,pubdate:.data.pubdate,owner:.data.owner.name,stat:.data.stat}}'               "$OUT/$id/api.json" > "$OUT/$id/meta.json" 2>/dev/null || true
+
+            yt-dlp --no-playlist --download-sections "*0-90"               -f "bv*[height<=480]+ba/b[height<=480]/best[height<=480]"               --merge-output-format mp4               -o "$OUT/$id/sample.%(ext)s" "$url"               > "$OUT/$id/download.stdout" 2> "$OUT/$id/download.stderr"
+            rc=$?
+            echo "download_rc=$rc" > "$OUT/$id/status.txt"
+
+            media=$(find "$OUT/$id" -maxdepth 1 -type f -name 'sample.*' | grep -E '\.(mp4|mkv|webm)$' | head -1)
+            if [ -n "$media" ]; then
+              ffprobe -v error -show_entries format=duration,size:stream=codec_name,width,height,r_frame_rate -of json "$media" > "$OUT/$id/ffprobe.json"
+              n=1
+              for t in 1 5 10 18 30 45 60 75 86; do
+                ffmpeg -loglevel error -ss "$t" -i "$media" -frames:v 1 -q:v 3 "$OUT/$id/frame_$n.jpg" || true
+                n=$((n+1))
+              done
+              rm -f "$media"
+            fi
+          done < /tmp/videos.txt
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilibili-comparator-samples
+          path: results/
+          if-no-files-found: error
+          retention-days: 3
