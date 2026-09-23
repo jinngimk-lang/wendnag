@@ -1,0 +1,130 @@
+name: Research video probe
+
+on:
+  push:
+    branches:
+      - research/video-content-deep-dive-20260923
+    paths:
+      - ".github/workflows/research-video-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe-public-videos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Install tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg aria2 jq curl
+          python -m pip install --upgrade yt-dlp
+          git clone --depth 1 https://github.com/zyipeng/video-downloader.git /tmp/video-downloader
+          mkdir -p "$GITHUB_WORKSPACE/results"
+
+      - name: Probe and sample user-provided public links
+        shell: bash
+        run: |
+          set +e
+          TOOL=/tmp/video-downloader
+          OUT="$GITHUB_WORKSPACE/results"
+
+          cat > /tmp/links.tsv <<'EOF'
+          20260615_xhs	https://xhslink.cn/o/8TkVRmKKrF
+          20260615_dy	https://v.douyin.com/1K9W0DPXTLk/
+          20260615_ks	https://v.kuaishou.com/K72MuhI9
+          20260616_xhs	https://xhslink.cn/o/4WOsmCGw9rY
+          20260616_dy	https://v.douyin.com/iIlQN970zYE/
+          20260616_ks	https://v.kuaishou.com/njcJZm1T
+          20260617_xhs	https://xhslink.cn/o/P7lrkfJcQP
+          20260617_dy	https://v.douyin.com/Qt2PcG-mF3c/
+          20260617_ks	https://v.kuaishou.com/Jn7T9JDc
+          20260619a_xhs	https://xhslink.cn/o/3klOx76ahZs
+          20260619a_dy	https://v.douyin.com/bGF3BJdJ9LY/
+          20260619a_ks	https://v.kuaishou.com/nUbXP6Ht
+          20260619b_xhs	https://xhslink.cn/o/2cm8mrkrBpj
+          20260619b_dy	https://v.douyin.com/I5KkpBlXrSg/
+          20260619b_ks	https://v.kuaishou.com/KdtJ9SWP
+          EOF
+
+          while IFS=$'\t' read -r id url; do
+            echo "==== $id ===="
+            mkdir -p "$OUT/$id"
+            printf '%s\n' "$url" > "$OUT/$id/input_url.txt"
+
+            resolved=$(curl -A 'Mozilla/5.0' -Ls -o /dev/null -w '%{url_effective}' --max-time 20 "$url")
+            rc=$?
+            printf '%s\n' "$resolved" > "$OUT/$id/resolved_url.txt"
+            echo "resolve_rc=$rc" > "$OUT/$id/status.txt"
+
+            target="$resolved"
+            [ -z "$target" ] && target="$url"
+
+            bash "$TOOL/scripts/probe.sh" "$target" > "$OUT/$id/probe.json" 2> "$OUT/$id/probe.stderr"
+            prc=$?
+            echo "probe_rc=$prc" >> "$OUT/$id/status.txt"
+
+            if [ "$prc" -eq 0 ]; then
+              mkdir -p "$OUT/$id/media"
+              bash "$TOOL/scripts/download.sh" speed "$target" "$OUT/$id/media" > "$OUT/$id/download.stdout" 2> "$OUT/$id/download.stderr"
+              drc=$?
+              echo "download_rc=$drc" >> "$OUT/$id/status.txt"
+
+              media=$(find "$OUT/$id/media" -type f \( -name '*.mp4' -o -name '*.mkv' -o -name '*.webm' \) | head -1)
+              if [ -n "$media" ]; then
+                ffprobe -v error -show_entries format=duration,size:stream=codec_name,width,height,r_frame_rate -of json "$media" > "$OUT/$id/ffprobe.json"
+                dur=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$media")
+                python - "$dur" > "$OUT/$id/times.txt" <<'PY'
+          import sys
+          try:
+              d=float(sys.argv[1])
+          except:
+              d=0
+          pts=[0.03,0.12,0.25,0.42,0.60,0.78,0.93]
+          for i,p in enumerate(pts,1):
+              print(f"{i}\t{max(0,d*p):.3f}")
+          PY
+                while IFS=$'\t' read -r n t; do
+                  ffmpeg -loglevel error -ss "$t" -i "$media" -frames:v 1 -q:v 3 "$OUT/$id/frame_$n.jpg"
+                done < "$OUT/$id/times.txt"
+                ffmpeg -loglevel error -i "$media" -vn -ac 1 -ar 16000 -b:a 48k "$OUT/$id/audio.mp3"
+                rm -f "$media"
+              fi
+            fi
+          done < /tmp/links.tsv
+
+          cat > /tmp/weixin.tsv <<'EOF'
+          20260615_wx	https://weixin.qq.com/sph/ANJCECUH3B
+          20260616_wx	https://weixin.qq.com/sph/AOmaOSklFH
+          20260617_wx	https://weixin.qq.com/sph/AQmWRuHsGF
+          20260619a_wx	https://weixin.qq.com/sph/AdayDa8Zni
+          20260619b_wx	https://weixin.qq.com/sph/AzrU0FWLCe
+          EOF
+          while IFS=$'\t' read -r id url; do
+            mkdir -p "$OUT/$id"
+            curl -A 'Mozilla/5.0' -LsS -D "$OUT/$id/headers.txt" --max-time 20 "$url" -o "$OUT/$id/page.html"
+            echo "curl_rc=$?" > "$OUT/$id/status.txt"
+            python - "$OUT/$id/page.html" > "$OUT/$id/meta.txt" <<'PY'
+          import re,sys,html
+          p=sys.argv[1]
+          try: s=open(p,'r',encoding='utf-8',errors='ignore').read()
+          except: s=''
+          for prop in ['og:title','og:description','og:image','og:video','twitter:title']:
+              m=re.search(r'<meta[^>]+(?:property|name)=["\']%s["\'][^>]+content=["\']([^"\']*)'%re.escape(prop),s,re.I)
+              if not m:
+                  m=re.search(r'<meta[^>]+content=["\']([^"\']*)["\'][^>]+(?:property|name)=["\']%s["\']'%re.escape(prop),s,re.I)
+              if m: print(prop, html.unescape(m.group(1)))
+          t=re.search(r'<title[^>]*>(.*?)</title>',s,re.I|re.S)
+          if t: print('title',re.sub(r'\s+',' ',html.unescape(t.group(1))).strip())
+          PY
+            rm -f "$OUT/$id/page.html"
+          done < /tmp/weixin.tsv
+
+      - name: Upload research artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-probe-results
+          path: results/
+          if-no-files-found: error
+          retention-days: 3
