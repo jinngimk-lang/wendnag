@@ -125,7 +125,7 @@ $$
 Attention 里：
 
 $$
-Q = XW_Q,quad K = XW_K,quad V = XW_V
+Q = XW_Q,\; K = XW_K,\; V = XW_V
 $$
 
 就是把同一个 token 的表示分别投影成三种职责：
@@ -233,7 +233,7 @@ $$
 于是：
 
 $$
-p=1 Rightarrow -log1=0
+p=1 ⇒ -log 1=0
 $$
 
 必然发生，没有惊讶。
@@ -241,7 +241,7 @@ $$
 而：
 
 $$
-p=0.01 Rightarrow -log0.01≈4.605
+p=0.01 ⇒ -log 0.01≈4.605
 $$
 
 只给 1% 概率的事情真的发生了，代价很大。
@@ -361,7 +361,7 @@ $$
 例如：
 
 $$
-p=[0,1,0],quad q=[0.1,0.7,0.2]
+p=[0,1,0],\; q=[0.1,0.7,0.2]
 $$
 
 则：
@@ -507,7 +507,7 @@ $$
 使用：
 
 $$
-Q_i=x_iW_Q,quad K_j=x_jW_K
+Q_i=x_iW_Q,\; K_j=x_jW_K
 $$
 
 可以学到更一般的、有方向的匹配关系。
@@ -527,7 +527,7 @@ $$
 设序列长度 n：
 
 $$
-Q ∈ R^{n×d_k},quad K ∈ R^{n×d_k}
+Q ∈ R^{n×d_k},\; K ∈ R^{n×d_k}
 $$
 
 则：
@@ -1122,7 +1122,7 @@ C. 非自回归或扩散式文本生成
 先算：
 
 $$
-Q=XW_Q,quad K=XW_K,quad V=XW_V
+Q=XW_Q,\; K=XW_K,\; V=XW_V
 $$
 
 再算：
@@ -1202,19 +1202,19 @@ $$
 ### 2. 自信息
 
 $$
-I(p)=-logp
+I(p)=-log p
 $$
 
 ### 3. 熵
 
 $$
-H(p)=-Σ_i p_i logp_i
+H(p)=-Σ_i p_i log p_i
 $$
 
 ### 4. 交叉熵
 
 $$
-H(p,q)=-Σ_i p_i logq_i
+H(p,q)=-Σ_i p_i log q_i
 $$
 
 ### 5. KL 与交叉熵
@@ -1226,13 +1226,13 @@ $$
 ### 6. One-hot 语言模型 Loss
 
 $$
-L=-logP_θ(x_t|x_{<t})
+L=-log P_θ(x_t|x_{<t})
 $$
 
 ### 7. QKV
 
 $$
-Q=XW_Q,quad K=XW_K,quad V=XW_V
+Q=XW_Q,\; K=XW_K,\; V=XW_V
 $$
 
 ### 8. Attention
