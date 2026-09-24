@@ -1,6 +1,6 @@
 # Marketing Video Platform Research
 
-状态：进行中（2026-09-23）
+状态：进行中（2026-09-24）
 
 ## 事实源
 - 第一方实验：用户《网络营销流量记录表(2).xlsx》
@@ -37,4 +37,4 @@
 - `2026-09-24-checkpoint-04-self-media-traffic-mechanisms.md` — 在上下文阶段节点保存并重新读取的“流量机制地图”研究 checkpoint。
 - `自媒体平台流量机制地图-2026.md` — 将抖音、小红书、快手、视频号、B站、微博、知乎、TikTok、YouTube Shorts 的公开热点/高热内容与平台资料统一抽象为 8 大流量引擎、24 个流量按钮、热点生命周期、平台原生策略与实验体系。
 
-本轮不再假设只有“结果先行”一个正确逻辑，而是将流量来源拆成 Utility / Proof / Emotion / Curiosity / Culture / Participation / Seriality / Trust，并明确区分 Spike（爆发）、Shelf（长尾货架）与 Series（回访关系）三类增长目标。
+本轮不再假设只有“结果先行”一个正确逻辑，而是将流量来源拆成 Utility / Proof / Emotion / Curiosity / Culture / Participation / Seriality / Trust，并明确区分 Spike（爆发）、Shelf（长尾货架）与 Series（回访关系）三类增长目标。正式稿最后附 30 天验证路线，用于把这些机制继续校准成账号自己的第一方流量知识。
