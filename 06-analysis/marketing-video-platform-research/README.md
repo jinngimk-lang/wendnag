@@ -29,3 +29,12 @@
 - `多平台宣传视频逐条复盘与高热内容对标研究.md` — 正式深挖报告。
 
 本轮临时 GitHub Actions 抓取 workflow 已在研究分支删除，不进入最终主分支；仓库只保留文字研究结论，不保存第三方/平台完整视频二进制。
+
+
+## 2026-09-24 自媒体流量机制扩展研究
+
+新增：
+- `2026-09-24-checkpoint-04-self-media-traffic-mechanisms.md` — 在上下文阶段节点保存并重新读取的“流量机制地图”研究 checkpoint。
+- `自媒体平台流量机制地图-2026.md` — 将抖音、小红书、快手、视频号、B站、微博、知乎、TikTok、YouTube Shorts 的公开热点/高热内容与平台资料统一抽象为 8 大流量引擎、24 个流量按钮、热点生命周期、平台原生策略与实验体系。
+
+本轮不再假设只有“结果先行”一个正确逻辑，而是将流量来源拆成 Utility / Proof / Emotion / Curiosity / Culture / Participation / Seriality / Trust，并明确区分 Spike（爆发）、Shelf（长尾货架）与 Series（回访关系）三类增长目标。
