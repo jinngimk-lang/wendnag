@@ -1,0 +1,40 @@
+# ROADMAP
+
+## Phase 0 — Concept validation
+- Complete competitive/open-source research.
+- Confirm first audience and first vertical.
+- Validate the “spectator competition” interaction with 5–8 target users.
+- Define a measurable match and a believable demo scenario.
+- Gate: users understand the rules and can distinguish simulation from fact.
+
+## Phase 1 — Clickable visual prototype
+- Explore three visual directions in Product Design.
+- Select one direction.
+- Create responsive HTML prototype with mocked event stream.
+- Include setup → live match → results → replay.
+- Gate: usability test and design QA.
+
+## Phase 2 — Finance Arena vertical slice
+- One market, one ticker, 4 strategies, fixed historical window.
+- Data provenance and point-in-time validation.
+- Deterministic paper-trading simulator and versioned scoring.
+- Event ledger, SSE stream, leaderboard and replay.
+- Gate: reproducible runs, no look-ahead leakage, independent baseline comparison.
+
+## Phase 3 — Marketing Arena pilot
+- Small audience cohort simulation and 3–4 channels.
+- Platform-specific content drafts and response hypotheses.
+- Calibration import for real campaign data.
+- Gate: error bands and calibration disclosed; no unverified “predicted views” claims.
+
+## Phase 4 — Life Arena pilot
+- Small set of user-controlled life scenarios.
+- Transparent assumptions and editable parameters.
+- Branching timelines and sensitivity analysis.
+- Gate: privacy review, bias evaluation and qualitative user study.
+
+## Phase 5 — Shared platform hardening
+- User accounts, saved matches, team workspaces, cost budgets, queueing and observability.
+- Versioned simulator/model/prompt provenance.
+- Abuse prevention, data governance and operational runbooks.
+- Gate: reliability, cost, safety and retention metrics justify scale.
