@@ -54,6 +54,13 @@ Recommended component set:
 
 Build one high-fidelity desktop live-match screen first, then mobile adaptation. Use realistic but clearly labeled demo data. Connect Figma MCP only after selecting a visual direction and creating/choosing a target Figma file; inspect and verify rendered screenshots at each milestone.
 
-## 6. Visual prototype boundary
+## 6. Visual prototype status
 
-The Product Design workflow in standard ChatGPT chat is not available. Do not claim a Figma file or interactive prototype has been created from this research-only phase. In Work mode, the Product Design workflow should generate three distinct visual directions and obtain the user's selection before implementing the HTML prototype.
+The first reviewable direction is implemented in `prototype/` as a responsive, dependency-free HTML/CSS/JS application.
+
+- Chosen direction: premium broadcast control room meets strategy game.
+- Shared visual language: graphite/navy surfaces, editorial headline, tabular scores, fine rules, restrained motion and clear simulation labels.
+- Domain accents: Finance = amber/gold; Marketing = electric cyan; Life = violet.
+- Primary flow: prompt → agent reveal → live event stream → standings → settlement → report / replay.
+- Desktop and mobile layouts have been browser-checked; details are in `prototype/TEST_REPORT.md`.
+- The connected Figma account currently reports a View seat, so no editable Figma file was created. Keep the HTML/CSS source as the current design artifact; create a Figma file when an edit-capable seat or target file is available.
