@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0b1017"><title>AI Arena — Think. Compete. Simulate.</title></head>
+<body><noscript>AI Arena 原型需要启用 JavaScript。</noscript><script>
+(async()=>{
+ const r=await fetch('shell.html.gz.b64');if(!r.ok)throw new Error('Shell asset unavailable');
+ const b=Uint8Array.from(atob((await r.text()).trim()),c=>c.charCodeAt(0));
+ const s=new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'));
+ const html=await new Response(s).text();document.open();document.write(html);document.close();
+})().catch(e=>{document.body.innerHTML='<p style="font:14px sans-serif;padding:24px;color:#b33">AI Arena 加载失败。请使用本地 HTTP 服务打开页面。</p>';console.error(e);});
+</script></body></html>
