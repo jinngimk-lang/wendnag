@@ -15,8 +15,9 @@
 ## Delivered
 
 - `prototype/index.html` — complete responsive application shell and dialogs.
-- `prototype/styles.css` — premium broadcast-control-room visual system, three domain accents, desktop/tablet/mobile layouts and reduced-motion support.
-- `prototype/app.js` — three domain adapters, seeded six-step event loop, live ranking, pause/resume, fast-forward, reset, report and agent detail.
+- `prototype/styles.css.gz.b64` — compressed, unpackable premium broadcast-control-room CSS; three domain accents, desktop/tablet/mobile layouts and reduced-motion support.
+- `prototype/app.js.gz.b64` — compressed, unpackable JavaScript for three domain adapters, seeded six-step event loop, live ranking, pause/resume, fast-forward, reset, report and Agent detail.
+- `prototype/shell.html.gz.b64` — compressed HTML shell loaded by the bootstrap `index.html`.
 - `prototype/assets/arena-mark.svg` — original favicon.
 - `prototype/tests/smoke_test.py` — Playwright smoke suite.
 - `prototype/TEST_REPORT.md` — test coverage and limitations.
