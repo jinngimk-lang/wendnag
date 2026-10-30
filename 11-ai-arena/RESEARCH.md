@@ -82,3 +82,25 @@ Before integration:
 - A robust deterministic scoring engine and anti-leakage benchmark dataset.
 - Human-in-the-loop evaluation for life-simulation usefulness and bias.
 - UX research: whether users prefer spectating, steering, or comparing after each round.
+
+
+## F. Repository and license spot-check — 2026-10-30
+
+The following default-branch snapshots and root license files were fetched from the upstream repositories on 2026-10-30. These checks support architectural study only; they are not a substitute for a full dependency, model-weight, dataset, API-terms or legal review.
+
+| Project | Snapshot commit | Root license observed | Current reuse stance |
+|---|---|---|---|
+| [TradingAgents](https://github.com/TauricResearch/TradingAgents) | `c4544913a14ed3df5f1ed7b9e8483270ce20682a` | Apache-2.0 | Strong Finance reference; study role separation, debate, simulated execution and logs. Pin and benchmark before reuse. |
+| [OASIS](https://github.com/camel-ai/oasis) | `ba892e0667eb84b312e4c0e5630f275154bbb98f` | Apache-2.0 | Strong Marketing social-interaction reference; do not equate simulator outputs with actual platform ranking or reach. |
+| [Generative Agents](https://github.com/joonspk-research/generative_agents) | `fe05a71d3e4ed7d10bf68aa4eda6dd995ec070f4` | Apache-2.0 | Life simulation memory/reflection reference; research snapshot is old (2023), and believability is not forecast validity. |
+| [LangGraph](https://github.com/langchain-ai/langgraph) | `6f2df053f4487ce6ea8decc0d7482c8e46e0f132` | MIT | Candidate durable orchestration layer; evaluate persistence and checkpoint semantics against the simpler explicit state machine. |
+| [AutoGen](https://github.com/microsoft/autogen) | `d07c667a3239ea4ab7af62a53b0f4ff205a1f23d` | Root `LICENSE` observed as CC BY 4.0; repository landing page marked archived | Do not adopt as the default new runtime or copy code based on the root license alone. Inspect package-specific licensing and successor guidance first. |
+| [Concordia](https://github.com/google-deepmind/concordia) | `95b2e2c1ea85be27dbbf549f652999bad6b4348b` | Apache-2.0 | Additional Life Arena reference for composable generative social simulation; evaluate model validity and cost. |
+| [AgentSociety](https://github.com/tsinghua-fib-lab/AgentSociety) | `0ca73abca877b43eefb01f7d3cdf588461489861` | Apache-2.0 | Additional social/urban multi-agent simulation reference; inspect datasets, model dependencies and scale requirements before integration. |
+
+### Consequences for AI Arena
+
+1. Prefer a small, domain-specific simulator and structured Agent contracts over copying a large agent framework wholesale.
+2. Use TradingAgents for finance-role inspiration, OASIS for audience interaction patterns, and Concordia / Generative Agents / AgentSociety for social-state and memory concepts.
+3. AutoGen's archived status and root license make it a weaker default choice for new integration.
+4. No upstream source code has been copied or vendored into this prototype.
