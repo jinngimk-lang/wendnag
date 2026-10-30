@@ -123,3 +123,4 @@ MVP match:
 - 2026-10-30: Finance MVP is paper/historical simulation only; no live trading.
 - 2026-10-30: Marketing reach metrics are simulated unless calibrated by real campaign data.
 - 2026-10-30: Life outputs are branching scenarios, not deterministic predictions.
+- 2026-10-30: Deliver a dependency-free HTML/CSS/JS prototype as the first reviewable product artifact; keep all demo events and metrics explicitly simulated.
