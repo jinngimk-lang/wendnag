@@ -20,7 +20,7 @@ Prompt/config → roster → orchestrated rounds → domain simulator → append
 
 - Work branch: `feat/ai-arena-concept-research`.
 - Draft PR: https://github.com/jinngimk-lang/wendnag/pull/26.
-- Interactive HTML prototype: `prototype/`.
+- Interactive HTML prototype: `prototype/` (`index.html` bootstraps the compressed shell/CSS/JS; run `python3 unpack.py` to restore readable source).
 - Implementation and limits: `IMPLEMENTATION.md`.
 - Verification: `prototype/TEST_REPORT.md`.
 - Visual direction: premium broadcast control room; Finance amber, Marketing cyan, Life violet.
