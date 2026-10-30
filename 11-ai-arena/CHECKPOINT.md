@@ -3,33 +3,59 @@
 Updated: 2026-10-30
 
 ## One-sentence goal
-Build a premium multi-agent competition platform where users enter a company, product or life decision and watch distinct AI agents compete in a transparent, replayable simulation.
+
+Build a premium multi-agent competition platform where a user enters a company, product or life choice and watches distinct AI Agents compete inside a transparent, replayable simulation.
 
 ## Three verticals
-- Finance: strategy agents + historical/paper trading + risk-aware leaderboard.
-- Marketing: creative agents + platform/audience network simulation + calibrated scenario metrics.
-- Life: persistent agents + branching long-term scenarios + sensitivity analysis.
+
+- Finance: competing research strategies + historical/paper execution + risk-aware scoring.
+- Marketing: creative strategies + audience/network simulation + calibrated scenario metrics.
+- Life: parallel long-horizon scenarios + editable assumptions + sensitivity analysis.
 
 ## Shared engine
+
 Prompt/config → roster → orchestrated rounds → domain simulator → append-only events → scoring → live view → replay/branch.
 
-## Current decisions
-- First product vertical recommended: Finance Arena, simulated only.
-- One shared engine, three domain adapters.
-- No live brokerage execution, real ad spend, auto-publishing or deterministic life predictions in MVP.
-- Evidence and uncertainty are first-class UI elements.
+## Current delivery
 
-## Reference shortlist
-- https://github.com/TauricResearch/TradingAgents
-- https://github.com/camel-ai/oasis
-- https://github.com/joonspk-research/generative_agents
-- https://github.com/microsoft/autogen
-- https://github.com/langchain-ai/langgraph
-- https://github.com/FoundationAgents/MetaGPT
+- Work branch: `feat/ai-arena-concept-research`.
+- Draft PR: https://github.com/jinngimk-lang/wendnag/pull/26.
+- Interactive HTML prototype: `prototype/`.
+- Implementation and limits: `IMPLEMENTATION.md`.
+- Verification: `prototype/TEST_REPORT.md`.
+- Visual direction: premium broadcast control room; Finance amber, Marketing cyan, Life violet.
 
-## Repository
-Work on branch `feat/ai-arena-concept-research`, folder `11-ai-arena/`.
-Read root AGENTS.md and this folder's PROJECT.md, STATUS.md and CHECKPOINT.md before continuing.
+## Current behavior
+
+- Three modes and six distinct Agent profiles per mode.
+- Subject prompt and example chips.
+- Six-step deterministic demo event stream.
+- Live standings, domain visualization, pause/resume, fast-forward, reset, report and agent detail.
+- Responsive checks at 1024 / 768 / 390px.
+- All demo metrics are seeded and labelled; no real API or real-world action is connected.
+
+## Current decisions and safety boundary
+
+- No live brokerage execution, real ad spend, auto-publishing or personal data collection.
+- Finance must use point-in-time data, common initial resources and explicit costs.
+- Marketing reach must be calibrated before it is described as a forecast.
+- Life outcomes must remain scenario ranges and trade-offs, not deterministic prophecies.
+- Render public event summaries, not hidden chain-of-thought.
+- Connected Figma plan is View seat; HTML/CSS is current editable design artifact.
+
+## Research snapshots
+
+See `RESEARCH.md` section F for pinned upstream commit SHAs and observed root licenses: TradingAgents, OASIS, Generative Agents, LangGraph, AutoGen, Concordia and AgentSociety.
 
 ## Next concrete action
-Continue product validation and source inspection. For visual exploration and HTML prototype, switch to Work mode, select one of three design directions, then build and visually verify the prototype.
+
+Implement Finance Arena's deterministic historical/paper-trading backend slice and event ledger. Keep the current front-end view-model contract; replace seeded events only after simulator and scoring fixtures are reproducible.
+
+## Recovery order
+
+1. Root `AGENTS.md`.
+2. `11-ai-arena/PROJECT.md`.
+3. `11-ai-arena/STATUS.md` and this file.
+4. `11-ai-arena/IMPLEMENTATION.md`.
+5. `11-ai-arena/ARCHITECTURE.md`, `DESIGN.md`, `RESEARCH.md`.
+6. `11-ai-arena/prototype/README.md` and `prototype/TEST_REPORT.md`.
