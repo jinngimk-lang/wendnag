@@ -117,3 +117,8 @@ Prototype:
 - Observability: structured logs, traces, per-agent token/cost/time budgets and simulator version tags.
 
 Do not prematurely adopt all components. First deliver one end-to-end match with replay using seeded fixtures.
+
+
+## 9. Prototype implementation boundary
+
+The current `prototype/` directory implements the presentation layer with three domain adapters and a seeded six-step event fixture. It demonstrates the state transitions and view-model contract only. It does not implement Match API, Agent Runtime, Data Gateway, persistent Event Ledger, or production Scoring Service. The next backend slice should preserve the same normalized event types and replace the fixture source with a durable event stream.
