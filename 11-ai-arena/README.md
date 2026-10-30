@@ -31,7 +31,9 @@ One shared Arena Engine; three domain-specific worlds. Every match has:
 
 ## Current phase
 
-Concept research and product definition. This is not yet a production system and no real trading, ad buying, or personal-life outcome prediction is performed. The first prototype should demonstrate a transparent, replayable **simulated** match.
+Phase 1 clickable prototype is implemented in `prototype/`. It demonstrates all three arenas with seeded, clearly labelled demo events and metrics. It is not a production system: no real trading, ad buying, auto-publishing, personal data collection or life-outcome prediction is performed.
+
+See `IMPLEMENTATION.md` for the front-end architecture and `prototype/TEST_REPORT.md` for browser verification.
 
 ## Context recovery
 
