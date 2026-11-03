@@ -48,3 +48,10 @@
 ## Boundaries
 
 The UI redesign does not make the prototype a live financial product. Company names remain labels/seeds; research, prices, sentiment, events, fills and returns remain synthetic. No live data, external LLM, broker or real order execution is connected.
+
+## GitHub Actions verification
+
+- Run #98: **PASS** — https://github.com/jinngimk-lang/wendnag/actions/runs/41571774692
+- Both jobs passed: Backend evidence contracts; Finance Lab browser regression (isolated Python environment, Playwright / Chromium, functional regression, responsive visual QA and artifact upload).
+- Artifact finance-lab-visual-qa, ID 13201641803, was downloaded and inspected. Research and mobile arena screenshots were reviewed after adjusting the capture scroll offsets so sticky navigation does not contaminate the snapshots.
+- CI report confirms five viewport widths (1440 / 1024 / 768 / 390 / 320), no horizontal overflow, six factions, 18 role templates and no page errors.
