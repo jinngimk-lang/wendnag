@@ -78,6 +78,8 @@ class SECClient:
     ) -> None:
         if not isinstance(user_agent, str) or not user_agent.strip():
             raise SECFetchError("SEC_USER_AGENT is required")
+        if len(user_agent) > 200 or "\r" in user_agent or "\n" in user_agent:
+            raise SECFetchError("SEC User-Agent must be a short single-line identifier")
         if not re.search(r"[^\s@]+@[^\s@]+\.[^\s@]+", user_agent):
             raise SECFetchError("SEC User-Agent must identify a contact email")
         if timeout <= 0 or min_interval < 0.1 or max_retries < 0 or max_retries > 5:
@@ -174,9 +176,11 @@ class SECClient:
 
     @staticmethod
     def normalize_cik(cik: str | int) -> str:
-        digits = "".join(ch for ch in str(cik) if ch.isdigit())
-        if not digits:
-            raise SECFetchError("CIK must contain digits")
+        if isinstance(cik, bool) or not isinstance(cik, (str, int)):
+            raise SECFetchError("CIK must be a string or integer")
+        digits = str(cik).strip()
+        if not digits.isdigit() or len(digits) > 10 or int(digits) <= 0:
+            raise SECFetchError("CIK must be a positive value of at most 10 digits")
         return digits.zfill(10)
 
     def get_submissions(self, cik: str | int) -> dict:
