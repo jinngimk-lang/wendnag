@@ -1,65 +1,64 @@
-# AI Arena — Finance Research Lab V0.3.3
+# AI Arena — Independent Agent Portfolio Workstation V0.4.0
 
-Finance Arena 的 research-to-paper-simulation 原型。它不再只是“输入公司名后看四个固定收益席位”，而是把完整比赛过程拆成：
+Finance Arena 已从“六派系围绕中央资金池的竞技场”重构为 **一个 Agent = 一个独立账户** 的投研与模拟交易工作站。
 
-**公司/代码输入 → 六派系独立投研 → 反方交叉质询 → 用户设置交易周期 → 共同市场环境 → 独立模拟组合 → 每日操作账本 → 回放与复盘。**
+## V0.4.0 产品结构
 
-## V0.3.3 视觉重设计
+**实验入口弹窗 → 共同市场环境 → 六个独立 Agent 账户 → 当前 Agent 完整工作区 → 净值比较 / 事件 / 风险 → 逐 Agent 操作账本。**
 
-Finance Research Lab 已围绕高级金融研究控制台重新组织：研究主标题与参数面板、六派系投研卡片、结构化交叉质询、中央盈亏金库、市场因子分析和可审计账本。原有确定性模拟器、DOM ID、事件处理与会计逻辑保持不变。设计规范见 MOTIONSITES_REDESIGN_SPEC.md；正式 HTML 内嵌 CSS/JS，仍可离线单文件运行。
+- 六个 Agent 各自拥有独立现金、股票持仓、净值路径、风险指标和操作记录。
+- 六个 Agent 共享同一条市场价格路径、市场因子、事件序列、起始本金、费用、滑点和风险上限，保证横向比较条件公平。
+- 不存在中央资金池，不存在 Agent 之间的现金转账；合计盈亏只是六个独立账户的汇总视图。
+- 主界面在同一工作台内展示市场数据、六个账户、所选 Agent 研究结论、净值曲线、事件、排名和逐日账本。
+- 新建实验、选择公司标签、配置模拟天数、初始本金和风险上限放入独立弹窗。
+- 每个 Agent 有独立人物视觉资产槽位。角色设定、色彩和图片规格见 AGENT_VISUAL_SYSTEM.md；生成图片预期路径为 assets/agents/value.webp、growth.webp、trend.webp、quant.webp、sentiment.webp、macro.webp。
+
+## 六个 Agent
+
+| Agent | 研究视角 | 视觉身份 |
+|---|---|---|
+| 价值派 | 估值、安全边际、现金流质量 | 沉稳的资深价值投资家 |
+| 成长派 | 增长质量、利润率、预期修正 | 年轻的科技成长投资人 |
+| 趋势派 | 价格结构、相对强弱、动量 | 果断的趋势交易员 |
+| 量化派 | 多因子、波动预算、组合约束 | 冷静的算法研究科学家 |
+| 情绪派 | 注意力、新闻情绪、拥挤与反身性 | 敏锐的市场心理分析师 |
+| 宏观派 | 流动性、利率、周期、风险偏好 | 成熟的全球宏观策略师 |
 
 ## 当前交互能力
 
-1. 输入公司名或股票代码；设置 20–252 个模拟交易日、每派系初始资金和统一风险上限。
-2. 六个派系使用不同研究框架：价值与质量、成长、技术趋势、量化、市场情绪、宏观环境。
-3. 每个派系有主研、反方挑战、风控三个角色模板；报告显示观点、置信度、驱动信号、风险、触发条件和观点失效条件。
-4. 交叉质询动态比较本轮最积极与最谨慎的观点，不伪造单一 AI 共识。
-5. 六个派系在相同价格路径、初始资金、费用、滑点、风险上限和模拟时钟下独立管理仓位。
-6. 用户可自动运行、暂停、逐日推进、推进五日、直达结算、重置或拖动时间轴回放。
-7. 每个派系每天均有 BUY / SELL / HOLD 决策；日志记录市场价、成交价、数量、目标仓位、成交金额、现金、持股、费用、滑点、决策原因、市场涨跌、宏观、情绪、行业动量、波动率和事件。
-8. 排名按演示风险分数排序；图表、市场事件、因子面板和日志均随回放时间同步，不展示未来事件或未来净值。
-9. 单日推进时，按真实模拟净值变化触发钞票动效：盈利由中央表现池流向派系，亏损由派系回流中央；金额、方向和数量均由当日净值变化决定，不随机播放。聚合盈亏正负同步切换绿/红。
-9. 完整 JSON 导出包含 run ID、版本、输入、合成证据包声明、市场路径、事件、基准、结果和逐日决策。
+1. 从“新建实验”弹窗设置研究对象标签、20–252 个模拟交易日、每 Agent 独立初始本金和统一风险上限。
+2. 六个 Agent 使用不同的研究框架，生成独立观点、置信度、信号、风险、入场触发和失效条件。
+3. 每个 Agent 独立持有现金和股票；模拟器逐日记录独立账户的现金、股数、仓位、成交、费用、滑点和净值。
+4. 共同市场状态、情绪、宏观、行业动量、波动和事件对所有 Agent 一致。
+5. 点击任意 Agent 卡片，查看其独立账户、研究结论、仓位、风险、交易次数和最后决策。
+6. 六账户净值曲线、动态排名、事件时间线和操作账本随回放时间同步，不展示未来净值和未来事件。
+7. 支持自动运行、暂停、逐日推进、推进五日、直达结算、重置、拖动回放、账本筛选和完整 JSON 导出。
 
 ## Run locally
 
 这是无外部 CDN / npm 依赖的单文件 HTML：
 
-```bash
+~~~bash
 python -m http.server 8000
 # open http://127.0.0.1:8000
-```
+~~~
 
 ## Browser QA
 
-```bash
+~~~bash
 python -m venv .venv
 .venv/bin/python -m pip install -r requirements-test.txt
 .venv/bin/python -m playwright install chromium
 .venv/bin/python tests/test_ui.py
 .venv/bin/python tests/visual_qa.py
-```
+~~~
 
-GitHub Actions 在干净的 Python 虚拟环境中安装测试依赖与 Chromium，并运行上述两套浏览器回归。
-
-## Visual QA report
-
-Final screenshot review, viewport matrix, MotionSites rubric scores and regression evidence: VISUAL_QA_REPORT.md.
-
-## Backend evidence gateway core (V0.1)
-
-The provider-agnostic standard-library contract lives in `../backend/research_gateway.py`: exact issuer resolution, immutable source-attributed evidence, point-in-time snapshot freezing, evidence-linked typed faction output and a hash-chained in-memory event ledger. The no-network SEC EDGAR submissions/companyfacts parser also maps filing accessions to exact `acceptanceDateTime` availability; license status defaults to `review_required`. A separate opt-in SEC JSON client requires `SEC_USER_AGENT`, limits requests to HTTPS SEC hosts, paces requests, retries transient errors and bounds response sizes; it has only been tested with mocked transport, not a live SEC request. Durable persistence is still pending. Run its tests from `11-ai-arena/` with:
-
-```bash
-python -m unittest discover -s backend/tests -v
-```
+GitHub Actions 在隔离 Python 虚拟环境中安装 Playwright / Chromium，并运行完整交互回归、252 日压力测试和五种屏幕尺寸视觉检查。
 
 ## Truth boundary — must remain visible
 
-**V0.3.3 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
+**V0.4.0 仍是本地合成演示，不是真实公司投研或历史回测。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个 Agent 是独立本地规则策略，不是实际运行的外部 LLM worker。模拟收益不是未来预测或投资建议。
 
 ## Real-data integration gate
 
-真正的公司投研必须先完成 `REAL_DATA_BLUEPRINT.md` 中的公司实体解析、许可数据接入、point-in-time 证据快照、独立 Agent worker、确定性模拟器和可审计事件账本。不能用公司名称 seed 出来的合成因子冒充真实公司研究，也不能把 ChatGPT 会话里的 MCP 数据访问误称为网页应用已经接通。
-
-V0.1 控制室和 V0.2 Capital Theater 保留作视觉对照；V0.3.3 是 Finance-first 交互验证版本。
+真实公司投研仍需完成 REAL_DATA_BLUEPRINT.md 中的公司实体解析、许可数据接入、point-in-time 证据快照、独立 Agent worker、确定性模拟器和可审计事件账本。不能用公司名称 seed 出来的合成因子冒充真实公司研究，也不能把 ChatGPT 会话里的 MCP 数据访问误称为网页应用已经接通。
