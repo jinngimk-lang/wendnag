@@ -99,3 +99,9 @@ This is a contract layer, not a provider integration or production API. No netwo
 Added `backend/adapters/sec_edgar.py` as a no-network normalization adapter. It joins companyfacts observations to submissions by accession number and uses the exact filing `acceptanceDateTime` as both publication and availability time. It never substitutes period end or date-only `filingDate` for the information-availability gate. Missing acceptance times, unmatched accessions and form mismatches are excluded; conflicting duplicate accession metadata fails closed, fiscal frame participates in fact identity, and issuer candidates preserve ticker/exchange ambiguity. License status defaults to `review_required`, so the common evidence snapshot fails closed until terms review is explicitly completed. The adapter has nine focused tests in addition to the 12 evidence-contract tests, for 21 total.
 
 The adapter consumes already-fetched JSON only. A compliant SEC HTTP fetcher, network access, persistence, live LLM workers and broker actions remain unimplemented.
+
+## 15. SEC read-only JSON client V0.1
+
+Added `backend/adapters/sec_client.py`: no requests occur at import time; explicit `SEC_USER_AGENT` with a contact email is required. The client restricts requests to HTTPS on SEC hosts, uses a conservative 0.25-second minimum interval, honors `Retry-After`, applies bounded retries to transient errors, caps response size and caches successful JSON briefly in memory. The nine mocked-transport tests cover host allowlisting, header identity, CIK normalization, pacing, 429/5xx retries, response-size and JSON validation, cache isolation and retry bounds.
+
+No live SEC request was performed. The next gate is a controlled smoke test with an explicitly monitored contact identity and current SEC policy review; the SEC parser continues to default license status to `review_required`.
