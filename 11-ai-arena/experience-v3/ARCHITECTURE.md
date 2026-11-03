@@ -1,66 +1,75 @@
-# Finance Arena V0.3 — Research-to-Paper-Simulation Contract
+# Finance Arena V0.3.1 — Research-to-Paper-Simulation Contract
 
 ## Product loop
 
-`SUBJECT → CONFIGURE → SHARED EVIDENCE SNAPSHOT → INDEPENDENT RESEARCH → CROSS-EXAM → PAPER SIMULATION → DAILY LEDGER → SETTLEMENT / REPLAY`
+`SUBJECT → CONFIGURE → SYNTHETIC RESEARCH PACK → INDEPENDENT FACTIONS → CROSS-EXAM → PAPER SIMULATION → DAILY RUN LEDGER → SETTLEMENT / REPLAY`
 
-The user controls simulation length in trading days (20–252), equal starting capital, and a shared portfolio-risk cap. The six factions are:
+The production target replaces the synthetic research pack with a common immutable point-in-time evidence pack. The current HTML remains a local deterministic prototype.
 
-| Faction | Primary lens | Typical decision drivers |
+## Six independent factions
+
+| Faction | Primary lens | Typical drivers |
 |---|---|---|
 | Value & Quality | valuation, cash-flow quality, balance-sheet resilience | valuation gap, quality, margin of safety |
 | Growth | revenue/earnings growth, market expansion, expectation revisions | growth persistence, margin trajectory, estimate revisions |
 | Technical / Momentum | price structure, relative strength, trend confirmation | momentum, moving-average regime, volume confirmation |
-| Quant | reproducible multi-factor signal and portfolio construction | factor score, volatility targeting, turnover and signal decay |
+| Quant | reproducible multi-factor signal and portfolio construction | factor score, volatility targeting, turnover, signal decay |
 | Sentiment | attention, news tone, crowding and reflexivity | sentiment level/change, crowding, reversal risk |
 | Macro / Regime | liquidity, rates, sector cycle, risk appetite | macro regime, correlation shift, volatility and tail risk |
 
-Each faction exposes three role templates: lead analyst, bear-case challenger, risk officer. In V0.3 these are explanatory templates, **not actual independent LLM workers**.
+Each faction exposes lead analyst, bear-case challenger and risk officer role templates. In V0.3.1 they are explanatory templates, **not actual independent LLM workers**.
 
 ## Fairness contract
 
-Every faction receives the same:
-- company task label and research-scenario seed;
+All factions receive the same:
+- company task label and scenario seed;
 - market path, event sequence and factor snapshots;
 - starting capital;
-- commission/slippage assumptions and risk cap;
+- commission, slippage assumptions and risk cap;
 - simulation clock and settlement rules.
 
-Each faction owns an independent cash/share ledger and target-weight policy. Agents propose target weights; the simulator applies orders and computes balances. Agents never directly write authoritative equity.
+Each faction owns an independent cash/share ledger and target-weight policy. The simulator applies orders and computes balances; strategy functions never write authoritative equity.
 
-## Synthetic prototype model
+## Synthetic model
 
-- Price is a deterministic, seeded path with daily idiosyncratic noise plus macro, sector and sentiment components.
-- Synthetic events alter one or more environment factors and can create a price shock.
+- Deterministic seeded price path with idiosyncratic noise plus macro, sector and sentiment components.
+- Synthetic events alter environment factors and may add a price shock.
 - Environment panel tracks macro liquidity, sentiment temperature, sector momentum and volatility.
-- Every faction emits one daily decision (`BUY`, `SELL`, `HOLD`) with target weight, execution notional, fee and concise reason.
-- Trading fee and slippage are fixed demonstrative rates; risk cap is shared and selected by the user.
-- Equity curves, drawdown, turnover, trade count and score are derived from the same portfolio state.
-- Benchmark is a synthetic buy-and-hold path using the same simulated price series.
-- JSON export includes input seed, research, daily market snapshots, events, results and full decision ledger.
+- Every faction emits one daily `BUY` / `SELL` / `HOLD` record.
+- Each operation now carries its own market-context snapshot: market return, macro, raw sentiment, sector, volatility, regime and event metadata.
+- Execution rows contain market/fill price, quantity, target weight, notional, fee, slippage, cash, shares and equity.
+- Buy-and-hold benchmark deducts the entry fee from invested capital before calculating shares.
+- Replay hides future event counts, future event cards, future ledger rows and future chart points.
+- JSON export includes a `SYNTHETIC_DEMO_ONLY` evidence-pack declaration, run ID, strategy/simulator versions, benchmark assumptions and full operation context.
 
-## Production architecture (not implemented in this static prototype)
+## Illustrative score
 
-1. **Entity Resolver** — canonical issuer, exchange, ticker, share class and corporate-action identity.
-2. **Data Gateway** — licensed point-in-time filings, financials, prices, news, sector and macro feeds; source timestamp, fetch timestamp, license and snapshot ID.
-3. **Evidence Pack Builder** — immutable, versioned and common to all factions; point-in-time cut-off prevents future-data leakage.
-4. **Research Orchestrator** — independent role workers with isolated context and tool budgets; typed outputs include thesis, stance, confidence, evidence refs, counter-thesis, triggers, invalidation conditions and risk limits.
-5. **Cross-Exam** — agents challenge claims and cite evidence; it records dissent rather than fabricating consensus.
-6. **Paper Simulator** — deterministic order validation, fills, cash/shares, fees, slippage, liquidity, corporate actions, calendar and risk constraints.
-7. **Append-only Event Ledger** — immutable event sequence with run ID, actor, event time, input snapshot, action, evidence refs, state hashes and version IDs.
-8. **Scoring / Reporting** — total and benchmark-relative return, max drawdown, volatility, Sharpe/Sortino only when statistically valid, turnover, exposure, hit rate and calibration/uncertainty.
-9. **Replay / Branch** — rebuild the UI from ledger events; allow controlled what-if branches without altering the original run.
+`totalReturnPct - 0.48 × maxDrawdownPct - 0.20 × dailyReturnVolatilityPct`
+
+This coefficient set is only a prototype fixture, not a validated investment objective. Replay ranking recalculates the same score from observations available up to the selected day.
+
+## Production architecture (not implemented)
+
+1. **Entity Resolver** — canonical issuer, exchange, ticker, share class, CIK and corporate-action identity.
+2. **Data Gateway** — licensed point-in-time filings, financials, prices, company/sector news, sentiment and macro feeds.
+3. **Evidence Pack Builder** — immutable, versioned, source-attributed and common to all factions; enforce `published_at` / `available_at` cutoffs.
+4. **Research Orchestrator** — independent role workers with isolated context/tool budgets; typed outputs include stance, thesis, confidence, evidence refs, counter-thesis, triggers, invalidation and risk limits.
+5. **Cross-Exam** — challenge claims against evidence and preserve dissent; do not reveal hidden chain-of-thought.
+6. **Policy / Trigger Engine** — agents produce a strategy policy once; re-evaluate on scheduled intervals or material events to avoid one LLM call per faction per day.
+7. **Paper Simulator** — deterministic order validation, fills, cash/shares, fees, slippage, liquidity, corporate actions, calendar and risk constraints.
+8. **Append-only Event Ledger** — immutable event sequence with run ID, actor, event time, input snapshot, action, evidence refs, state hashes and version IDs.
+9. **Scoring / Reporting** — total and benchmark-relative return, max drawdown, volatility, turnover, exposure, hit rate, calibration and uncertainty; Sharpe/Sortino only when statistically valid.
+10. **Replay / Branch** — rebuild the UI from ledger events; what-if branches never mutate the original run.
 
 ## Required event families
 
 `research_started`, `evidence_added`, `thesis_submitted`, `challenge_raised`, `risk_limit_set`, `market_event`, `sentiment_updated`, `action_proposed`, `order_accepted`, `fill_recorded`, `position_updated`, `risk_triggered`, `day_settled`, `match_settled`.
 
-## Data integrity and safety gates
+## Integrity and safety gates
 
-- No future data in historical decisions; record `published_at` and `available_at`.
-- Do not treat news sentiment as fact; store source, text span, model/version, confidence and correction status.
-- Keep facts, model inference, scenario assumptions and simulated events visually distinct.
-- No live broker execution in MVP. Paper simulation must not share credentials or order endpoints with live trading.
-- No “guaranteed profit”, “AI predicts price” or investment-advice claims.
-- Validate on held-out periods and against simple baselines; publish costs, missing data and uncertainty.
-- Keep all raw reasoning private; expose concise rationale and cited evidence, not hidden chain-of-thought.
+- No future data in historical decisions; persist `published_at`, `available_at`, `retrieved_at` and snapshot ID.
+- News sentiment is a model estimate, not fact; store source, text span, model/version, confidence and correction status.
+- Visually separate observed facts, model inference, scenario assumptions and simulated events.
+- No live broker execution in MVP; paper simulator must not share credentials or order endpoints with live execution.
+- Never promise profit or claim that AI predicts a stock price.
+- Validate against buy-and-hold / index / simple factor baselines and run look-ahead leakage tests.
