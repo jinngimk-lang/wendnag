@@ -1,6 +1,6 @@
 # Finance Arena — Real Company Research Integration Blueprint
 
-**Status:** production target; provider integrations are still not connected. A standard-library backend contract core now implements exact issuer resolution, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs and an in-memory hash-chained ledger. A no-network SEC submissions/companyfacts parser now anchors facts to accession acceptance timestamps; it defaults to `review_required` license status. No SEC fetcher or other live provider integration or production persistence service is connected. V0.3.2 remains a synthetic front-end demo.
+**Status:** production target; provider integrations are still not connected. A standard-library backend contract core now implements exact issuer resolution, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs and an in-memory hash-chained ledger. A no-network SEC submissions/companyfacts parser now anchors facts to accession acceptance timestamps; it defaults to `review_required` license status. A separate opt-in SEC JSON client requires an explicit contact-email User-Agent, restricts HTTPS hosts to SEC domains, paces requests, honors Retry-After, bounds retries and response size, and uses a short in-memory cache. No live SEC request was performed; other live providers and production persistence remain unconnected. V0.3.2 remains a synthetic front-end demo.
 
 ## 1. Input resolution
 
@@ -54,7 +54,7 @@ A connected Alpaca MCP read-only session was verified during this work for asset
 
 `backend/adapters/sec_edgar.py` parses already-fetched SEC submissions and companyfacts JSON; it does not make HTTP requests. Each financial fact is tied to its accession and the matching filing `acceptanceDateTime`. Date-only `filingDate` and fiscal period end are retained as metadata but never used as the point-in-time availability gate. Facts with missing acceptance timestamps, unknown accessions or mismatched forms are excluded. The adapter defaults to `review_required` license status, so the evidence gateway refuses to freeze those records until a separate terms review explicitly approves them.
 
-This parser is a normalization layer, not proof that a live SEC ingestion pipeline exists. A production fetcher still needs the SEC-required User-Agent, conservative request pacing, retry/backoff, response caching, accession lineage, and operational monitoring.
+The parser and client are normalization/transport components, not proof that a live SEC ingestion pipeline is active. The client has only been validated with mocked HTTP responses; no external SEC request was issued in this milestone. A production fetcher still needs the SEC-required User-Agent, conservative request pacing, retry/backoff, response caching, accession lineage, and operational monitoring.
 
 ## 4. Agent graph
 
