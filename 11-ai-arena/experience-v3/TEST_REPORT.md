@@ -73,4 +73,4 @@ The backend is a contract core plus a mocked/tested SEC transport/parser, not an
 - Screenshot review: desktop first viewport has clear headline → setup → six-faction hierarchy; mobile setup remains readable with 44px+ primary controls; central vault and six portfolio pods remain the visual signature.
 - Browser checks cover 1440 / 1024 / 768 / 390 / 320px; no page/console errors or horizontal overflow.
 - Existing 252-day stress, 1,512 daily decisions, bidirectional accounting-linked money flow, replay, filters, export and deterministic rerun remain covered by tests/test_ui.py.
-- No external fonts, CDN, npm dependencies or image assets introduced.
+- GitHub Actions run #100 also passed in a clean isolated `.venv` with Playwright and Chromium installed from the test requirements. No external fonts, CDN, npm dependencies or image assets introduced.

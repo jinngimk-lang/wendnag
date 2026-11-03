@@ -55,3 +55,9 @@ The UI redesign does not make the prototype a live financial product. Company na
 - Both jobs passed: Backend evidence contracts; Finance Lab browser regression (isolated Python environment, Playwright / Chromium, functional regression, responsive visual QA and artifact upload).
 - Artifact finance-lab-visual-qa, ID 13201641803, was downloaded and inspected. Research and mobile arena screenshots were reviewed after adjusting the capture scroll offsets so sticky navigation does not contaminate the snapshots.
 - CI report confirms five viewport widths (1440 / 1024 / 768 / 390 / 320), no horizontal overflow, six factions, 18 role templates and no page errors.
+
+
+## Final isolated CI run
+
+- GitHub Actions run #100: **PASS** — https://github.com/jinngimk-lang/wendnag/actions/runs/41572065099
+- The run created a fresh Python virtual environment, installed the declared Playwright test requirements and Chromium, passed browser regression and backend contracts, captured responsive screenshots, and uploaded artifact ID 13201981641.

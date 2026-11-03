@@ -83,7 +83,7 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Added MOTIONSITES_REDESIGN_SPEC.md and embedded a standalone V0.3.3 design system into the HTML. No simulation JS or accounting rules were changed.
 - Local .venv Playwright regression passed after redesign; all six factions, 18 role templates, money-flow direction, ledger, replay, export, deterministic rerun and 252-day / 1,512-decision stress remain covered.
 - Desktop and mobile screenshots reviewed. A separate tests/visual_qa.py captures five responsive widths plus research and arena states and checks page/console errors and horizontal overflow. VISUAL_QA_REPORT.md records a 8.3/10 MotionSites review score (no category below 7).
-- GitHub Actions run #96 passed; after refining the screenshot framing, run #98 also passed. The uploaded visual artifact (ID 13201641803) was downloaded and inspected. Backend evidence contracts and browser regression are green.
+- GitHub Actions runs #96, #98 and #100 passed; #100 is the final documentation-closure run. The uploaded visual artifact (ID 13201981641) was downloaded and inspected. Backend evidence contracts and browser regression are green.
 - PR #26 remains Draft and unmerged. Continue from this branch/head; no production or live-finance claims are made.
 
 
@@ -92,3 +92,5 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - GitHub Actions run #98: PASS — backend evidence contracts, isolated Python venv + Playwright browser regression, five responsive viewport snapshots, screenshot artifact upload.
 - Artifact: finance-lab-visual-qa (ID 13201641803, ~2.8 MB); downloaded and visually reviewed. The research screenshot shows the six faction cards without sticky-header capture artifacts; the mobile arena screenshot is aligned to the simulation section top.
 - Visual report JSON: 1440 / 1024 / 768 / 390 / 320px; all horizontalOverflow=false, factions=6, roleTemplates=18, pageErrors=[]; result=PASS.
+
+- The local README now documents the portable clean-venv install/test commands; it no longer exposes this runtime's preinstalled package path.

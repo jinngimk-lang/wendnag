@@ -37,6 +37,7 @@ python -m venv .venv
 .venv/bin/python -m pip install -r requirements-test.txt
 .venv/bin/python -m playwright install chromium
 .venv/bin/python tests/test_ui.py
+.venv/bin/python tests/visual_qa.py
 ```
 
 本工作环境使用系统 Chromium 和预装 Playwright 包运行隔离虚拟环境测试：
