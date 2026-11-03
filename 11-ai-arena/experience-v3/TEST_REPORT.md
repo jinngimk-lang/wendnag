@@ -46,3 +46,14 @@ PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable
 ## Limitations
 
 This validates front-end interaction and deterministic local simulation only. It does not validate company-specific research, licensed market data, actual LLM agents, historical backtest quality, exchange execution, legal suitability or investment performance. All current facts, signals, events, prices, fills and returns are synthetic.
+
+## Backend evidence contract QA — V0.1
+
+- `python -m unittest discover -s backend/tests -v`: **12 tests PASS**.
+- Exact issuer match, exchange-qualified ticker and CIK normalization; ambiguous ticker and unknown issuer outcomes.
+- UTC chronology checks, future-availability exclusion, foreign-issuer rejection, license fail-closed behavior and conflicting duplicate-ID rejection.
+- Deterministic snapshot identity independent of input record order; deep payload immutability and manifest-tamper detection.
+- Faction output evidence-reference validation and hard target-weight cap.
+- Append-only hash-chain verification, payload immutability, corruption detection and monotonic timestamps.
+
+The backend is a contract core only. No real SEC/Alpaca/news/macro/sentiment adapter, persistence layer, external LLM call or broker action is implemented.
