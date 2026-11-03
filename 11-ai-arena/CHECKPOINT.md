@@ -76,6 +76,14 @@ Six factions (value, growth, trend, quant, sentiment, macro) each show lead/chal
 
 Next: licensed point-in-time research/data provider → common immutable evidence pack → isolated LLM role workers → deterministic paper simulator and append-only ledger → held-out baseline/leakage tests. Keep V0.1/V0.2 intact for comparison.
 
+## 2026-11-03 SEC EDGAR parser V0.1
+
+- `backend/adapters/sec_edgar.py` normalizes already-fetched submissions/companyfacts JSON; it performs no HTTP requests.
+- Financial facts are joined by accession and use `acceptanceDateTime` as the public-availability timestamp; period end and date-only filingDate are metadata only.
+- Missing acceptance timestamps, unknown accessions and form mismatches are excluded; CIK mismatch fails closed.
+- License status defaults to `review_required`; do not mark approved without a separate terms review.
+- 19 backend unit tests pass. A compliant SEC fetcher with User-Agent, pacing, retries, caching and accession lineage remains the next step.
+
 ## 2026-11-03 backend evidence gateway contract V0.1
 
 - Executable core: `backend/research_gateway.py` (Python standard library only).
