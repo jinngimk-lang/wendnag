@@ -168,3 +168,5 @@ This is not yet a live research service. There are no SEC/Alpaca/news/macro adap
 The backend now includes a no-network parser for SEC submissions and companyfacts JSON. Financial facts are joined to the exact accession and filing `acceptanceDateTime`; reporting period end and date-only filing date are descriptive metadata, never substitutes for public-availability time. Missing acceptance times, unknown accessions and form mismatches are excluded. License status defaults to `review_required`, and the evidence pack refuses to freeze unapproved records.
 
 This parser does not fetch data. A production SEC fetcher must implement the required User-Agent, request pacing, retry/backoff, caching and accession lineage, and must preserve the original point-in-time release timestamps. No terms approval or live SEC connection is implied.
+
+SEC parser hardening also rejects conflicting duplicate submissions metadata for one accession and includes fiscal year/period/frame in fact identity so distinct SEC observations cannot silently collide under one evidence ID. The SEC parser and evidence contract now have 21 standard-library unit tests.
