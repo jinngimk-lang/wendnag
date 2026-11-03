@@ -75,3 +75,11 @@ Six factions (value, growth, trend, quant, sentiment, macro) each show lead/chal
 **Not real research yet:** no company filings, live prices/news, external LLM workers or broker. All V0.3 numbers are synthetic and company text only seeds the demo. Read `experience-v3/README.md`, `ARCHITECTURE.md`, `TEST_REPORT.md` and `CHECKPOINT.md`. QA: isolated venv + Playwright passes; 252-day run creates 1,512 decisions; responsive 1440/1024/768/390/320; no console errors.
 
 Next: licensed point-in-time research/data provider → common immutable evidence pack → isolated LLM role workers → deterministic paper simulator and append-only ledger → held-out baseline/leakage tests. Keep V0.1/V0.2 intact for comparison.
+
+## 2026-11-03 backend evidence gateway contract V0.1
+
+- Executable core: `backend/research_gateway.py` (Python standard library only).
+- 12 tests pass for exact/ambiguous issuer resolution, CIK normalization, UTC chronology, point-in-time future exclusion, foreign issuer and license rejection, duplicate IDs, deep immutability, snapshot integrity, evidence-linked faction contracts, weight caps and hash-chain tampering.
+- GitHub Actions workflow: `.github/workflows/ai-arena-validation.yml` runs backend contract and Finance Lab browser tests.
+- Not implemented: real SEC/Alpaca/news/macro adapters, network access, credentials, LLM calls, HTTP API, durable persistence or broker integration.
+- Next: implement one reviewed SEC issuer/filing adapter and one licensed market-data adapter; persist snapshots and ledger before connecting faction workers.
