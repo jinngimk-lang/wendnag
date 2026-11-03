@@ -142,6 +142,7 @@ def run():
         assert len(payload["market"]) == 61
         assert len(payload["operations"]) == 360
         assert {x["agentId"] for x in payload["operations"]} == {"value", "growth", "trend", "quant", "sentiment", "macro"}
+        cap = {"conservative": .35, "balanced": .60, "aggressive": .85}[payload["inputs"]["risk"]]
         assert len(payload["results"]) == 6
         for result in payload["results"]:
             assert len(result["equityPath"]) == 61
@@ -159,7 +160,6 @@ def run():
         assert all("fillPrice" in x and "slippageCost" in x and "cashBalance" in x and "sharesHeld" in x for x in payload["operations"])
         assert all("marketReturnPct" in x and "macro" in x and "sentimentRaw" in x and "sector" in x and "volatility" in x and "eventKind" in x and "eventDescription" in x for x in payload["operations"])
         assert all(x["volatility"] >= 0 and 0 <= x["sentiment"] <= 100 for x in payload["operations"])
-        cap = {"conservative": .35, "balanced": .60, "aggressive": .85}[payload["inputs"]["risk"]]
         assert all(x["weight"] <= cap + 1e-9 for x in payload["operations"])
         assert all(x["cashBalance"] >= -0.01 for x in payload["operations"])
         assert len(set(x["sentiment"] for x in payload["market"])) > 8
