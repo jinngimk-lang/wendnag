@@ -49,7 +49,8 @@ No live company research, licensed financial data, market news, LLM workers, bro
 - Snapshot freeze filters records not yet available at the requested `as_of` cutoff, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting duplicate IDs, and produces a deterministic manifest ID.
 - Typed faction research validates supporting/counter evidence references against the same snapshot and enforces `target_weight <= max_weight`.
 - Append-only in-memory ledger chains payload hashes and prior event hashes; tampering and timestamp reversal are detected.
-- Twelve standard-library unit tests pass. No external provider, network call, API key, LLM worker, database or broker is connected.
+- Added `backend/adapters/sec_edgar.py`: a no-network parser for SEC submissions/companyfacts that anchors facts to accession `acceptanceDateTime`, excludes unmatched accessions/forms, and defaults license status to `review_required`.
+- Nineteen standard-library unit tests pass. No SEC fetcher, other live provider, API key, LLM worker, database or broker is connected.
 - Added root `.github/workflows/ai-arena-validation.yml` to run backend contracts and the Finance Lab Playwright regression on AI Arena changes.
 
 ## Research discoveries
