@@ -145,6 +145,12 @@ def run():
             assert len(result["cashPath"]) == 61
             assert len(result["sharesPath"]) == 61
             assert len(result["weightPath"]) == 61
+            assert len(result["targetWeightPath"]) == 61
+            for day_index, actual_weight in enumerate(result["weightPath"]):
+                equity = result["equityPath"][day_index]
+                expected_weight = result["sharesPath"][day_index] * payload["market"][day_index]["price"] / equity if equity else 0
+                assert abs(actual_weight - expected_weight) < 1e-8
+            assert max(result["targetWeightPath"]) <= cap + 1e-9
             expected_score = result["totalReturn"] - .48 * result["maxDrawdown"] - .20 * result["dailyVolatilityPct"]
             assert abs(result["score"] - expected_score) < 1e-8
         assert all("fillPrice" in x and "slippageCost" in x and "cashBalance" in x and "sharesHeld" in x for x in payload["operations"])
