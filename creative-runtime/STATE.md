@@ -175,3 +175,15 @@ The existing LegalLens film task remains separate; do not mix its assets or narr
 - GitHub: continue on `design/aegistonteam-cinematic-landing-20261103` / Draft PR #27. PR #27 remains Draft and is a design/prototype workstream; do not merge or deploy to production. The remote `10-aegistonteam/landing-cinematic/site/index.html` is an older V2 page, not the V3/V4 deliverable.
 - No native Figma file/timeline exists. Web motion uses native CSS / browser transitions as an implementation of Smart Animate principles.
 - V5 review candidate completed locally: `AegistonTeam_V5_离线预览.html` (SHA-256 `3109c52a5af44478d60bad451261269dbf5a6546516947db6ab93f40535e761f`, 1,371,124 bytes) and `AegistonTeam_V5_源码与验收包.zip` (SHA-256 `345f62851f1c3f7441c92b5f90e6559186347f61f5b22c87d8ea0964bf5dd970`). Eight content-image placements are embedded; no remote image host dependency. Desktop 1440px and mobile 390px Chromium QA passed with no overflow or JS errors; tab, lightbox, accordion, mobile nav, runner replay, reduced-motion, and internal anchors passed. Full evidence: `10-aegistonteam/landing-cinematic/V5-QA-2026-11-03.md`. These binary artifacts were delivered in chat and are not yet committed to GitHub. Keep PR #27 Draft; next step is user visual review, no production deployment.
+
+
+## 2026-11-03 — AegistonTeam V6 x.ai-inspired landing-page continuation
+
+- **Current active design iteration:** AegistonTeam V6. Read `10-aegistonteam/landing-cinematic/V6-CONTINUITY-2026-11-03.md` first.
+- Reference: [x.ai](https://x.ai/) used only for information hierarchy and section rhythm. The V6 sequence is hero → real product preview → grounded capability proof → illustrated collaboration moments → team workflow → two start paths → mascot footer.
+- The approved warm-white / orange / cream / charcoal mascot identity remains authoritative. Genuine workspace and team-structure screenshots are retained; no fake UI or invented performance metrics/news are added.
+- Local Python venv: `/mnt/data/wendnag-v5/.venv`; source workspace: `/mnt/data/wendnag-v5/project/AegistonTeam_V6/`.
+- Offline HTML: `AegistonTeam_V6_xai-structure_offline.html`, SHA-256 `4cbc058e7dce18f06d518e023fa0dd2f4bff8b5cce4ced9f5c9952bbf999e25a`.
+- Source + QA ZIP SHA-256: `d57ba226b6a6cc8a0e04fdf824ba8b6c7f645bb9bf227157c656ceb73bb7a939`.
+- QA passed at 1440 / 1024 / 768 / 390 / 320px; 8/8 images loaded; zero page/console errors; no external requests; tabs, lightbox, accordion, mobile menu, runner replay and reduced-motion passed. Full evidence: `10-aegistonteam/landing-cinematic/V6-QA-2026-11-03.md`.
+- Large binary HTML/ZIP/image files remain session downloads; GitHub branch stores continuity, reference, QA and manifest docs. PR #27 remains Draft. No production deployment or merge.
