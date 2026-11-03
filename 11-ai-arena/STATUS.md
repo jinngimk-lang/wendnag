@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — Finance Research Lab V0.3.2 refined.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.1 strengthens faction-specific research gates, per-decision market context, replay integrity, benchmark cost accounting and the real-data integration blueprint. It remains a local synthetic front-end demonstration, not live company research or a production multi-agent simulator.
+**Phase 2 — Finance Research Lab V0.3.2 + backend evidence contract V0.1.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.2 is still a local synthetic front-end demonstration; the new standard-library backend core validates issuer identity, point-in-time evidence snapshots, typed faction outputs and hash-chained events, but does not connect live data providers or run production agents.
 
 ## Repository state
 
@@ -57,6 +57,17 @@
 - Browser tests cover both directions, exact sign-to-direction mapping, cleanup of animation nodes, responsive layouts and the 252-day / 1,512-decision stress case.
 - V0.3.2 export and simulator version IDs updated.
 
+## New delivery — Backend evidence gateway core V0.1 (2026-11-03)
+
+- Added `backend/research_gateway.py` and 12 standard-library unit tests.
+- Exact issuer resolution with explicit ambiguous/not-found states; no silent ticker guessing.
+- Deeply immutable, source-attributed evidence records with UTC publication, availability and retrieval timestamps, provider/license metadata and SHA-256 hashes.
+- Deterministic point-in-time evidence-pack freezing; excludes evidence not available at `as_of`, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting IDs.
+- Typed faction research contract validates all evidence references against the same frozen snapshot and enforces the target-weight cap.
+- Append-only in-memory ledger uses payload hashes and previous-event hashes; corruption and time reversal are detected.
+- Added GitHub Actions validation for backend contracts and browser regression.
+- No real provider adapter, API credential, external LLM, database persistence or broker integration has been added.
+
 ## Delivered
 
 - `prototype/index.html` — complete responsive application shell and dialogs.
@@ -95,7 +106,7 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 
 ## Remaining gaps
 
-- No backend, real LLM Agent runtime, event persistence or SSE/WebSocket stream.
+- No production API service, real LLM Agent runtime, durable event persistence or SSE/WebSocket stream; only a standard-library contract core exists.
 - No licensed point-in-time market-data source or validated backtest engine.
 - No actual social-platform ranking model or calibration dataset.
 - No validated causal life model or privacy review.
@@ -103,11 +114,12 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 
 ## Next actions
 
-1. Build the Finance vertical slice: point-in-time data snapshot, deterministic paper execution, costs/slippage, risk-aware scoring and replay.
-2. Define a typed Agent action schema and append-only event ledger; keep LLM proposals separate from authoritative simulator state.
-3. Benchmark against buy-and-hold and simple factor baselines before showing strategy comparisons as meaningful.
-4. Run 5–8 target-user tests on the spectator-versus-steering interaction.
-5. Only then calibrate the Marketing audience simulator and expand Life scenarios.
+1. Implement the first reviewed provider adapters: SEC issuer/ticker mapping and filing/facts ingestion with accession and accepted-time provenance.
+2. Add a licensed market-data adapter with explicit feed, bar availability time, stale/outlier and spread-quality checks.
+3. Persist frozen evidence snapshots and the append-only ledger; add replay-by-event-sequence and state hashes.
+4. Connect structured faction workers to the shared evidence pack, with evidence/counter-evidence references and event-triggered refreshes.
+5. Validate the deterministic paper simulator against buy-and-hold / index / factor baselines and held-out periods before presenting performance comparisons.
+6. Keep live brokerage execution out of MVP; continue user tests on spectator-versus-steering interaction.
 
 ## Context recovery
 
