@@ -41,6 +41,17 @@ No live company research, licensed financial data, market news, LLM workers, bro
 - Per-operation market context, replay filters, benchmark fee accounting, risk cap, JSON export and deterministic rerun verified.
 - No console/page errors or horizontal overflow.
 
+## Backend evidence gateway core V0.1 (2026-11-03)
+
+- Added `backend/research_gateway.py`, a provider-agnostic standard-library contract layer.
+- Exact issuer resolution returns `resolved`, `ambiguous` or `not_found`; ambiguous ticker matches are never guessed.
+- Evidence records are deeply immutable, source-attributed and SHA-256 hashed, with UTC `published_at`, `available_at` and `retrieved_at`, provider and license status.
+- Snapshot freeze filters records not yet available at the requested `as_of` cutoff, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting duplicate IDs, and produces a deterministic manifest ID.
+- Typed faction research validates supporting/counter evidence references against the same snapshot and enforces `target_weight <= max_weight`.
+- Append-only in-memory ledger chains payload hashes and prior event hashes; tampering and timestamp reversal are detected.
+- Twelve standard-library unit tests pass. No external provider, network call, API key, LLM worker, database or broker is connected.
+- Added root `.github/workflows/ai-arena-validation.yml` to run backend contracts and the Finance Lab Playwright regression on AI Arena changes.
+
 ## Research discoveries
 
 - TradingAgents: specialist analysts + bull/bear debate + trader/risk/portfolio manager; latest 2026-10 release notes emphasize filing-date leakage and market-holiday settlement.
