@@ -15,8 +15,8 @@
 - Gate passed for the front-end prototype: all three modes work, no page/console errors, and 1024/768/390px widths have no horizontal overflow.
 - Figma artifact deferred because the connected account currently reports a View seat; HTML/CSS remains the editable source.
 
-## Phase 2 — Finance Arena vertical slice (interaction prototype V0.3.1 completed; production slice pending)
-- Interaction prototype V0.3.1: six factions, independent theses, configurable duration, shared synthetic market path, daily context ledger and replay.
+## Phase 2 — Finance Arena vertical slice (interaction prototype V0.3.2 completed; production slice pending)
+- Interaction prototype V0.3.2: six factions, independent theses, configurable duration, shared synthetic market path, daily context ledger, replay and accounting-linked bidirectional money-flow animation.
 - Production slice: one issuer, one licensed point-in-time evidence pack, six typed faction workflows, event-triggered policy updates and deterministic paper execution.
 - Data provenance, issuer resolution and point-in-time validation.
 - Use experience-v3/REAL_DATA_BLUEPRINT.md as the integration contract; keep demo labels separate from actual issuer research.
