@@ -74,3 +74,7 @@ This coefficient set is only a prototype fixture, not a validated investment obj
 - No live broker execution in MVP; paper simulator must not share credentials or order endpoints with live execution.
 - Never promise profit or claim that AI predicts a stock price.
 - Validate against buy-and-hold / index / simple factor baselines and run look-ahead leakage tests.
+
+## Backend evidence gateway core V0.1
+
+The first executable backend contract lives in `../backend/research_gateway.py` and intentionally uses the Python standard library. It provides exact issuer resolution, deeply immutable evidence records with publication/availability/retrieval timestamps and source/license provenance, point-in-time snapshot freezing, evidence-linked typed faction outputs, and an append-only in-memory hash chain. It fails closed on ambiguous issuer identity, future evidence, foreign issuers, unapproved licenses, conflicting IDs, invalid evidence references and portfolio weights above the risk cap. It does not fetch provider data or persist events yet; those are the next integration layers.
