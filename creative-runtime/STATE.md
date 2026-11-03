@@ -142,7 +142,7 @@ Before any major new creative phase or when the conversation becomes materially 
 
 Last updated: 2026-11-03
 
-- Current authoritative design direction: 10-aegistonteam/landing-cinematic/V2-LIGHT-MOTION-2026-11-03.md. The user rejected the dark / game-like direction and requested warm off-white / cream backgrounds, natural Chinese typography, thin warm dividers, no English numbered labels, and no decorative arrows.
+- Historical V2 direction; superseded by the user-approved V3 comic visual anchor in `10-aegistonteam/landing-cinematic/V3-INTERACTIVE-MOTION-2026-11-03.md` and the active V5 checkpoint. The user rejected the dark / game-like direction and requested warm off-white / cream backgrounds, natural Chinese typography, thin warm dividers, no English numbered labels, and no decorative arrows.
 - Interactive live preview: https://aegistonteam-light-motion-preview.vercel.app. This is an isolated Vercel project with no custom production domain; no existing company site, product app, DNS, or credentials were changed.
 - GitHub working branch / draft PR: design/aegistonteam-cinematic-landing-20261103 / #27.
 - Source: 10-aegistonteam/landing-cinematic/site/index.html.
@@ -161,3 +161,17 @@ The existing LegalLens film task remains separate; do not mix its assets or narr
 - Figma Smart Animate style states are implemented with native browser transitions (pointer parallax, 3-scene switcher, real screenshot switcher + zoom, scroll entrance, progress bar, animated footer runner, mobile menu, reduced-motion fallback). No native Figma file has been created; avoid implying otherwise.
 - Chromium QA: desktop and mobile no horizontal overflow and no JS page errors; screen switching, zoom/ESC and mobile menu passed; GIF verified that CSS runner changes position across samples.
 - User's next design iteration should use V3 as the baseline. Do not revert to dark portal, generic software template or fake generated UI.
+
+
+## 2026-11-03 — AegistonTeam V5 offline / natural-layout iteration
+
+- **Current active task:** refine the approved warm-white AegistonTeam comic landing page into a more natural, less templated V5 review candidate; fix broken image assets; preserve Figma Motion-inspired interaction.
+- **Continuity source of truth:** `10-aegistonteam/landing-cinematic/V5-CONTINUITY-2026-11-03.md`. Read it before continuing. V3 remains the approved visual anchor; V5 is a new review candidate, not yet user-approved.
+- Latest user captures showed missing hero mascot, three missing partner illustrations, and missing team-structure screenshot because the preview relied on a separate asset host. V4's local source uses `./assets/*`; build the V5 downloadable HTML with embedded data-URI images or a fully local package so no external asset host is required.
+- User feedback: the page layout / section rhythm felt too AI-like or templated. Preserve warm paper-white, original orange/cream/charcoal mascot trio, natural Chinese type, real product screenshots, and generous whitespace. Use varied editorial composition; reduce repeated equal-weight cards, repeated kicker labels, generic pill tags, and decorative arrows.
+- **Do not switch to Sony-style layout** unless explicitly requested. Do not return to dark game portal / sci-fi styling. Do not redraw or fabricate product UI.
+- Local working inputs: `/mnt/data/aegistonteam_v3/`, `/mnt/data/aegistonteam_v4/`, approved visual anchor `/mnt/data/aegistonteam协作落地页.png`; latest broken-image evidence `/mnt/data/image(20261103-073151).png`, `image(20261103-073232).png`, `image(20261103-073236).png`.
+- Working environment: `/mnt/data/wendnag-v5/`; Python venv at `/mnt/data/wendnag-v5/.venv/`. Python 3.13.5 and local Chromium are available. Container DNS/network is unavailable, so pip install and git clone failed; use standard-library Python and installed Chromium, and do not claim third-party packages are installed.
+- GitHub: continue on `design/aegistonteam-cinematic-landing-20261103` / Draft PR #27. PR #27 remains Draft and is a design/prototype workstream; do not merge or deploy to production. The remote `10-aegistonteam/landing-cinematic/site/index.html` is an older V2 page, not the V3/V4 deliverable.
+- No native Figma file/timeline exists. Web motion uses native CSS / browser transitions as an implementation of Smart Animate principles.
+- Next: build self-contained V5 HTML from V4's interactions and local assets, improve section rhythm, run actual desktop/390px Chromium QA, and commit HTML/source/assets/QA evidence to PR #27 using the verified GitHub binary-capable path.
