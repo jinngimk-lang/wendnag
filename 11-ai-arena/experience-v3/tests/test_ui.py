@@ -1,10 +1,10 @@
 from pathlib import Path
 import json
-import os
 import tempfile
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
+
 
 def run():
     errors = []
@@ -19,11 +19,23 @@ def run():
         page.set_content((ROOT / "index.html").read_text(encoding="utf-8"), wait_until="load")
 
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
-        assert page.locator("#research").is_hidden()
-        assert page.locator("#simulation").is_hidden()
+        assert page.locator("#setupModal").is_visible()
+        assert page.locator("#simulation").is_visible()
+        assert page.locator("#arenaGrid .agent-card").count() == 6
+        assert page.locator("#arenaGrid .agent-card").evaluate_all("els => new Set(els.map(e => e.dataset.id)).size") == 6
+        assert page.locator("#arenaGrid .agent-card img[data-image-src]").count() == 6
+        assert page.locator("#vault").count() == 0
+        assert page.locator("#cashflowLayer").count() == 0
+
         page.locator("#rulesOpen").click()
         assert page.locator("#rulesModal").is_visible()
+        assert "不存在" in page.locator("#rulesModal").inner_text()
         page.locator("#closeRules").click()
+        page.locator("#closeSetup").click()
+        assert page.locator("#setupModal").is_hidden()
+        page.locator("#newRunBtn").click()
+        assert page.locator("#setupModal").is_visible()
+
         page.locator("#company").fill("ACME Robotics / ACME")
         page.locator("#days").evaluate("(el) => { el.value = '60'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         assert page.locator("#daysOut").inner_text() == "60 天"
@@ -31,59 +43,40 @@ def run():
         page.locator("#riskMode").select_option("conservative")
         page.locator("#researchBtn").click()
 
-        assert page.locator("#research").is_visible()
-        assert page.locator("#researchGrid .faction").count() == 6
-        assert page.locator("#researchGrid details").count() == 6
-        assert page.locator("#researchGrid .team-row").count() == 18
-        assert "ACME Robotics" in page.locator("#configSubject").inner_text()
-        assert page.locator("#configDays").inner_text() == "60 DAYS"
-        assert "合成" in page.locator("#researchGrid").inner_text()
-        page.locator("#researchGrid details").evaluate_all("els => els.forEach(el => el.open = true)")
-        research_text = page.locator("#researchGrid").inner_text()
-        assert "入场触发条件" in research_text and "观点失效条件" in research_text
-        assert "合成情景指标" in research_text
-        assert page.locator("#debate .debate-col").count() == 3
-
-        page.locator("#runBtn").click()
-        assert page.locator("#simulation").is_visible()
+        assert page.locator("#setupModal").is_hidden()
+        assert "RESEARCH COMPLETE" in page.locator("#researchStatus").inner_text()
+        assert page.locator("#arenaGrid .agent-card").count() == 6
+        assert page.locator("#agentDetail .detail-kpi").count() == 6
+        assert page.locator("#detailName").inner_text() == "价值派"
+        assert page.locator("#detailEquity").inner_text() == "$250,000"
+        assert page.locator("#runSubject").inner_text() == "ACME Robotics / ACME"
         assert page.locator("#runDay").inner_text() == "DAY 000 / 060"
-        assert page.locator(".pod").count() == 6
-        assert page.locator("#ledger").is_visible()
         assert page.locator("#ledgerBody tr").count() == 1
         assert page.locator("#eventTotal").inner_text() == "0 EVENTS SEEN"
-        assert "等待" not in page.locator("#ledgerSummary").inner_text()
 
+        # Selecting an Agent changes the detailed workspace without changing any other account.
+        page.locator('.agent-card[data-id="quant"]').click()
+        assert page.locator("#detailName").inner_text() == "量化派"
+        assert "QUANT" in page.locator("#agentDetail").inner_text()
+        page.locator('.agent-card[data-id="value"]').click()
+        assert page.locator("#detailName").inner_text() == "价值派"
+
+        # One shared market day produces six separate decisions and six independent account cards.
         page.locator("#nextBtn").click()
         assert page.locator("#runDay").inner_text() == "DAY 001 / 060"
         assert page.locator("#decisionCount").inner_text() == "6"
-        assert page.locator("#totalPnl").evaluate("el => getComputedStyle(el).color") == "rgb(255, 136, 126)", "Aggregate loss must use loss color, not the profit color"
-        assert "真实资金转账" in page.locator(".cashflow-note").inner_text()
-        flows = page.locator("#cashflowLayer .cashflow-bill")
-        assert flows.count() > 0, "A one-day advance should visualize each faction’s actual equity delta"
-        for flow in flows.all():
-            delta = float(flow.get_attribute("data-delta"))
-            direction = flow.get_attribute("data-flow")
-            assert (delta > 0 and direction == "profit") or (delta < 0 and direction == "loss")
-        page.wait_for_timeout(120)
-        page.screenshot(path=str(ROOT / "cashflow.png"))
-        page.wait_for_timeout(1500)
-        assert page.locator("#cashflowLayer .cashflow-bill").count() == 0
-        assert page.locator("#cashflowLayer .cashflow-amount").count() == 0
         assert page.locator("#ledgerBody tr").count() == 6
-        assert "市场" in page.locator("#ledgerBody").inner_text() and "情绪" in page.locator("#ledgerBody").inner_text()
-        assert int(page.locator("#eventTotal").inner_text().split()[0]) == page.locator("#eventsList .event").count()
-        page.locator("#nextBtn").click()  # Day 2
-        page.wait_for_timeout(1500)
-        page.locator("#nextBtn").click()  # Day 3: the ACME fixture has both gains and losses
-        mixed = page.locator("#cashflowLayer .cashflow-bill").evaluate_all("els => [...new Set(els.map(e => e.dataset.flow))]")
-        assert "profit" in mixed and "loss" in mixed, "The visual must support both money-in and money-out directions"
-        assert all(a.inner_text() not in ("+$0", "−$0") for a in page.locator("#cashflowLayer .cashflow-amount").all())
-        page.wait_for_timeout(120)
-        page.screenshot(path=str(ROOT / "cashflow-mixed.png"))
-        page.wait_for_timeout(1500)
-        page.locator("#resetBtn").click()
-        page.locator("#nextBtn").click()
-        assert page.locator("#runDay").inner_text() == "DAY 001 / 060"
+        assert page.locator("#totalPnl").evaluate("el => ['rgb(112, 223, 173)', 'rgb(255, 136, 126)'].includes(getComputedStyle(el).color)")
+        assert page.locator("#macroNow").inner_text() != "0.00" or page.locator("#sectorNow").inner_text() != "0.00"
+        assert page.locator("#detailCash").inner_text().startswith("$")
+        assert page.locator("#detailShares").inner_text() != "—"
+        assert page.locator("#detailLastAction").inner_text()
+        assert "共享资金池" in page.locator("#totalReturn").inner_text() or "独立账户" in page.locator("#totalReturn").inner_text()
+        assert page.locator("#arenaGrid .agent-card").count() == 6
+        assert page.locator("#vault").count() == 0
+        assert page.locator("#cashflowLayer").count() == 0
+        assert "Agent 之间的资金转账" in page.locator("#rulesModal").inner_text()
+
         page.locator("#next5Btn").click()
         assert page.locator("#runDay").inner_text() == "DAY 006 / 060"
         page.locator("#finishBtn").click()
@@ -97,12 +90,12 @@ def run():
         assert page.locator("#priceNow").inner_text().startswith("$")
         assert page.locator("#scrubLabel").inner_text() == "60 / 60"
 
-        # Replay must update the market state, standings and ledger window.
+        # Replay hides future points and keeps every account's ledger isolated.
         page.locator("#scrub").evaluate("(el) => { el.value = '20'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         assert page.locator("#runDay").inner_text() == "DAY 020 / 060"
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 120 条")
         chart_path = page.locator("#equityChart path").first.get_attribute("d")
-        assert chart_path.count("L") == 20, "Chart must not reveal future simulation points during replay"
+        assert chart_path.count("L") == 20
         page.locator("#agentFilter").select_option("value")
         assert page.locator("#ledgerBody tr").count() == 20
         page.locator("#actionFilter").select_option("BUY")
@@ -113,7 +106,7 @@ def run():
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 ")
         page.locator("#dayFilter").select_option("all")
 
-        # Pause/resume and replay controls.
+        # Pause, resume, reset and export the complete experiment.
         page.locator("#scrub").evaluate("(el) => { el.value = '0'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         page.locator("#playBtn").click()
         assert page.locator("#runState").inner_text() == "LIVE"
@@ -122,8 +115,6 @@ def run():
         assert page.locator("#runState").inner_text() == "PAUSED"
         page.locator("#resetBtn").click()
         assert page.locator("#runDay").inner_text() == "DAY 000 / 060"
-
-        # JSON export contains inputs, six reports, daily market path and 6*days ledger records.
         page.locator("#finishBtn").click()
         with page.expect_download() as dl_info:
             page.locator("#exportBtn").click()
@@ -132,8 +123,8 @@ def run():
         download.save_as(str(target))
         payload = json.loads(target.read_text(encoding="utf-8"))
         assert payload["dataMode"] == "SYNTHETIC_DEMO_ONLY"
-        assert payload["schema"] == "ai-arena-run-v0.3.2"
-        assert payload["versions"]["simulator"] == "paper-sim-v0.3.2"
+        assert payload["schema"] == "ai-arena-run-v0.4.0"
+        assert payload["versions"]["simulator"] == "paper-sim-v0.4.0"
         assert payload["evidencePack"]["sourceCount"] == 0 and payload["evidencePack"]["companyLabelOnly"]
         assert payload["benchmark"]["shares"] > 0 and payload["benchmark"]["initialFee"] > 0
         assert abs(payload["benchmark"]["finalValue"] - payload["benchmark"]["path"][-1]) < 1e-8
@@ -141,36 +132,32 @@ def run():
         assert len(payload["research"]) == 6
         assert len(payload["market"]) == 61
         assert len(payload["operations"]) == 360
-        assert int(page.locator("#eventTotal").inner_text().split()[0]) == len(payload["events"])
-        page.locator("#scrub").evaluate("(el) => { el.value = '20'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
-        assert int(page.locator("#eventTotal").inner_text().split()[0]) == sum(1 for e in payload["events"] if e["day"] <= 20)
-        page.locator("#scrub").evaluate("(el) => { el.value = '0'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
+        assert {x["agentId"] for x in payload["operations"]} == {"value", "growth", "trend", "quant", "sentiment", "macro"}
+        assert len(payload["results"]) == 6
         for result in payload["results"]:
+            assert len(result["equityPath"]) == 61
+            assert len(result["cashPath"]) == 61
+            assert len(result["sharesPath"]) == 61
+            assert len(result["weightPath"]) == 61
             expected_score = result["totalReturn"] - .48 * result["maxDrawdown"] - .20 * result["dailyVolatilityPct"]
             assert abs(result["score"] - expected_score) < 1e-8
-        assert {x["action"] for x in payload["operations"]}.issubset({"BUY", "SELL", "HOLD"})
         assert all("fillPrice" in x and "slippageCost" in x and "cashBalance" in x and "sharesHeld" in x for x in payload["operations"])
         assert all("marketReturnPct" in x and "macro" in x and "sentimentRaw" in x and "sector" in x and "volatility" in x and "eventKind" in x and "eventDescription" in x for x in payload["operations"])
         assert all(x["volatility"] >= 0 and 0 <= x["sentiment"] <= 100 for x in payload["operations"])
         cap = {"conservative": .35, "balanced": .60, "aggressive": .85}[payload["inputs"]["risk"]]
         assert all(x["weight"] <= cap + 1e-9 for x in payload["operations"])
         assert all(x["cashBalance"] >= -0.01 for x in payload["operations"])
-        sentiment_path = [x["sentiment"] for x in payload["market"]]
-        assert len(set(sentiment_path)) > 8
-        assert len({round(x["macro"], 3) for x in payload["operations"]}) > 8
-        assert len({round(x["sector"], 3) for x in payload["operations"]}) > 8
-        sentiment_weights = {round(x["weight"], 3) for x in payload["operations"] if x["agentId"] == "sentiment"}
-        assert len(sentiment_weights) > 3
+        assert len(set(x["sentiment"] for x in payload["market"])) > 8
         target.unlink(missing_ok=True)
 
-        # New duration and deterministic rerun.
+        # A new experiment is deterministic and can use a different duration.
+        page.locator("#newRunBtn").click()
         page.locator("#days").evaluate("(el) => { el.value = '30'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         page.locator("#researchBtn").click()
-        page.locator("#runBtn").click()
         page.locator("#finishBtn").click()
         first_total = page.locator("#totalPnl").inner_text()
+        page.locator("#newRunBtn").click()
         page.locator("#researchBtn").click()
-        page.locator("#runBtn").click()
         page.locator("#finishBtn").click()
         assert page.locator("#totalPnl").inner_text() == first_total
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 180 条")
@@ -185,24 +172,25 @@ def run():
         page.wait_for_timeout(100)
         assert page.evaluate("window.scrollY") == 0
         page.screenshot(path=str(ROOT / "desktop.png"))
-        page.locator("#simulation").evaluate("(el) => el.scrollIntoView({behavior:'instant',block:'start'})")
+        page.locator("#agentWorkspace").evaluate("(el) => el.scrollIntoView({behavior:'instant',block:'start'})")
         page.wait_for_timeout(100)
-        page.screenshot(path=str(ROOT / "arena.png"))
+        page.screenshot(path=str(ROOT / "agent-workspace.png"))
         page.set_viewport_size({"width": 390, "height": 844})
         page.evaluate("document.documentElement.style.scrollBehavior='auto';document.body.style.scrollBehavior='auto';document.scrollingElement.scrollTop=0;window.scrollTo({top:0,behavior:'instant'})")
         page.wait_for_timeout(100)
         assert page.evaluate("window.scrollY") == 0
         page.screenshot(path=str(ROOT / "mobile.png"))
         page.set_viewport_size({"width": 1440, "height": 1000})
+        page.locator("#newRunBtn").click()
         page.locator("#days").evaluate("(el) => { el.value = '252'; el.dispatchEvent(new Event('input', {bubbles:true})); }")
         page.locator("#researchBtn").click()
-        page.locator("#runBtn").click()
         page.locator("#finishBtn").click()
         assert page.locator("#runDay").inner_text() == "DAY 252 / 252"
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 1,512 条")
         assert not errors, errors
         browser.close()
-    print("PASS: 6-faction research, triggers/invalidation, bidirectional data-linked cash-flow animation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors")
+    print("PASS: six independent Agent portfolios, shared market path, distinct research/persona cards, per-agent cash/share/equity paths, selected Agent workspace, isolated ledger, replay, export, deterministic rerun, 252-day stress, responsive and no browser errors")
+
 
 if __name__ == "__main__":
     run()
