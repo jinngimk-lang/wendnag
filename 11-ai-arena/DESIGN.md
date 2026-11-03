@@ -64,3 +64,11 @@ The first reviewable direction is implemented in `prototype/` as a responsive, d
 - Primary flow: prompt → agent reveal → live event stream → standings → settlement → report / replay.
 - Desktop and mobile layouts have been browser-checked; details are in `prototype/TEST_REPORT.md`.
 - The connected Figma account currently reports a View seat, so no editable Figma file was created. Keep the HTML/CSS source as the current design artifact; create a Figma file when an edit-capable seat or target file is available.
+
+## 7. Alternate direction V0.2 — Capital Theater (2026-11-03)
+
+**Not a replacement declared by fiat.** The original dashboard remains a valid analytical mode. The new independent front-end experiment is at `experience-v2/index.html`. Visual stage centers on a physically legible aggregate-money vault; four Agent pods receive cash on profit and lose cash on drawdown. Metal, paper, spotlights, 2.5D depth, responsive choreography and optional understated sound provide the emotional energy of an arena without gambling actions.
+
+Critical contrast: V0.1 asks users to `read` the score, V0.2 lets them `see money move` and then inspect the actual score. Rules, simulated label, replay and drawdown remain prominent. Use audience comprehension—not pixels or amount of animation—to decide whether this direction wins.
+
+No real photography has been generated or attached in V0.2, and no Figma file was authored because the connected account lacks an edit-capable seat. All graphics are original HTML/CSS/SVG.
