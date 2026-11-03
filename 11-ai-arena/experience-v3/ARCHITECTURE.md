@@ -85,7 +85,7 @@ The first executable backend contract lives in `../backend/research_gateway.py` 
 The V0.3.x arena visualization implied that six factions were positioned around a shared central vault. That metaphor is retired. It is not an acceptable representation of the accounting model.
 
 - One faction/Agent maps to exactly one paper portfolio.
-- Each portfolio owns its own cash balance, share balance, equity path, cash path, share path, target-weight path, drawdown path and operation rows.
+- Each portfolio owns its own cash balance, share balance, equity path, cash path, share path, actual-position-weight path, target-weight path, drawdown path and operation rows.
 - The shared market is an external common input only: price path, macro, sentiment, sector momentum, volatility and event sequence are identical across all six Agents.
 - Starting capital, commission, slippage, risk cap, simulation clock and settlement rules remain equal across portfolios.
 - The simulator remains the only authority that changes cash, shares, fills, fees and equity. Strategy functions return a target weight; they never write portfolio accounting state.
