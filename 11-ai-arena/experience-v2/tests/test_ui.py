@@ -25,6 +25,8 @@ def run():
         assert page.locator('.bill').count()>0
         assert page.locator('.pod.loss').count()>0
         assert page.locator('.pod.gain').count()>0
+        assert '本轮' in page.locator('.pod .pod-change').first.inner_text()
+        assert '累计' in page.locator('.pod .pod-change').first.inner_text()
         page.locator('#scrub').fill('0')
         assert page.locator('#totalPnl').inner_text()=='+$0'
         page.locator('#start').click()
