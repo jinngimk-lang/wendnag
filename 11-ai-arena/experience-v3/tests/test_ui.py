@@ -24,6 +24,7 @@ def run():
         assert page.locator("#arenaGrid .agent-card").count() == 6
         assert page.locator("#arenaGrid .agent-card").evaluate_all("els => new Set(els.map(e => e.dataset.id)).size") == 6
         assert page.locator("#arenaGrid .agent-card img[data-image-src]").count() == 6
+        assert page.locator("#arenaGrid .agent-card img").evaluate_all("imgs => imgs.every(img => img.getAttribute('src') ? (img.complete && img.naturalWidth > 0) : getComputedStyle(img).display === 'none')")
         assert page.locator(".vault").count() == 0
         assert page.locator("#cashflowLayer").count() == 0
 
