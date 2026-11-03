@@ -50,7 +50,7 @@ No live company research, licensed financial data, market news, LLM workers, bro
 - Typed faction research validates supporting/counter evidence references against the same snapshot and enforces `target_weight <= max_weight`.
 - Append-only in-memory ledger chains payload hashes and prior event hashes; tampering and timestamp reversal are detected.
 - Added `backend/adapters/sec_edgar.py`: a no-network parser for SEC submissions/companyfacts that anchors facts to accession `acceptanceDateTime`, excludes unmatched accessions/forms, and defaults license status to `review_required`.
-- Twenty-one standard-library unit tests pass. No SEC fetcher, other live provider, API key, LLM worker, database or broker is connected.
+- Thirty standard-library unit tests pass. Added `backend/adapters/sec_client.py`: opt-in read-only SEC HTTP client with explicit `SEC_USER_AGENT`, SEC-host HTTPS allowlist, 4/sec default pacing, Retry-After and bounded retries, response-size cap and short in-memory cache. Tests use a fake transport; no live SEC request was issued. No other live provider, LLM worker, database or broker is connected.
 - Added root `.github/workflows/ai-arena-validation.yml` to run backend contracts and the Finance Lab Playwright regression on AI Arena changes.
 
 ## Research discoveries
