@@ -137,3 +137,17 @@ Prefer 6–7 tightly controlled beats over one undifferentiated long prompt if t
 ## Continuity checkpoint rule
 
 Before any major new creative phase or when the conversation becomes materially long, update this file rather than relying on chat history. Preserve only durable state; put reusable principles in `LEARNINGS.md`.
+
+## Parallel active creative task — AegistonTeam light-motion landing page
+
+Last updated: 2026-11-03
+
+- Current authoritative design direction: 10-aegistonteam/landing-cinematic/V2-LIGHT-MOTION-2026-11-03.md. The user rejected the dark / game-like direction and requested warm off-white / cream backgrounds, natural Chinese typography, thin warm dividers, no English numbered labels, and no decorative arrows.
+- Interactive live preview: https://aegistonteam-light-motion-preview.vercel.app. This is an isolated Vercel project with no custom production domain; no existing company site, product app, DNS, or credentials were changed.
+- GitHub working branch / draft PR: design/aegistonteam-cinematic-landing-20261103 / #27.
+- Source: 10-aegistonteam/landing-cinematic/site/index.html.
+- The page uses real user-provided workspace and team-structure screenshots, the user's own mascot family, responsive navigation, screenshot zoom, scroll reveals, reduced-motion support, and a footer running-character motion.
+- The CTA currently scrolls to the real product screenshot section. Connect a real authenticated workspace URL only after it is confirmed.
+- Before production, consolidate the preview assets into the repository and complete desktop / mobile browser QA.
+
+The existing LegalLens film task remains separate; do not mix its assets or narrative with AegistonTeam.

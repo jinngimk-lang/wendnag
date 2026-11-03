@@ -133,3 +133,12 @@ Add a new entry only when it is:
 - a project insight likely to matter again after chat context is gone.
 
 Keep transient shot wording and current decisions in `STATE.md` or task-specific checkpoints.
+
+## 2026-11-03 — AegistonTeam light landing page and mascot-led motion
+
+- Warm off-white / cream surfaces, natural Chinese system typography, thin warm-gray dividers, restrained orange accents, and whitespace can feel premium without a dark cyber / game aesthetic.
+- Avoid synthetic English numbering, oversized all-caps section labels, and decorative arrows when the brand voice is human and friendly.
+- Use the brand's own mascot characters as the motion narrative from hero to footer; prefer subtle movement and respect reduced-motion settings.
+- Preserve real product screenshots as source-of-truth images. Animate the surrounding frame and page transitions, never rewrite the UI pixels or invent interface content.
+- MotionSites / Zenith Footer is a pacing and page-ending reference only; abstract the principles rather than copying assets or exact layout.
+- Mark preview-only CTA behavior honestly. A button that scrolls to product proof is not a real authenticated product entry point.

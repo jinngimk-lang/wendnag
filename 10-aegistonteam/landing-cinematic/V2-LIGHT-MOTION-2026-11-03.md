@@ -64,3 +64,15 @@
 **优先维持：** 暖白底、短中文标题、手绘线条、原始角色身份、真实产品界面、动画中原始三人。允许改善清晰度、节奏、配色微调和局部动效。
 **禁止倒退：** 深色整页/橙色发光传送门、英文大编号与 UI chips、满屏箭头、替换成外来卡通角色、AI 重绘真实产品中文字。
 下一阶段只在用户确认视觉方向后，适配真实网站工程与产品路由；不要将此静态预览当作已经发布的页面。
+
+
+## 交互预览部署记录（2026-11-03）
+
+- 在线预览：https://aegistonteam-light-motion-preview.vercel.app
+- Vercel 项目：aegistonteam-light-motion-preview（独立预览项目，未绑定正式域名）。
+- 页面源码：10-aegistonteam/landing-cinematic/site/index.html。
+- 当前页面包含：暖白 / 浅米色背景、自然中文排版、橙色强调、三位自有卡通伙伴、真实工作台与团队结构截图、滚动显现、移动端导航、截图放大查看，以及页尾角色奔跑动效。
+- 产品截图与角色图由独立 companion asset deployment 提供：https://aegistonteam-light-landing-preview-tako8.vercel.app/assets。这是预览期的临时资源托管；进入正式发布前应将资源归并到本仓库，避免跨项目依赖。
+- “进入工作台”当前定位到页面内的真实产品截图展示，不会发起真实登录；接入真实工作台 URL 需单独确认。
+- Vercel 返回 HTTP 200；工作台、团队结构、角色图片三个资源均返回 HTTP 200。
+- 本地 Chromium 在当前执行环境受策略限制，仍需在真实桌面 / 手机浏览器完成视觉验收。
