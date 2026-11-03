@@ -18,6 +18,8 @@ This is the first executable backend contract behind `experience-v3/REAL_DATA_BL
 PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py
 ```
 
+The current backend suite contains **21 standard-library tests**, including SEC accession timestamp, duplicate-accession collision and fiscal-frame identity checks. The repository workflow runs this suite alongside the Finance Lab Playwright browser regression.
+
 ## Explicit non-goals
 
 The SEC module is a parser only: it accepts already-fetched JSON and makes no network requests. No SEC fetcher, Alpaca, news, macro or sentiment provider is connected yet. No API keys, live LLM workers, database persistence, broker integration or order execution are included. Fixture records in tests are synthetic. The SEC adapter defaults to `review_required`; a caller must complete terms review before promoting any record to `approved`. A production adapter must preserve provider accession/version data and source-specific `available_at`, and create a new immutable snapshot rather than rewriting old evidence.
