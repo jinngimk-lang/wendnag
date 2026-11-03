@@ -24,12 +24,12 @@ def run():
         assert page.locator("#arenaGrid .agent-card").count() == 6
         assert page.locator("#arenaGrid .agent-card").evaluate_all("els => new Set(els.map(e => e.dataset.id)).size") == 6
         assert page.locator("#arenaGrid .agent-card img[data-image-src]").count() == 6
-        assert page.locator("#vault").count() == 0
+        assert page.locator(".vault").count() == 0
         assert page.locator("#cashflowLayer").count() == 0
 
         page.locator("#rulesOpen").click()
         assert page.locator("#rulesModal").is_visible()
-        assert "不存在" in page.locator("#rulesModal").inner_text()
+        assert "不存在" in page.locator("#rulesModal").text_content()
         page.locator("#closeRules").click()
         page.locator("#closeSetup").click()
         assert page.locator("#setupModal").is_hidden()
