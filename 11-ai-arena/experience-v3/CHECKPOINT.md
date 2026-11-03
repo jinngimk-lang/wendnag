@@ -105,5 +105,6 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Added keyboard-accessible Agent card selection and a selected-Agent detail workspace with thesis, signals, risks, triggers, invalidation, cash, shares, weight, trade count and drawdown.
 - Updated README and architecture contract; added AGENT_VISUAL_SYSTEM.md with six distinct personas, a shared 4:5 cinematic portrait art direction, prompt briefs and stable asset paths.
 - Browser regression and visual QA scripts were rewritten for the new layout. GitHub Actions now includes this work branch in its push validation trigger and runs the suite in an isolated Python virtual environment.
-- Portrait image slots are wired by stable Agent IDs, but the six generated image files are not yet present. Higgsfield GPT Image 2.5 preflight estimated 3 credits for six 1K portraits and reported no free generation allowance. Do not spend credits until the user explicitly approves.
+- Portrait image slots are wired by stable Agent IDs, but six generated image files are not yet present. No image-generation jobs have been submitted; await explicit user authorization before using a paid image-generation balance.
+- GitHub Actions run #116 passed: backend contracts, browser regression, 252-day stress test and responsive visual QA; screenshots were downloaded and visually inspected. No horizontal overflow or browser errors.
 - No live company research, real market data, LLM workers, broker or real trades have been connected. V0.4.0 remains a synthetic local prototype.
