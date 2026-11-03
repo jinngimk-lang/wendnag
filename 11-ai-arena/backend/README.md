@@ -9,6 +9,7 @@ This is the first executable backend contract behind \`experience-v3/REAL_DATA_B
 - Point-in-time evidence-pack freezing. Records unavailable at the requested \`as_of\` cutoff are excluded; foreign issuers, invalid chronology, unapproved licenses and conflicting duplicate IDs fail closed.
 - Typed faction-research contract with confidence, evidence/counter-evidence references, entry triggers, invalidation conditions and a hard target-weight cap.
 - Append-only in-memory event ledger with payload hashes and a verifiable previous-event hash chain.
+- SEC EDGAR submissions/companyfacts parser anchors each fact to the filing `acceptanceDateTime` and accession, never the reporting period end or date-only `filingDate`. Missing acceptance times and unmatched accessions are excluded. License status defaults to `review_required`.
 
 ## Run tests in the project virtual environment
 
