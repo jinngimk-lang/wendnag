@@ -73,3 +73,7 @@ This is a deterministic UI fixture. It is not a real multi-agent orchestrator an
 ## 9. Next engineering slice
 
 Implement Finance Arena as a reproducible historical/paper-trading vertical slice: point-in-time data snapshots, a deterministic execution simulator, four strategies, versioned risk-aware scoring, append-only event ledger, pause/resume, replay and independent benchmark fixtures. Keep live brokerage execution out of scope.
+
+## 10. Finance Research Lab V0.3 interaction prototype
+
+The latest Finance-first UI is in `experience-v3/`. It covers six independent rule-based faction theses, cross-examination, a user-selected 20–252 trading-day window, shared synthetic market factors/events, separate paper portfolios, daily operation records and replay. It is a deterministic front-end fixture—not real company research, LLM invocation, licensed data, historical backtest or broker execution. See its `ARCHITECTURE.md` for the production service boundary and `TEST_REPORT.md` for browser QA.
