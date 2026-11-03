@@ -144,3 +144,10 @@ The six factions are Value & Quality, Growth, Technical/Momentum, Quant, Sentime
 V0.3 at `experience-v3/` is a local deterministic interaction prototype. It uses synthetic company-seeded research signals and synthetic market/event/sentiment data. The six strategy functions are not LLM calls; role cards are workflow templates. Do not present any result as company-specific research, historical backtest or forecast.
 
 The production gate is a licensed point-in-time Research Provider, shared evidence snapshots with provenance, independently invoked structured Agent workers, a deterministic paper-execution engine and an append-only replayable ledger. Live brokerage execution remains out of MVP scope.
+
+
+## 2026-11-03 Finance Arena V0.3.1 auditability refinement
+
+The local prototype now makes each faction's entry trigger and invalidation condition explicit, dynamically compares the strongest and most cautious synthetic thesis, and attaches the market context (market return, macro, sentiment, sector, volatility, regime and event) to every daily decision. Replay hides future event counts as well as future ledger/chart data. The buy-and-hold benchmark now invests post-entry-fee cash. JSON export records run ID, strategy/simulator versions, synthetic evidence-pack status and benchmark assumptions.
+
+These changes improve traceability but do **not** turn the prototype into real company research. The real-data boundary is specified in experience-v3/REAL_DATA_BLUEPRINT.md: issuer resolution, licensed point-in-time evidence, common immutable snapshots, independent typed faction workers, event-triggered strategy updates, deterministic paper execution and append-only replayable events. Do not copy third-party agent frameworks wholesale; the latest research favors adapting the useful role/evidence patterns while keeping the domain simulator authoritative.
