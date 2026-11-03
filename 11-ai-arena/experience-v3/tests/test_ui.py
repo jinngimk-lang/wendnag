@@ -27,12 +27,12 @@ def run():
         assert page.locator(".vault").count() == 0
         assert page.locator("#cashflowLayer").count() == 0
 
+        page.locator("#closeSetup").click()
+        assert page.locator("#setupModal").is_hidden()
         page.locator("#rulesOpen").click()
         assert page.locator("#rulesModal").is_visible()
         assert "不存在" in page.locator("#rulesModal").text_content()
         page.locator("#closeRules").click()
-        page.locator("#closeSetup").click()
-        assert page.locator("#setupModal").is_hidden()
         page.locator("#newRunBtn").click()
         assert page.locator("#setupModal").is_visible()
 
