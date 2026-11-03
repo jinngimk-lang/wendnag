@@ -80,9 +80,9 @@ Next: licensed point-in-time research/data provider → common immutable evidenc
 
 - `backend/adapters/sec_edgar.py` normalizes already-fetched submissions/companyfacts JSON; it performs no HTTP requests.
 - Financial facts are joined by accession and use `acceptanceDateTime` as the public-availability timestamp; period end and date-only filingDate are metadata only.
-- Missing acceptance timestamps, unknown accessions and form mismatches are excluded; CIK mismatch fails closed.
+- Missing acceptance timestamps, unknown accessions and form mismatches are excluded; conflicting duplicate accession metadata fails closed, fiscal frame is included in evidence identity, and CIK mismatch fails closed.
 - License status defaults to `review_required`; do not mark approved without a separate terms review.
-- 19 backend unit tests pass. A compliant SEC fetcher with User-Agent, pacing, retries, caching and accession lineage remains the next step.
+- 21 backend unit tests pass. A compliant SEC fetcher with User-Agent, pacing, retries, caching and accession lineage remains the next step.
 
 ## 2026-11-03 backend evidence gateway contract V0.1
 
