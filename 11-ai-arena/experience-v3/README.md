@@ -1,4 +1,4 @@
-# AI Arena — Finance Research Lab V0.3.1
+# AI Arena — Finance Research Lab V0.3.2
 
 Finance Arena 的 research-to-paper-simulation 原型。它不再只是“输入公司名后看四个固定收益席位”，而是把完整比赛过程拆成：
 
@@ -14,6 +14,7 @@ Finance Arena 的 research-to-paper-simulation 原型。它不再只是“输入
 6. 用户可自动运行、暂停、逐日推进、推进五日、直达结算、重置或拖动时间轴回放。
 7. 每个派系每天均有 BUY / SELL / HOLD 决策；日志记录市场价、成交价、数量、目标仓位、成交金额、现金、持股、费用、滑点、决策原因、市场涨跌、宏观、情绪、行业动量、波动率和事件。
 8. 排名按演示风险分数排序；图表、市场事件、因子面板和日志均随回放时间同步，不展示未来事件或未来净值。
+9. 单日推进时，按真实模拟净值变化触发钞票动效：盈利由中央表现池流向派系，亏损由派系回流中央；金额、方向和数量均由当日净值变化决定，不随机播放。聚合盈亏正负同步切换绿/红。
 9. 完整 JSON 导出包含 run ID、版本、输入、合成证据包声明、市场路径、事件、基准、结果和逐日决策。
 
 ## Run locally
@@ -42,10 +43,10 @@ PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_
 
 ## Truth boundary — must remain visible
 
-**V0.3.1 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
+**V0.3.2 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
 
 ## Real-data integration gate
 
 真正的公司投研必须先完成 `REAL_DATA_BLUEPRINT.md` 中的公司实体解析、许可数据接入、point-in-time 证据快照、独立 Agent worker、确定性模拟器和可审计事件账本。不能用公司名称 seed 出来的合成因子冒充真实公司研究，也不能把 ChatGPT 会话里的 MCP 数据访问误称为网页应用已经接通。
 
-V0.1 控制室和 V0.2 Capital Theater 保留作视觉对照；V0.3.1 是 Finance-first 交互验证版本。
+V0.1 控制室和 V0.2 Capital Theater 保留作视觉对照；V0.3.2 是 Finance-first 交互验证版本。
