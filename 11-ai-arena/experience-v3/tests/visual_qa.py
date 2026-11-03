@@ -21,10 +21,16 @@ def run():
         page.on("console", lambda message: errors.append(f"console: {message.text}") if message.type == "error" else None)
         page.set_content(HTML, wait_until="load")
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
-
-        page.wait_for_timeout(45)
-        page.screenshot(path=str(SHOTS / "desktop-early.png"))
-        page.wait_for_timeout(900)
+        assert page.locator("#setupModal").is_visible()
+        assert page.locator("#arenaGrid .agent-card").count() == 6
+        page.screenshot(path=str(SHOTS / "setup-modal.png"), full_page=False)
+        page.locator("#researchBtn").click()
+        assert page.locator("#setupModal").is_hidden()
+        assert page.locator("#arenaGrid .agent-card").count() == 6
+        assert page.locator("#agentDetail").is_visible()
+        assert page.locator("#agentDetail .detail-kpi").count() == 6
+        page.wait_for_timeout(120)
+        page.screenshot(path=str(SHOTS / "desktop-workstation.png"), full_page=False)
 
         viewports = [
             ("desktop", 1440, 1000),
@@ -36,36 +42,37 @@ def run():
         for name, width, height in viewports:
             page.set_viewport_size({"width": width, "height": height})
             page.evaluate("window.scrollTo({top:0,behavior:'instant'})")
-            page.wait_for_timeout(220)
+            page.wait_for_timeout(180)
             dimensions = page.evaluate("({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight})")
             overflow = dimensions["scroll"] > dimensions["client"]
             viewport_results.append({"name": name, "width": width, "height": height, **dimensions, "horizontalOverflow": overflow})
             page.screenshot(path=str(SHOTS / f"{name}.png"), full_page=False)
 
         page.set_viewport_size({"width": 1440, "height": 1000})
-        page.locator("#company").fill("ACME Robotics / ACME")
-        page.locator("#researchBtn").click()
-        assert page.locator("#researchGrid .faction").count() == 6
-        assert page.locator("#researchGrid .team-row").count() == 18
-        page.wait_for_timeout(250)
-        page.locator("#researchGrid").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 150, behavior: 'instant'})")
-        page.wait_for_timeout(180)
-        page.screenshot(path=str(SHOTS / "research-desktop.png"), full_page=False)
-
-        page.locator("#runBtn").click()
-        page.locator("#nextBtn").click()
+        page.locator('.agent-card[data-id="quant"]').click()
+        assert page.locator("#detailName").inner_text() == "量化派"
+        page.locator("#agentWorkspace").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'instant'})")
         page.wait_for_timeout(160)
-        page.locator("#simulation").screenshot(path=str(SHOTS / "arena-desktop.png"))
+        page.screenshot(path=str(SHOTS / "selected-agent-workspace.png"), full_page=False)
+
+        page.locator("#nextBtn").click()
+        assert page.locator("#runDay").inner_text() == "DAY 001 / 090"
+        page.wait_for_timeout(140)
+        page.locator("#market").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'instant'})")
+        page.screenshot(path=str(SHOTS / "market-and-agent-cards.png"), full_page=False)
+
         page.set_viewport_size({"width": 390, "height": 844})
-        page.locator("#simulation").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'instant'})")
-        page.wait_for_timeout(180)
-        page.screenshot(path=str(SHOTS / "arena-mobile.png"), full_page=False)
+        page.locator("#agents").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'instant'})")
+        page.wait_for_timeout(160)
+        page.screenshot(path=str(SHOTS / "agent-cards-mobile.png"), full_page=False)
 
         report = {
             "title": page.title(),
             "viewportChecks": viewport_results,
-            "factions": 6,
-            "roleTemplates": 18,
+            "agents": 6,
+            "independentPortfolios": 6,
+            "avatarSlots": page.locator("#arenaGrid .agent-card img[data-image-src]").count(),
+            "selectedAgent": page.locator("#detailName").inner_text(),
             "pageErrors": errors,
             "result": "PASS" if not errors and not any(v["horizontalOverflow"] for v in viewport_results) else "FAIL",
             "screenshots": sorted(p.name for p in SHOTS.glob("*.png")),
@@ -78,7 +85,7 @@ def run():
     overflows = [v for v in viewport_results if v["horizontalOverflow"]]
     if overflows:
         raise AssertionError(f"Horizontal overflow: {overflows}")
-    print("PASS: visual screenshots at 1440/1024/768/390/320px; no horizontal overflow or browser errors")
+    print("PASS: unified Agent workstation screenshots at 1440/1024/768/390/320px; no horizontal overflow or browser errors")
 
 
 if __name__ == "__main__":
