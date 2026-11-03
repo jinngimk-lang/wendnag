@@ -1,6 +1,6 @@
 # Finance Arena — Real Company Research Integration Blueprint
 
-**Status:** production target; provider integrations are still not connected. A standard-library backend contract core now implements exact issuer resolution, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs and an in-memory hash-chained ledger. This is not a live data provider or production persistence service. V0.3.2 remains a synthetic front-end demo.
+**Status:** production target; provider integrations are still not connected. A standard-library backend contract core now implements exact issuer resolution, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs and an in-memory hash-chained ledger. A no-network SEC submissions/companyfacts parser now anchors facts to accession acceptance timestamps; it defaults to `review_required` license status. No SEC fetcher or other live provider integration or production persistence service is connected. V0.3.2 remains a synthetic front-end demo.
 
 ## 1. Input resolution
 
@@ -49,6 +49,12 @@ A research run stores a point-in-time cutoff. A document is usable only if it wa
 | Social / crowd sentiment | Licensed Stocktwits/Reddit/social provider where terms permit | Never scrape against terms; store sample size, language, bot/noise caveat, model/version and confidence |
 
 A connected Alpaca MCP read-only session was verified during this work for asset metadata, a 21-session NVDA daily-bar sample (2026-10-05 to 2026-11-02) and a snapshot. This proves the ChatGPT session can access that connector; it does **not** mean the website has Alpaca credentials or can call the MCP directly. The returned IEX snapshot also showed a wide bid/ask spread, which is why production ingestion needs stale/outlier and spread-quality guards.
+
+## 3A. Implemented SEC parser boundary (2026-11-03)
+
+`backend/adapters/sec_edgar.py` parses already-fetched SEC submissions and companyfacts JSON; it does not make HTTP requests. Each financial fact is tied to its accession and the matching filing `acceptanceDateTime`. Date-only `filingDate` and fiscal period end are retained as metadata but never used as the point-in-time availability gate. Facts with missing acceptance timestamps, unknown accessions or mismatched forms are excluded. The adapter defaults to `review_required` license status, so the evidence gateway refuses to freeze those records until a separate terms review explicitly approves them.
+
+This parser is a normalization layer, not proof that a live SEC ingestion pipeline exists. A production fetcher still needs the SEC-required User-Agent, conservative request pacing, retry/backoff, response caching, accession lineage, and operational monitoring.
 
 ## 4. Agent graph
 
