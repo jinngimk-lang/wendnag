@@ -82,7 +82,7 @@ Next: licensed point-in-time research/data provider → common immutable evidenc
 - Financial facts are joined by accession and use `acceptanceDateTime` as the public-availability timestamp; period end and date-only filingDate are metadata only.
 - Missing acceptance timestamps, unknown accessions and form mismatches are excluded; conflicting duplicate accession metadata fails closed, fiscal frame is included in evidence identity, and CIK mismatch fails closed.
 - License status defaults to `review_required`; do not mark approved without a separate terms review.
-- 21 backend unit tests pass. A compliant SEC fetcher with User-Agent, pacing, retries, caching and accession lineage remains the next step.
+- 30 backend unit tests pass. A read-only SEC client now provides required contact-email User-Agent, SEC HTTPS allowlist, pacing, bounded retries, response-size cap and short in-memory cache. Its mocked-transport tests pass; no live request has been issued. Next: controlled SEC smoke test after configuring a monitored contact identity and reviewing current access policy.
 
 ## 2026-11-03 backend evidence gateway contract V0.1
 
