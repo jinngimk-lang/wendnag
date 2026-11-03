@@ -49,11 +49,14 @@ This validates front-end interaction and deterministic local simulation only. It
 
 ## Backend evidence contract QA — V0.1
 
-- `python -m unittest discover -s backend/tests -v`: **12 tests PASS**.
+- `python -m unittest discover -s backend/tests -v`: **19 tests PASS**.
 - Exact issuer match, exchange-qualified ticker and CIK normalization; ambiguous ticker and unknown issuer outcomes.
 - UTC chronology checks, future-availability exclusion, foreign-issuer rejection, license fail-closed behavior and conflicting duplicate-ID rejection.
 - Deterministic snapshot identity independent of input record order; deep payload immutability and manifest-tamper detection.
 - Faction output evidence-reference validation and hard target-weight cap.
 - Append-only hash-chain verification, payload immutability, corruption detection and monotonic timestamps.
+
+- SEC parser: CIK/ticker/exchange candidates, ambiguous symbols, acceptance-time anchoring, exclusion of unknown accessions and mismatched forms, missing acceptance timestamp handling, CIK consistency and default license-review gate.
+- SEC fixture parser performs no network requests; all fixtures are synthetic.
 
 The backend is a contract core only. No real SEC/Alpaca/news/macro/sentiment adapter, persistence layer, external LLM call or broker action is implemented.
