@@ -56,9 +56,34 @@ def run():
         page.locator("#nextBtn").click()
         assert page.locator("#runDay").inner_text() == "DAY 001 / 060"
         assert page.locator("#decisionCount").inner_text() == "6"
+        assert page.locator("#totalPnl").evaluate("el => getComputedStyle(el).color") == "rgb(255, 136, 126)", "Aggregate loss must use loss color, not the profit color"
+        assert "真实资金转账" in page.locator(".cashflow-note").inner_text()
+        flows = page.locator("#cashflowLayer .cashflow-bill")
+        assert flows.count() > 0, "A one-day advance should visualize each faction’s actual equity delta"
+        for flow in flows.all():
+            delta = float(flow.get_attribute("data-delta"))
+            direction = flow.get_attribute("data-flow")
+            assert (delta > 0 and direction == "profit") or (delta < 0 and direction == "loss")
+        page.wait_for_timeout(120)
+        page.screenshot(path=str(ROOT / "cashflow.png"))
+        page.wait_for_timeout(1500)
+        assert page.locator("#cashflowLayer .cashflow-bill").count() == 0
+        assert page.locator("#cashflowLayer .cashflow-amount").count() == 0
         assert page.locator("#ledgerBody tr").count() == 6
         assert "市场" in page.locator("#ledgerBody").inner_text() and "情绪" in page.locator("#ledgerBody").inner_text()
         assert int(page.locator("#eventTotal").inner_text().split()[0]) == page.locator("#eventsList .event").count()
+        page.locator("#nextBtn").click()  # Day 2
+        page.wait_for_timeout(1500)
+        page.locator("#nextBtn").click()  # Day 3: the ACME fixture has both gains and losses
+        mixed = page.locator("#cashflowLayer .cashflow-bill").evaluate_all("els => [...new Set(els.map(e => e.dataset.flow))]")
+        assert "profit" in mixed and "loss" in mixed, "The visual must support both money-in and money-out directions"
+        assert all(a.inner_text() not in ("+$0", "−$0") for a in page.locator("#cashflowLayer .cashflow-amount").all())
+        page.wait_for_timeout(120)
+        page.screenshot(path=str(ROOT / "cashflow-mixed.png"))
+        page.wait_for_timeout(1500)
+        page.locator("#resetBtn").click()
+        page.locator("#nextBtn").click()
+        assert page.locator("#runDay").inner_text() == "DAY 001 / 060"
         page.locator("#next5Btn").click()
         assert page.locator("#runDay").inner_text() == "DAY 006 / 060"
         page.locator("#finishBtn").click()
@@ -107,7 +132,8 @@ def run():
         download.save_as(str(target))
         payload = json.loads(target.read_text(encoding="utf-8"))
         assert payload["dataMode"] == "SYNTHETIC_DEMO_ONLY"
-        assert payload["schema"] == "ai-arena-run-v0.3.1"
+        assert payload["schema"] == "ai-arena-run-v0.3.2"
+        assert payload["versions"]["simulator"] == "paper-sim-v0.3.2"
         assert payload["evidencePack"]["sourceCount"] == 0 and payload["evidencePack"]["companyLabelOnly"]
         assert payload["benchmark"]["shares"] > 0 and payload["benchmark"]["initialFee"] > 0
         assert abs(payload["benchmark"]["finalValue"] - payload["benchmark"]["path"][-1]) < 1e-8
@@ -176,7 +202,7 @@ def run():
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 1,512 条")
         assert not errors, errors
         browser.close()
-    print("PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors")
+    print("PASS: 6-faction research, triggers/invalidation, bidirectional data-linked cash-flow animation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors")
 
 if __name__ == "__main__":
     run()
