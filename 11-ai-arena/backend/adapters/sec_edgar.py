@@ -134,11 +134,15 @@ def parse_companyfacts(
             raise SECAdapterError(f"retrieved_at predates filing availability: {accession}")
         form = forms[index].strip() if index < len(forms) and isinstance(forms[index], str) else "UNKNOWN"
         filing_date = filing_dates[index] if index < len(filing_dates) else None
-        filing_by_accession[accession] = {
+        filing_entry = {
             "accepted_at": accepted_at,
             "form": form,
             "filing_date": _parse_period(filing_date, "filingDate") if filing_date else None,
         }
+        existing = filing_by_accession.get(accession)
+        if existing is not None and existing != filing_entry:
+            raise SECAdapterError(f"conflicting submissions metadata for accession: {accession}")
+        filing_by_accession[accession] = filing_entry
 
     facts = companyfacts.get("facts")
     if not isinstance(facts, Mapping):
@@ -180,7 +184,12 @@ def parse_companyfacts(
                         continue
                     accepted_at = filing["accepted_at"]
                     accession_clean = accession.replace("-", "")
-                    key = "|".join((cik, accession, str(taxonomy), str(tag), str(unit), str(period_start), str(period_end), str(filing["form"])))
+                    fiscal_year = observation.get("fy")
+                    fiscal_period = observation.get("fp")
+                    frame = observation.get("frame")
+                    key = "|".join((cik, accession, str(taxonomy), str(tag), str(unit), str(period_start),
+                                    str(period_end), str(filing["form"]), str(fiscal_year),
+                                    str(fiscal_period), str(frame)))
                     evidence_id = "sec_" + sha256(key.encode("utf-8")).hexdigest()[:24]
                     title = f"{taxonomy}.{tag} ({unit})"
                     source_url = f"https://www.sec.gov/Archives/edgar/data/{cik_path}/{accession_clean}/"
@@ -190,8 +199,7 @@ def parse_companyfacts(
                         "period_start": period_start, "period_end": period_end,
                         "form": filing["form"], "filing_date": filing["filing_date"],
                         "acceptance_datetime": accepted_at.isoformat(), "accession": accession,
-                        "fiscal_year": observation.get("fy"), "fiscal_period": observation.get("fp"),
-                        "frame": observation.get("frame"),
+                        "fiscal_year": fiscal_year, "fiscal_period": fiscal_period, "frame": frame,
                     }
                     try:
                         records.append(EvidenceRecord.create(
