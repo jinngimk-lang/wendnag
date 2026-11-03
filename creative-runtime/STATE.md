@@ -137,3 +137,53 @@ Prefer 6–7 tightly controlled beats over one undifferentiated long prompt if t
 ## Continuity checkpoint rule
 
 Before any major new creative phase or when the conversation becomes materially long, update this file rather than relying on chat history. Preserve only durable state; put reusable principles in `LEARNINGS.md`.
+
+## Parallel active creative task — AegistonTeam light-motion landing page
+
+Last updated: 2026-11-03
+
+- Historical V2 direction; superseded by the user-approved V3 comic visual anchor in `10-aegistonteam/landing-cinematic/V3-INTERACTIVE-MOTION-2026-11-03.md` and the active V5 checkpoint. The user rejected the dark / game-like direction and requested warm off-white / cream backgrounds, natural Chinese typography, thin warm dividers, no English numbered labels, and no decorative arrows.
+- Interactive live preview: https://aegistonteam-light-motion-preview.vercel.app. This is an isolated Vercel project with no custom production domain; no existing company site, product app, DNS, or credentials were changed.
+- GitHub working branch / draft PR: design/aegistonteam-cinematic-landing-20261103 / #27.
+- Source: 10-aegistonteam/landing-cinematic/site/index.html.
+- The page uses real user-provided workspace and team-structure screenshots, the user's own mascot family, responsive navigation, screenshot zoom, scroll reveals, reduced-motion support, and a footer running-character motion.
+- The CTA currently scrolls to the real product screenshot section. Connect a real authenticated workspace URL only after it is confirmed.
+- Before production, consolidate the preview assets into the repository and complete desktop / mobile browser QA.
+
+The existing LegalLens film task remains separate; do not mix its assets or narrative with AegistonTeam.
+
+
+## 2026-11-03 — AegistonTeam V3 approved-comic visual anchor
+
+- **Current task source of truth:** `10-aegistonteam/landing-cinematic/V3-INTERACTIVE-MOTION-2026-11-03.md`. It supersedes V2 design guidance for this landing page without changing the unrelated LegalLens timeline above.
+- User explicitly approved the particular recovered warm-white full page illustration image `aegistonteam协作落地页.png`, which must be treated as the unique visual anchor for future rounds. Orange / cream / charcoal outlined mascots from this image must remain the same.
+- V3 deliverable completed in the conversation working container: offline HTML/CSS/JS site, 7 assets, 1600×900 hero and 1600×5183 full desktop PNGs, 390px mobile previews, a GIF captured from the actual CSS running animation, and full source ZIP. The GitHub repository currently stores design/QA documentation, not the V3 source binaries.
+- Figma Smart Animate style states are implemented with native browser transitions (pointer parallax, 3-scene switcher, real screenshot switcher + zoom, scroll entrance, progress bar, animated footer runner, mobile menu, reduced-motion fallback). No native Figma file has been created; avoid implying otherwise.
+- Chromium QA: desktop and mobile no horizontal overflow and no JS page errors; screen switching, zoom/ESC and mobile menu passed; GIF verified that CSS runner changes position across samples.
+- User's next design iteration should use V3 as the baseline. Do not revert to dark portal, generic software template or fake generated UI.
+
+
+## 2026-11-03 — AegistonTeam V5 offline / natural-layout iteration
+
+- **Current active task:** refine the approved warm-white AegistonTeam comic landing page into a more natural, less templated V5 review candidate; fix broken image assets; preserve Figma Motion-inspired interaction.
+- **Continuity source of truth:** `10-aegistonteam/landing-cinematic/V5-CONTINUITY-2026-11-03.md`. Read it before continuing. V3 remains the approved visual anchor; V5 is a new review candidate, not yet user-approved.
+- Latest user captures showed missing hero mascot, three missing partner illustrations, and missing team-structure screenshot because the preview relied on a separate asset host. V4's local source uses `./assets/*`; build the V5 downloadable HTML with embedded data-URI images or a fully local package so no external asset host is required.
+- User feedback: the page layout / section rhythm felt too AI-like or templated. Preserve warm paper-white, original orange/cream/charcoal mascot trio, natural Chinese type, real product screenshots, and generous whitespace. Use varied editorial composition; reduce repeated equal-weight cards, repeated kicker labels, generic pill tags, and decorative arrows.
+- **Do not switch to Sony-style layout** unless explicitly requested. Do not return to dark game portal / sci-fi styling. Do not redraw or fabricate product UI.
+- Local working inputs: `/mnt/data/aegistonteam_v3/`, `/mnt/data/aegistonteam_v4/`, approved visual anchor `/mnt/data/aegistonteam协作落地页.png`; latest broken-image evidence `/mnt/data/image(20261103-073151).png`, `image(20261103-073232).png`, `image(20261103-073236).png`.
+- Working environment: `/mnt/data/wendnag-v5/`; Python venv at `/mnt/data/wendnag-v5/.venv/`. Python 3.13.5 and local Chromium are available. Container DNS/network is unavailable, so pip install and git clone failed; use standard-library Python and installed Chromium, and do not claim third-party packages are installed.
+- GitHub: continue on `design/aegistonteam-cinematic-landing-20261103` / Draft PR #27. PR #27 remains Draft and is a design/prototype workstream; do not merge or deploy to production. The remote `10-aegistonteam/landing-cinematic/site/index.html` is an older V2 page, not the V3/V4 deliverable.
+- No native Figma file/timeline exists. Web motion uses native CSS / browser transitions as an implementation of Smart Animate principles.
+- V5 review candidate completed locally: `AegistonTeam_V5_离线预览.html` (SHA-256 `3109c52a5af44478d60bad451261269dbf5a6546516947db6ab93f40535e761f`, 1,371,124 bytes) and `AegistonTeam_V5_源码与验收包.zip` (SHA-256 `345f62851f1c3f7441c92b5f90e6559186347f61f5b22c87d8ea0964bf5dd970`). Eight content-image placements are embedded; no remote image host dependency. Desktop 1440px and mobile 390px Chromium QA passed with no overflow or JS errors; tab, lightbox, accordion, mobile nav, runner replay, reduced-motion, and internal anchors passed. Full evidence: `10-aegistonteam/landing-cinematic/V5-QA-2026-11-03.md`. These binary artifacts were delivered in chat and are not yet committed to GitHub. Keep PR #27 Draft; next step is user visual review, no production deployment.
+
+
+## 2026-11-03 — AegistonTeam V6 x.ai-inspired landing-page continuation
+
+- **Current active design iteration:** AegistonTeam V6. Read `10-aegistonteam/landing-cinematic/V6-CONTINUITY-2026-11-03.md` first.
+- Reference: [x.ai](https://x.ai/) used only for information hierarchy and section rhythm. The V6 sequence is hero → real product preview → grounded capability proof → illustrated collaboration moments → team workflow → two start paths → mascot footer.
+- The approved warm-white / orange / cream / charcoal mascot identity remains authoritative. Genuine workspace and team-structure screenshots are retained; no fake UI or invented performance metrics/news are added.
+- Local Python venv: `/mnt/data/wendnag-v5/.venv`; source workspace: `/mnt/data/wendnag-v5/project/AegistonTeam_V6/`.
+- Offline HTML: `AegistonTeam_V6_xai-structure_offline.html`, SHA-256 `4cbc058e7dce18f06d518e023fa0dd2f4bff8b5cce4ced9f5c9952bbf999e25a`.
+- Source + QA ZIP SHA-256: `d57ba226b6a6cc8a0e04fdf824ba8b6c7f645bb9bf227157c656ceb73bb7a939`.
+- QA passed at 1440 / 1024 / 768 / 390 / 320px; 8/8 images loaded; zero page/console errors; no external requests; tabs, lightbox, accordion, mobile menu, runner replay and reduced-motion passed. Full evidence: `10-aegistonteam/landing-cinematic/V6-QA-2026-11-03.md`.
+- Large binary HTML/ZIP/image files remain session downloads; GitHub branch stores continuity, reference, QA and manifest docs. PR #27 remains Draft. No production deployment or merge.
