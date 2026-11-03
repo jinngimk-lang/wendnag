@@ -73,7 +73,7 @@ def run():
         assert page.locator("#detailLastAction").inner_text()
         assert "共享资金池" in page.locator("#totalReturn").inner_text() or "独立账户" in page.locator("#totalReturn").inner_text()
         assert page.locator("#arenaGrid .agent-card").count() == 6
-        assert page.locator("#vault").count() == 0
+        assert page.locator(".vault").count() == 0
         assert page.locator("#cashflowLayer").count() == 0
         assert "Agent 之间的资金转账" in page.locator("#rulesModal").inner_text()
 
