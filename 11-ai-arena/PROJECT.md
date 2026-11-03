@@ -132,3 +132,15 @@ We explicitly declined to continue indefinite surface-level iteration on the V0.
 The visual rule is **data-to-effect, never effect-to-data**. Winning cash visuals flow from the central notional pool to the Agent; losing cash visuals flow back. Nothing about particle counts, coin stacks, sound or lighting is allowed to change balances. Ranking remains risk-adjusted, and the sample fixture never becomes a personalized company forecast.
 
 Before investing in large GPU/WebGL animations or photorealistic source assets, compare both directions with actual user tests; retire or redesign the new direction if it increases false confidence. For research and engineering checkpoints see `experience-v2/VISUAL_RESEARCH.md` and `experience-v2/CHECKPOINT.md`.
+
+## 2026-11-03 Finance Arena interaction clarification
+
+The Capital Theater is a visual stage, not the entire product. The Finance Arena's primary user journey is:
+
+**company / ticker → independent faction research → cross-examination → user-configured trading-day window → changing shared market environment → independent paper portfolios → complete operation ledger → replay and report.**
+
+The six factions are Value & Quality, Growth, Technical/Momentum, Quant, Sentiment, and Macro/Regime. Each faction should eventually use a lead researcher, bear-case challenger and risk officer. All factions receive the same immutable point-in-time evidence pack, market path, starting capital, fee/slippage assumptions and risk limits, while maintaining independent theses and portfolio states.
+
+V0.3 at `experience-v3/` is a local deterministic interaction prototype. It uses synthetic company-seeded research signals and synthetic market/event/sentiment data. The six strategy functions are not LLM calls; role cards are workflow templates. Do not present any result as company-specific research, historical backtest or forecast.
+
+The production gate is a licensed point-in-time Research Provider, shared evidence snapshots with provenance, independently invoked structured Agent workers, a deterministic paper-execution engine and an append-only replayable ledger. Live brokerage execution remains out of MVP scope.
