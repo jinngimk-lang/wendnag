@@ -77,3 +77,8 @@ Implement Finance Arena as a reproducible historical/paper-trading vertical slic
 ## 10. Finance Research Lab V0.3 interaction prototype
 
 The latest Finance-first UI is in `experience-v3/`. It covers six independent rule-based faction theses, cross-examination, a user-selected 20–252 trading-day window, shared synthetic market factors/events, separate paper portfolios, daily operation records and replay. It is a deterministic front-end fixture—not real company research, LLM invocation, licensed data, historical backtest or broker execution. See its `ARCHITECTURE.md` for the production service boundary and `TEST_REPORT.md` for browser QA.
+
+
+## 11. Finance Research Lab V0.3.1 auditability refinement
+
+V0.3.1 adds faction-specific trigger/invalidation fields, dynamic thesis comparison, per-operation market-factor/event snapshots, replay-aware event counts, corrected benchmark entry-fee accounting and versioned JSON provenance. The full real-data/agent service boundary is documented in experience-v3/REAL_DATA_BLUEPRINT.md. The prototype remains synthetic; these refinements do not represent actual issuer research or live LLM workers.
