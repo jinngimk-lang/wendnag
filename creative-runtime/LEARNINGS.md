@@ -142,3 +142,18 @@ Keep transient shot wording and current decisions in `STATE.md` or task-specific
 - Preserve real product screenshots as source-of-truth images. Animate the surrounding frame and page transitions, never rewrite the UI pixels or invent interface content.
 - MotionSites / Zenith Footer is a pacing and page-ending reference only; abstract the principles rather than copying assets or exact layout.
 - Mark preview-only CTA behavior honestly. A button that scrolls to product proof is not a real authenticated product entry point.
+
+
+## 2026-11-03 — Reliable mascot-led landing pages
+
+### 1. Remove the separate asset-host failure mode
+A preview can render perfectly while the deployed page still breaks if its images live on a second Vercel project/domain. For reviewable offline deliverables, keep assets beside the HTML with relative paths or embed them as data URIs. Add an asset-integrity check that rejects unresolved/remote image references before delivery.
+
+### 2. Natural layout rhythm beats repeated component templates
+A mascot-led product site should not repeat the same kicker + centered heading + three equal cards in every section. Vary the composition according to the information: large real-product proof, a looser illustrated narrative, asymmetric partner moments, and a quieter team-structure close. Keep the same design language while allowing each section to have a distinct job.
+
+### 3. Preserve the source illustration and product UI as evidence
+Use the approved mascot artwork as the identity source and real product screenshots as product-truth sources. Do not regenerate the mascot or ask an image model to redraw Chinese UI. Compose around the real assets; preserve their internal pixels.
+
+### 4. Figma Motion principles can be implemented honestly in the browser
+Use stable matching containers, coherent state transitions, measured easing, and purposeful scroll triggers. Describe this as a web implementation inspired by Smart Animate; do not imply a native Figma file or timeline exists unless one has actually been created.
