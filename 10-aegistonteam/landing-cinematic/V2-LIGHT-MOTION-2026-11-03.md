@@ -45,8 +45,8 @@
 ## 本轮本地可复现输出（会话生成；非声称已上传 GitHub）
 相对路径：`/mnt/data/aegistonteam_light_v2/`（这是会话工作环境，不是远程仓库文件）。
 - `AegistonTeam_V2_暖白卡通落地页_首屏.png` — 1600×900，SHA256 前16位 `36631b30d8df9382`
-- `AegistonTeam_V2_暖白卡通落地页_全页效果图.png` — 1600×5066，SHA256 前16位（修正版需重新计算）
-- `AegistonTeam_V2_移动端效果图.png` — 390px 宽，移动端无横向滚动；修正版需重新计算
+- `AegistonTeam_V2_暖白卡通落地页_全页效果图.png` — 1600×5066，SHA256 前16位 `d01f428ca9cf7058`
+- `AegistonTeam_V2_移动端效果图.png` — 390px 宽，移动端无横向滚动；SHA256 前16位 `460534fa7618a0b3`
 - `AegistonTeam_V2_吉祥物奔跑动效.mp4` — 6秒，1280×608，用户原始跑动三人 PNG 保持原身份
 - `AegistonTeam_V2_暖白落地页_动态HTML原型.zip` — 包含 `index.html` 与必要的用户原始图片衍生物，可在本地浏览器打开
 - `index.html` — CSS 原生响应式排版；IntersectionObserver 触发底部动画；没有假后端。
