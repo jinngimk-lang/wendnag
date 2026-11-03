@@ -138,3 +138,16 @@ See [V5-QA-2026-11-03.md](./V5-QA-2026-11-03.md) for the full evidence.
 ## 9. Current status and next action
 
 V5 is a technically validated **review candidate**, not yet approved by the user. Keep PR #27 Draft. Do not merge, publish, or deploy to the production AegistonTeam site. The next step is user visual review; after feedback, make only the necessary corrections and update this checkpoint and QA evidence.
+
+
+## 10. V6 continuation — x.ai-inspired information architecture (2026-11-03)
+
+V5 remains a historical, technically validated review candidate. The latest active iteration is V6; read these documents before continuing:
+- `V6-XAI-REFERENCE-AND-IA-2026-11-03.md`
+- `V6-CONTINUITY-2026-11-03.md`
+- `V6-QA-2026-11-03.md`
+- `V6-SOURCE-MANIFEST-2026-11-03.md`
+
+V6 preserves the approved warm-white comic visual anchor and original mascot trio. It adapts x.ai's sequence (hero → product demonstration → capability statement → proof → start paths) without copying its dark visual identity or content. AegistonTeam has no verified public news feed or approved performance metrics, so the V6 page uses genuine product/workflow proof rather than fabricated news or numbers.
+
+V6 local artifact SHA-256: `4cbc058e7dce18f06d518e023fa0dd2f4bff8b5cce4ced9f5c9952bbf999e25a`. ZIP SHA-256: `d57ba226b6a6cc8a0e04fdf824ba8b6c7f645bb9bf227157c656ceb73bb7a939`. The HTML/ZIP binaries are session downloads, not GitHub files. PR #27 remains Draft; do not merge or deploy until user visual approval.
