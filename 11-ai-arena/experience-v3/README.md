@@ -40,11 +40,7 @@ python -m venv .venv
 .venv/bin/python tests/visual_qa.py
 ```
 
-本工作环境使用系统 Chromium 和预装 Playwright 包运行隔离虚拟环境测试：
-
-```bash
-PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py
-```
+GitHub Actions 在干净的 Python 虚拟环境中安装测试依赖与 Chromium，并运行上述两套浏览器回归。
 
 ## Visual QA report
 
