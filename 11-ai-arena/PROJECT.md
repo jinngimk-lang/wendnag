@@ -162,3 +162,9 @@ The research-to-paper-simulation prototype now carries the earlier Capital Theat
 The first executable backend contract is now under `backend/research_gateway.py`. It is deliberately provider-agnostic and standard-library-only: exact issuer resolution with explicit ambiguity, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs validated against the common snapshot, and an append-only in-memory hash chain. The core fails closed on future evidence, foreign issuers, unapproved licenses, invalid references and target weights above the declared cap.
 
 This is not yet a live research service. There are no SEC/Alpaca/news/macro adapters, API credentials, LLM calls, durable database, HTTP API or broker actions. The next production step is to implement and test provider adapters with source-specific availability timestamps and license review, then persist snapshots/events before adding model workers. The deterministic paper simulator remains authoritative for positions, fills, fees and P&L.
+
+## 2026-11-03 SEC EDGAR parser milestone
+
+The backend now includes a no-network parser for SEC submissions and companyfacts JSON. Financial facts are joined to the exact accession and filing `acceptanceDateTime`; reporting period end and date-only filing date are descriptive metadata, never substitutes for public-availability time. Missing acceptance times, unknown accessions and form mismatches are excluded. License status defaults to `review_required`, and the evidence pack refuses to freeze unapproved records.
+
+This parser does not fetch data. A production SEC fetcher must implement the required User-Agent, request pacing, retry/backoff, caching and accession lineage, and must preserve the original point-in-time release timestamps. No terms approval or live SEC connection is implied.
