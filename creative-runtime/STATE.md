@@ -151,3 +151,13 @@ Last updated: 2026-11-03
 - Before production, consolidate the preview assets into the repository and complete desktop / mobile browser QA.
 
 The existing LegalLens film task remains separate; do not mix its assets or narrative with AegistonTeam.
+
+
+## 2026-11-03 — AegistonTeam V3 approved-comic visual anchor
+
+- **Current task source of truth:** `10-aegistonteam/landing-cinematic/V3-INTERACTIVE-MOTION-2026-11-03.md`. It supersedes V2 design guidance for this landing page without changing the unrelated LegalLens timeline above.
+- User explicitly approved the particular recovered warm-white full page illustration image `aegistonteam协作落地页.png`, which must be treated as the unique visual anchor for future rounds. Orange / cream / charcoal outlined mascots from this image must remain the same.
+- V3 deliverable completed in the conversation working container: offline HTML/CSS/JS site, 7 assets, 1600×900 hero and 1600×5183 full desktop PNGs, 390px mobile previews, a GIF captured from the actual CSS running animation, and full source ZIP. The GitHub repository currently stores design/QA documentation, not the V3 source binaries.
+- Figma Smart Animate style states are implemented with native browser transitions (pointer parallax, 3-scene switcher, real screenshot switcher + zoom, scroll entrance, progress bar, animated footer runner, mobile menu, reduced-motion fallback). No native Figma file has been created; avoid implying otherwise.
+- Chromium QA: desktop and mobile no horizontal overflow and no JS page errors; screen switching, zoom/ESC and mobile menu passed; GIF verified that CSS runner changes position across samples.
+- User's next design iteration should use V3 as the baseline. Do not revert to dark portal, generic software template or fake generated UI.
