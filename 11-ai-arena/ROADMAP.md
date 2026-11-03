@@ -18,7 +18,7 @@
 ## Phase 2 — Finance Arena vertical slice (interaction prototype V0.3.2 completed; production slice pending)
 - Interaction prototype V0.3.2: six factions, independent theses, configurable duration, shared synthetic market path, daily context ledger, replay and accounting-linked bidirectional money-flow animation.
 - Backend contract V0.1 delivered: exact issuer-resolution outcomes, immutable point-in-time evidence records/snapshots, typed evidence-linked faction outputs, append-only in-memory hash chain and GitHub Actions validation.
-- SEC parser V0.1 delivered: joins companyfacts observations to accession acceptance timestamps; defaults license status to review-required; 19 backend tests pass.
+- SEC parser V0.1 delivered: joins companyfacts observations to accession acceptance timestamps; defaults license status to review-required; 21 backend tests pass.
 - Production slice still pending: compliant SEC fetcher, reviewed/licensed market-data adapter, persisted point-in-time evidence pack, six typed faction workflows, event-triggered policy updates and deterministic paper execution.
 - Provider-specific data provenance, SEC accession/accepted-time lineage and point-in-time validation.
 - Durable snapshot/event persistence and replay-by-sequence; current hash chain is in-memory only.
