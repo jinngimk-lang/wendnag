@@ -125,5 +125,30 @@ class SECCompanyFactsTests(unittest.TestCase):
                                license_status=LicenseStatus.APPROVED)
 
 
+    def test_conflicting_duplicate_accession_metadata_is_rejected(self):
+        submissions, companyfacts = fixture()
+        recent = submissions["filings"]["recent"]
+        recent["accessionNumber"].append(ACCESSION)
+        recent["acceptanceDateTime"].append("2026-01-02T11:30:00.000Z")
+        recent["form"].append("10-Q")
+        recent["filingDate"].append("2026-01-02")
+        with self.assertRaises(SECAdapterError):
+            parse_companyfacts(submissions, companyfacts,
+                               retrieved_at=datetime(2026, 1, 2, 12, tzinfo=UTC),
+                               license_status=LicenseStatus.APPROVED)
+
+    def test_fiscal_frame_is_part_of_evidence_identity(self):
+        submissions, companyfacts = fixture()
+        facts = companyfacts["facts"]["us-gaap"]["Revenue"]["units"]["USD"]
+        facts.append({"accn": ACCESSION, "fy": 2026, "fp": "Q1", "form": "10-Q",
+                      "filed": "2026-01-02", "end": "2025-12-31", "val": 123456,
+                      "frame": "CY2025Q4I"})
+        result = parse_companyfacts(submissions, companyfacts,
+                                    retrieved_at=datetime(2026, 1, 2, 12, tzinfo=UTC),
+                                    license_status=LicenseStatus.APPROVED)
+        self.assertEqual(len(result.records), 2)
+        self.assertEqual(len({record.evidence_id for record in result.records}), 2)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
