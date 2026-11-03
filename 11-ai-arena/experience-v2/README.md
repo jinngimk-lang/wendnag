@@ -49,7 +49,7 @@ python -m venv .venv
 
 ## Figma / 美术资产
 
-已核实当前 Figma 账户只有 View seat；本轮没有新建或修改 Figma 文件，也未消耗图片生成额度。HTML 是完整的可编辑设计源。后续有 Design seat 时，可按 `VaultStage`、`AgentPod`、`MoneyFlow`、`ReplayBar`、`StandingRow`、`EventRow` 六个语义组件拆分成 Figma 变体，并对照实时截屏验收。
+已核实当前 Figma 账户只有 View seat；本轮没有新建或修改 Figma 文件，也未消耗图片生成额度。HTML 是完整的可编辑设计源。后续有 Design seat 时，可按 `FIGMA_HANDOFF.md` 的组件合同拆分成 Figma 变体，并对照实时截屏验收。
 
 ## 可信度边界
 
