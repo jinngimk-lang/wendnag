@@ -1,4 +1,4 @@
-# Finance Research Lab checkpoint — 2026-11-03 / V0.3.1
+# Finance Research Lab checkpoint — 2026-11-03 / V0.3.2
 
 ## User's clarified product intent
 
@@ -6,7 +6,7 @@ The Capital Theater screenshot is a visual stage, not the product's complete beh
 
 **company input → independent faction research → cross-examination → user-configured trading days → shared changing market environment → separate paper portfolios → full operation ledger → replay and report.**
 
-A company label alone must never be presented as company-specific research. V0.3.1 is explicitly a synthetic local interaction prototype.
+A company label alone must never be presented as company-specific research. V0.3.2 is explicitly a synthetic local interaction prototype.
 
 ## Current implementation
 
@@ -36,6 +36,7 @@ No live company research, licensed financial data, market news, LLM workers, bro
 - Isolated Python venv + Playwright / Chromium.
 - Responsive widths 1440 / 1024 / 768 / 390 / 320.
 - 252-day stress test passes with 1,512 daily decisions.
+- One-day cash-flow animation tested for both positive and negative daily changes, with no zero-dollar labels and no lingering DOM elements.
 - Dynamic market factors and sentiment change; strategy weights respond to evolving environment.
 - Per-operation market context, replay filters, benchmark fee accounting, risk cap, JSON export and deterministic rerun verified.
 - No console/page errors or horizontal overflow.
