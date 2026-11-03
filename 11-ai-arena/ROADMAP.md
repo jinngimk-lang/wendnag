@@ -15,7 +15,7 @@
 - Gate passed for the front-end prototype: all three modes work, no page/console errors, and 1024/768/390px widths have no horizontal overflow.
 - Figma artifact deferred because the connected account currently reports a View seat; HTML/CSS remains the editable source.
 
-## Phase 2 — Finance Arena vertical slice
+## Phase 2 — Finance Arena vertical slice (interaction prototype V0.3 completed; production slice pending)
 - One market, one ticker, 4 strategies, fixed historical window.
 - Data provenance and point-in-time validation.
 - Deterministic paper-trading simulator and versioned scoring.
