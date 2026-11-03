@@ -156,3 +156,9 @@ These changes improve traceability but do **not** turn the prototype into real c
 ## 2026-11-03 Finance Arena V0.3.2 visual accounting link
 
 The research-to-paper-simulation prototype now carries the earlier Capital Theater money metaphor into the daily simulation. A one-day forward step creates paper-bill movement only from the signed net-value change: gains flow from the central performance vault toward that faction; losses flow from the faction back toward the vault. Amount chips, direction, bill intensity and aggregate red/green color are driven by the same accounting delta. It is explicitly a visual metaphor, not a transfer between separate portfolios. The animation is not triggered by a multi-day jump or arbitrary replay scrub, and reduced-motion cleanup is supported. This joins the V0.2 spectator appeal to V0.3.1's more complete research and operation audit without making animation the source of truth.
+
+## 2026-11-03 backend evidence gateway contract V0.1
+
+The first executable backend contract is now under `backend/research_gateway.py`. It is deliberately provider-agnostic and standard-library-only: exact issuer resolution with explicit ambiguity, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs validated against the common snapshot, and an append-only in-memory hash chain. The core fails closed on future evidence, foreign issuers, unapproved licenses, invalid references and target weights above the declared cap.
+
+This is not yet a live research service. There are no SEC/Alpaca/news/macro adapters, API credentials, LLM calls, durable database, HTTP API or broker actions. The next production step is to implement and test provider adapters with source-specific availability timestamps and license review, then persist snapshots/events before adding model workers. The deterministic paper simulator remains authoritative for positions, fills, fees and P&L.
