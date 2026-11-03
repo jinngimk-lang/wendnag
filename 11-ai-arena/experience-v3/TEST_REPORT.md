@@ -1,4 +1,4 @@
-# Browser QA — Finance Research Lab V0.3.1
+# Browser QA — Finance Research Lab V0.3.2
 
 **Result: PASS** — isolated Python virtual environment + Chromium.
 
@@ -20,6 +20,8 @@
 - Every decision stores its own market return, macro, sentiment, sector, volatility, regime and event context.
 - Execution price, market price, quantity, target weight, notional, commission, slippage, cash and share balances.
 - Buy-and-hold benchmark applies the entry fee to the actual invested cash before calculating shares.
+- Data-linked bill animation tested in both directions: positive equity delta flows vault → Agent; negative delta flows Agent → vault; no rounded zero-dollar chips; animation nodes clean up after completion.
+- Aggregate P&L display switches to red on a negative combined result and green on a positive result.
 - One-day / five-day advance, auto-play, pause, reset, settlement and timeline scrub.
 - Event count, event feed, factor panels and ledger respect the replay cursor; no future event count or future chart points leak into earlier states.
 - Agent/action/period filters and complete JSON export with run ID, versions, synthetic evidence declaration and benchmark assumptions.
@@ -38,7 +40,7 @@ PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_
 Output:
 
 ```text
-PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors
+PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, bidirectional data-linked cash flow, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors
 ```
 
 ## Limitations
