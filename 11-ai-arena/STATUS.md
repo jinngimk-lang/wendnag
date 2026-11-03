@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — two competing UI directions tested.** V0.1 three-arena control-room prototype remains available; new V0.2 `experience-v2/index.html` is an independent, finance-first Capital Theater with data-tied physical money flow. Both are front-end demonstrations, not production multi-agent simulators.
+**Phase 2 — Finance Research Lab V0.3 added.** V0.1 control room and V0.2 Capital Theater remain available. New V0.3 `experience-v3/index.html` models the clarified research-to-paper-simulation workflow with six independent rule-based factions, user-configurable duration, a shared synthetic market environment, daily operations and replay. It is still a local front-end demonstration, not live company research or a production multi-agent simulator.
 
 ## Repository state
 
@@ -23,6 +23,20 @@
 - Figma remains View-seat-only; no editable native Figma design or paid image generation claimed.
 - No unvalidated market data, live trading or actual agent service. Entered company name only changes the demonstration label.
 - V0.1 is retained to enable usability A/B tests; it is not overwritten.
+
+## New delivery — Finance Research Lab V0.3 (2026-11-03)
+
+- User flow: company label → six independent faction research reports → cross-examination → configurable 20–252 trading days → paper simulation → daily decision ledger → replay / JSON export.
+- Six factions: value & quality, growth, technical/momentum, quant, sentiment, macro/regime.
+- Each faction exposes lead analyst, bear-case challenger and risk officer role templates.
+- User controls equal starting capital ($50k/$100k/$250k/$500k) and shared risk cap.
+- Each faction independently targets exposure while all share one deterministic synthetic market path, starting capital, fee/slippage model and market events.
+- Macro liquidity, sentiment temperature, sector momentum and volatility evolve daily and influence both market returns and strategy weights.
+- Daily BUY / SELL / HOLD log for every faction, including market/fill price, quantity, target exposure, notional, cash, shares, commission, slippage, reason, event and sentiment.
+- Day-by-day replay, auto-play, pause, next-day / five-day advance, settlement, scrub, dynamic ranking, benchmark fixture and JSON export.
+- Files: `experience-v3/index.html`, `README.md`, `ARCHITECTURE.md`, `TEST_REPORT.md`, `CHECKPOINT.md`, `requirements-test.txt`, `tests/test_ui.py`.
+- Isolated Python venv + Playwright / Chromium QA passed at 1440/1024/768/390/320px; 252-day stress run generated 1,512 daily decisions; no console/page errors or horizontal overflow.
+- **Truth boundary:** all V0.3 research signals, prices, events, sentiment, fills and returns are synthetic. The six strategy agents are local deterministic rules, and the 18 role cards are templates—not live LLM calls. No company data, licensed feed, broker or real trade is connected.
 
 ## Delivered
 
