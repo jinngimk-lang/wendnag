@@ -67,7 +67,7 @@
 - Append-only in-memory ledger uses payload hashes and previous-event hashes; corruption and time reversal are detected.
 - Added a no-network SEC EDGAR submissions/companyfacts parser. It anchors facts to accession `acceptanceDateTime`, rejects unmatched accessions/form mismatches and conflicting accession metadata, includes fiscal frame in fact identity, and defaults license status to `review_required`.
 - Added GitHub Actions validation for backend contracts and browser regression.
-- Twenty-one standard-library backend tests pass. No SEC fetcher, API credential, external LLM, database persistence or broker integration has been added.
+- Thirty standard-library backend tests pass. Added an opt-in read-only SEC client with required contact-email User-Agent, SEC HTTPS host allowlist, 4/sec default pacing, Retry-After handling, bounded retries, response-size cap and short in-memory cache. HTTP tests use a fake transport; no live SEC request or external data fetch was performed. No market-data provider, external LLM, database persistence or broker integration is connected.
 
 ## Delivered
 
@@ -115,7 +115,7 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 
 ## Next actions
 
-1. Build a compliant SEC fetcher around the parser: mandatory User-Agent, conservative request pacing, retry/backoff, caching and accession lineage; keep license status blocked until terms review.
+1. Configure an explicitly monitored `SEC_USER_AGENT` and perform a controlled read-only SEC smoke test; verify live response shape, access policy and rate behavior before enabling ingestion. Keep license status blocked until terms review.
 2. Add a licensed market-data adapter with explicit feed, bar availability time, stale/outlier and spread-quality checks.
 3. Persist frozen evidence snapshots and the append-only ledger; add replay-by-event-sequence and state hashes.
 4. Connect structured faction workers to the shared evidence pack, with evidence/counter-evidence references and event-triggered refreshes.
