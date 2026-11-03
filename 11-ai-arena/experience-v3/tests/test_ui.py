@@ -131,6 +131,9 @@ def run():
         assert payload["dataMode"] == "SYNTHETIC_DEMO_ONLY"
         assert payload["schema"] == "ai-arena-run-v0.4.0"
         assert payload["versions"]["simulator"] == "paper-sim-v0.4.0"
+        assert payload["versions"]["research"] == "local-rules-v0.4.0"
+        assert payload["assumptions"]["accountIsolation"] == "one_agent_one_portfolio"
+        assert payload["assumptions"]["perAgentStartingCapital"] == 250000
         assert payload["evidencePack"]["sourceCount"] == 0 and payload["evidencePack"]["companyLabelOnly"]
         assert payload["benchmark"]["shares"] > 0 and payload["benchmark"]["initialFee"] > 0
         assert abs(payload["benchmark"]["finalValue"] - payload["benchmark"]["path"][-1]) < 1e-8
