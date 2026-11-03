@@ -46,6 +46,11 @@ def run():
         assert page.locator("#setupModal").is_hidden()
         assert "RESEARCH COMPLETE" in page.locator("#researchStatus").inner_text()
         assert page.locator("#arenaGrid .agent-card").count() == 6
+        card_rects = page.locator("#arenaGrid .agent-card").evaluate_all("els => els.map(e => { const r=e.getBoundingClientRect(); return {x:r.x,y:r.y,w:r.width,h:r.height}; })")
+        for i, a in enumerate(card_rects):
+            for b in card_rects[i + 1:]:
+                overlaps = a["x"] < b["x"] + b["w"] and a["x"] + a["w"] > b["x"] and a["y"] < b["y"] + b["h"] and a["y"] + a["h"] > b["y"]
+                assert not overlaps, f"Agent cards overlap: {a} / {b}"
         assert page.locator("#agentDetail .detail-kpi").count() == 6
         assert page.locator("#detailName").inner_text() == "价值派"
         assert page.locator("#detailEquity").inner_text() == "$250,000"
