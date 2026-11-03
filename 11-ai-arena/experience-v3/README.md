@@ -43,7 +43,7 @@ PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_
 
 ## Backend evidence gateway core (V0.1)
 
-The provider-agnostic standard-library contract lives in `../backend/research_gateway.py`: exact issuer resolution, immutable source-attributed evidence, point-in-time snapshot freezing, evidence-linked typed faction output and a hash-chained in-memory event ledger. The no-network SEC EDGAR submissions/companyfacts parser also maps filing accessions to exact `acceptanceDateTime` availability; license status defaults to `review_required`. It has no live fetcher or persistence yet. Run its tests from `11-ai-arena/` with:
+The provider-agnostic standard-library contract lives in `../backend/research_gateway.py`: exact issuer resolution, immutable source-attributed evidence, point-in-time snapshot freezing, evidence-linked typed faction output and a hash-chained in-memory event ledger. The no-network SEC EDGAR submissions/companyfacts parser also maps filing accessions to exact `acceptanceDateTime` availability; license status defaults to `review_required`. A separate opt-in SEC JSON client requires `SEC_USER_AGENT`, limits requests to HTTPS SEC hosts, paces requests, retries transient errors and bounds response sizes; it has only been tested with mocked transport, not a live SEC request. Durable persistence is still pending. Run its tests from `11-ai-arena/` with:
 
 ```bash
 python -m unittest discover -s backend/tests -v
