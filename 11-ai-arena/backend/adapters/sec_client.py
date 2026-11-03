@@ -78,7 +78,7 @@ class SECClient:
     ) -> None:
         if not isinstance(user_agent, str) or not user_agent.strip():
             raise SECFetchError("SEC_USER_AGENT is required")
-        if not re.search(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+", user_agent):
+        if not re.search(r"[^\s@]+@[^\s@]+\.[^\s@]+", user_agent):
             raise SECFetchError("SEC User-Agent must identify a contact email")
         if timeout <= 0 or min_interval < 0.1 or max_retries < 0 or max_retries > 5:
             raise SECFetchError("invalid SEC client timeout, rate limit or retry configuration")
