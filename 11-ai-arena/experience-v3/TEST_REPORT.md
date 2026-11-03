@@ -1,4 +1,4 @@
-# Browser QA — Finance Research Lab V0.3
+# Browser QA — Finance Research Lab V0.3.1
 
 **Result: PASS** — isolated Python virtual environment + Chromium.
 
@@ -13,14 +13,17 @@
 
 - Research form and user-controlled simulation duration (20–252 trading days).
 - Six independent strategy factions; six research reports; 18 visible role templates; three cross-examination columns.
+- Each report displays synthetic signals, risk, entry trigger and invalidation conditions.
 - Company label, initial capital and shared risk cap.
-- Daily paper simulation with a common market path, changing macro/sentiment/sector/volatility factors, synthetic world events and deterministic seeded replay.
+- Daily paper simulation with a common market path, changing macro/sentiment/sector/volatility factors and synthetic world events.
 - BUY / SELL / HOLD for every faction on every simulated day (6 × N decisions).
+- Every decision stores its own market return, macro, sentiment, sector, volatility, regime and event context.
 - Execution price, market price, quantity, target weight, notional, commission, slippage, cash and share balances.
+- Buy-and-hold benchmark applies the entry fee to the actual invested cash before calculating shares.
 - One-day / five-day advance, auto-play, pause, reset, settlement and timeline scrub.
-- Event feed and factor panels update with replay time.
-- Chart does not reveal future points while the replay cursor is earlier than settlement.
-- Agent/action/period filters and complete JSON export.
+- Event count, event feed, factor panels and ledger respect the replay cursor; no future event count or future chart points leak into earlier states.
+- Agent/action/period filters and complete JSON export with run ID, versions, synthetic evidence declaration and benchmark assumptions.
+- Risk cap enforced for all generated target weights.
 - Deterministic rerun with identical inputs.
 - 252-day stress run: 1,512 decision records.
 - Viewport widths 1440, 1024, 768, 390 and 320 px: no horizontal overflow.
@@ -35,9 +38,9 @@ PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_
 Output:
 
 ```text
-PASS: 6-faction research, 18 role templates, configurable duration, shared market path, dynamic factors, 6x daily ledger, replay, filters, export, deterministic rerun, responsive and no browser errors
+PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors
 ```
 
 ## Limitations
 
-This validates the front-end interaction and deterministic local simulation only. It does not validate company-specific research, market data, an LLM Agent runtime, historical backtest quality, exchange execution, legal suitability or investment performance. All current facts, signals, events, prices, fills and returns are synthetic.
+This validates front-end interaction and deterministic local simulation only. It does not validate company-specific research, licensed market data, actual LLM agents, historical backtest quality, exchange execution, legal suitability or investment performance. All current facts, signals, events, prices, fills and returns are synthetic.
