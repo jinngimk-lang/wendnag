@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — Finance Research Lab V0.3.1 refined.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.1 strengthens faction-specific research gates, per-decision market context, replay integrity, benchmark cost accounting and the real-data integration blueprint. It remains a local synthetic front-end demonstration, not live company research or a production multi-agent simulator.
+**Phase 2 — Finance Research Lab V0.3.2 refined.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.1 strengthens faction-specific research gates, per-decision market context, replay integrity, benchmark cost accounting and the real-data integration blueprint. It remains a local synthetic front-end demonstration, not live company research or a production multi-agent simulator.
 
 ## Repository state
 
@@ -48,6 +48,14 @@
 - Added experience-v3/REAL_DATA_BLUEPRINT.md for issuer resolution, licensed point-in-time evidence, typed faction workers, event-triggered policy updates, deterministic simulation and append-only ledger.
 - Added GitHub research on TradingAgents (Apache-2.0), FinRobot (Apache-2.0), Qlib (MIT), NautilusTrader (LGPL-3.0) and Backtrader (GPL-3.0); no code copied or vendored.
 - Browser QA rerun: PASS at 1440/1024/768/390/320px; 252-day stress run = 1,512 decisions; no page/console errors or horizontal overflow.
+
+## New delivery — Finance Research Lab V0.3.2 (2026-11-03)
+
+- Single-day forward playback now animates original paper-bill notes between the central performance vault and each faction pod, with direction determined by that faction's signed daily equity delta.
+- Amount labels and bill count derive from the same net-value change; profit flows vault → faction, loss flows faction → vault. This is a visual metaphor, not a real inter-faction cash transfer.
+- Aggregate P&L and return switch green/red with the sign; no rounded $0 animation labels.
+- Browser tests cover both directions, exact sign-to-direction mapping, cleanup of animation nodes, responsive layouts and the 252-day / 1,512-decision stress case.
+- V0.3.2 export and simulator version IDs updated.
 
 ## Delivered
 
