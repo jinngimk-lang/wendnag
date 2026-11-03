@@ -83,5 +83,5 @@ The UI already maps each Agent to a stable data-image-src slot. The generated as
 ## Generation / delivery status
 
 - Persona system and prompt briefs: defined.
-- Image output: pending explicit approval to spend the image-generation balance. A six-image 1K estimate returned 3 credits total; no free generation allowance was available at preflight.
+- Image output: pending explicit user authorization; no image-generation jobs have been submitted.
 - Do not mark this asset set complete until all six images are generated, inspected for consistency, added to the repository and loaded by the browser regression.
