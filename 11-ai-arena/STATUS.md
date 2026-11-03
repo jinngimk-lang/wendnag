@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — Finance Research Lab V0.3 added.** V0.1 control room and V0.2 Capital Theater remain available. New V0.3 `experience-v3/index.html` models the clarified research-to-paper-simulation workflow with six independent rule-based factions, user-configurable duration, a shared synthetic market environment, daily operations and replay. It is still a local front-end demonstration, not live company research or a production multi-agent simulator.
+**Phase 2 — Finance Research Lab V0.3.1 refined.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.1 strengthens faction-specific research gates, per-decision market context, replay integrity, benchmark cost accounting and the real-data integration blueprint. It remains a local synthetic front-end demonstration, not live company research or a production multi-agent simulator.
 
 ## Repository state
 
@@ -34,9 +34,20 @@
 - Macro liquidity, sentiment temperature, sector momentum and volatility evolve daily and influence both market returns and strategy weights.
 - Daily BUY / SELL / HOLD log for every faction, including market/fill price, quantity, target exposure, notional, cash, shares, commission, slippage, reason, event and sentiment.
 - Day-by-day replay, auto-play, pause, next-day / five-day advance, settlement, scrub, dynamic ranking, benchmark fixture and JSON export.
-- Files: `experience-v3/index.html`, `README.md`, `ARCHITECTURE.md`, `TEST_REPORT.md`, `CHECKPOINT.md`, `requirements-test.txt`, `tests/test_ui.py`.
+- Files: `experience-v3/index.html`, `README.md`, `ARCHITECTURE.md`, `REAL_DATA_BLUEPRINT.md`, `TEST_REPORT.md`, `CHECKPOINT.md`, `requirements-test.txt`, `tests/test_ui.py`.
 - Isolated Python venv + Playwright / Chromium QA passed at 1440/1024/768/390/320px; 252-day stress run generated 1,512 daily decisions; no console/page errors or horizontal overflow.
 - **Truth boundary:** all V0.3 research signals, prices, events, sentiment, fills and returns are synthetic. The six strategy agents are local deterministic rules, and the 18 role cards are templates—not live LLM calls. No company data, licensed feed, broker or real trade is connected.
+
+## New delivery — Finance Research Lab V0.3.1 (2026-11-03)
+
+- Six faction reports now expose faction-specific entry triggers and thesis-invalidation conditions; cross-examination compares the actual most-positive and most-cautious synthetic signals.
+- Every daily operation carries market return, macro, sentiment, sector, volatility, regime and event metadata; the UI exposes this context beside the decision reason.
+- Event count and feed are replay-aware, preventing future event-count leakage.
+- Corrected buy-and-hold entry-fee accounting by buying shares with post-fee cash.
+- Export schema v0.3.1 includes run ID, strategy/simulator versions, explicit synthetic evidence-pack declaration, benchmark assumptions and full operation context.
+- Added experience-v3/REAL_DATA_BLUEPRINT.md for issuer resolution, licensed point-in-time evidence, typed faction workers, event-triggered policy updates, deterministic simulation and append-only ledger.
+- Added GitHub research on TradingAgents (Apache-2.0), FinRobot (Apache-2.0), Qlib (MIT), NautilusTrader (LGPL-3.0) and Backtrader (GPL-3.0); no code copied or vendored.
+- Browser QA rerun: PASS at 1440/1024/768/390/320px; 252-day stress run = 1,512 decisions; no page/console errors or horizontal overflow.
 
 ## Delivered
 
@@ -92,4 +103,4 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 
 ## Context recovery
 
-Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECKPOINT.md`, `IMPLEMENTATION.md`, `DESIGN.md`, `ARCHITECTURE.md` and `prototype/README.md`. Chat memory is not the source of truth.
+Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECKPOINT.md`, `IMPLEMENTATION.md`, `DESIGN.md`, `ARCHITECTURE.md`, `experience-v3/CHECKPOINT.md`, `experience-v3/REAL_DATA_BLUEPRINT.md` and `prototype/README.md`. Chat memory is not the source of truth.
