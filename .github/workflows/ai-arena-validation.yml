@@ -1,0 +1,48 @@
+name: AI Arena validation
+
+on:
+  pull_request:
+    paths:
+      - "11-ai-arena/**"
+      - ".github/workflows/ai-arena-validation.yml"
+  push:
+    branches:
+      - "feat/ai-arena-concept-research"
+    paths:
+      - "11-ai-arena/**"
+      - ".github/workflows/ai-arena-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  backend-contract:
+    name: Backend evidence contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run standard-library contract tests
+        env:
+          PYTHONPATH: 11-ai-arena
+        run: python -m unittest discover -s 11-ai-arena/backend/tests -v
+
+  browser-regression:
+    name: Finance Lab browser regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Create isolated Python environment
+        run: python -m venv .venv
+      - name: Install Playwright and Chromium
+        run: |
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r 11-ai-arena/experience-v3/requirements-test.txt
+          .venv/bin/python -m playwright install --with-deps chromium
+      - name: Run browser regression suite
+        run: .venv/bin/python 11-ai-arena/experience-v3/tests/test_ui.py
