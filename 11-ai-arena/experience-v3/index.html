@@ -218,18 +218,10 @@ function researchCompany(name){
  return {subject:name.trim()||'未命名公司',seed,factors:f,reports};
 }
 function renderResearch(){
- const r=state.research;
- $('researchGrid').innerHTML=r.reports.map(a=>`<article class="panel faction" style="--accent:${a.color}" data-id="${a.id}">
-  <div class="faction-top"><div class="faction-name"><span class="faction-icon">${a.icon}</span><div><strong>${a.name}</strong><small>${a.en}</small></div></div><span class="stance">${a.stance} · ${a.confidence}%</span></div>
-  <h3>${a.thesis}</h3><p class="thesis">${a.method}</p><div class="signals">${a.signals.map(x=>`<span class="signal">${x}</span>`).join('')}</div>
-  <div class="team">${a.roles.map((role,i)=>`<div class="team-row"><b>${role}</b><span>${i===0?'独立形成核心论点与触发条件':i===1?a.bear:'设定仓位上限、回撤阈值与退出条件'}</span></div>`).join('')}</div>
-  <details><summary>查看完整研究结论与风险</summary><div class="detail-body"><b>研究结论：</b>${a.thesis}<br><b>主要风险：</b>${a.risk}<br><b>反方质询：</b>${a.bear}<br><b>入场触发条件：</b>${a.trigger}<br><b>观点失效条件：</b>${a.invalidation}<br><b>模拟初始仓位倾向：</b>${a.exposure}%（规则样例，不是建议）<br><b>证据状态：</b>合成情景指标；没有真实来源引用。</div></details>
- </article>`).join('');
- const sorted=[...r.reports].sort((a,b)=>b.score-a.score),bull=sorted[0],bear=sorted.at(-1);
- $('debate').innerHTML=`<div class="debate-col"><small>01 / STRONGEST THESIS</small><h3>${bull.name} · ${bull.stance}</h3><p>${bull.thesis} 反方提醒：${bull.bear}</p></div><div class="debate-col"><small>02 / KEY DISAGREEMENT</small><h3>${bull.name} ↔ ${bear.name}</h3><p>本轮合成信号分差 ${Math.abs(bull.score-bear.score).toFixed(2)}，初始目标仓位相差 ${Math.abs(bull.exposure-bear.exposure)} 个百分点。${bull.name} 的判断是“${bull.stance}”，${bear.name} 的判断是“${bear.stance}”。保留分歧，不强行合并成一个“AI 共识”。</p></div><div class="debate-col"><small>03 / RISK REVIEW</small><h3>${bear.name} · ${bear.stance}</h3><p>${bear.risk} 风控角色将把仓位、波动和回撤约束转成明确的模拟规则。</p></div>`;
- $('configSubject').textContent=r.subject;$('configDays').textContent=$('days').value+' DAYS';$('configCapital').textContent=money(+$('capital').value);
- $('research').classList.remove('hidden');$('simulation').classList.add('hidden');$('ledger').classList.add('hidden');
- $('researchStatus').textContent='RESEARCH COMPLETE · SYNTHETIC';$('runBtn').disabled=false;
+ if(!state.research)return;
+ $('researchStatus').textContent='RESEARCH COMPLETE · SYNTHETIC';
+ renderAgentCards();
+ renderAgentDetail();
 }
 function targetWeight(id,base,env,price,history,capWeight,previousSentiment){
  const mom=history.length>5?(price/history[Math.max(0,history.length-6)]-1)*8:0;
@@ -251,7 +243,7 @@ function runSimulation(){
  const fac={...state.research.factors},factions=factionDefs.map(x=>({...x}));
  let price=100,macro=fac.macro,sentiment=fac.sentiment,sector=fac.momentum,vol=fac.volatility,previousSentiment=sentiment;
  const market=[{day:0,price,macro,sentiment,sector,vol,return:0,event:null,regime:'等待开盘'}];
- const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
+ const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],cashPath:[capital],sharesPath:[0],weightPath:[0],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
  const logs=[],events=[],priceHistory=[price],benchmarkFee=capital*.0015,benchmarkShares=(capital-benchmarkFee)/price,benchmarkPath=[capital-benchmarkFee];
  const initialCash=capital-benchmarkFee;
  const feeRate=.0015,slippage=.001;
@@ -283,7 +275,7 @@ function runSimulation(){
     commission=notional*feeRate;slippageCost=Math.abs(delta*(fillPrice-price));
     p.cash-=delta*fillPrice+commission;p.shares=targetShares;p.trades++;p.turnover+=notional;p.fees+=commission+slippageCost;
    }
-   p.equity=p.cash+p.shares*price;
+   p.equity=p.cash+p.shares*price;p.cashPath.push(p.cash);p.sharesPath.push(p.shares);p.weightPath.push(weight);
    p.peak=Math.max(p.peak,p.equity);const currentDD=(1-p.equity/p.peak)*100;p.maxDD=Math.max(p.maxDD,currentDD);p.drawdownPath.push(currentDD);p.maxDDPath.push(p.maxDD);
    const dayReturn=p.equityPath.length?p.equity/p.equityPath.at(-1)-1:0;
    p.returns.push(dayReturn);p.equityPath.push(p.equity);p.previousWeight=weight;
@@ -300,12 +292,12 @@ function runSimulation(){
  }).sort((a,b)=>b.score-a.score);
  const benchmarkReturn=(benchmarkPath.at(-1)/capital-1)*100;
  state.simulation={subject,days,capital,risk,capWeight,seed,market,portfolios,results,benchmarkPath,benchmarkReturn,benchmarkShares,benchmarkFee,events,logs,feeRate,slippage};
+ state.selectedAgentId=state.selectedAgentId||'value';
  state.day=0;state.logs=logs;state.events=events;
- $('simulation').classList.remove('hidden');$('ledger').classList.remove('hidden');$('runSubject').textContent=subject;
+ $('runSubject').textContent=subject;
  $('scrub').max=days;$('scrub').value=0;$('scrubLabel').textContent=`0 / ${days}`;$('runState').textContent='READY';$('eventTotal').textContent='0 EVENTS SEEN';
  $('agentFilter').innerHTML='<option value="all">全部派系</option>'+factionDefs.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
  renderDay(0);renderChart();renderEvents();renderStandings();renderLedger();
- $('simulation').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function stopPlayback(){if(state.timer){clearInterval(state.timer);state.timer=null;}state.running=false;if($('pauseBtn'))$('pauseBtn').disabled=true;}
 function riskMetricsAt(p,day,capital){
@@ -314,46 +306,88 @@ function riskMetricsAt(p,day,capital){
  const volDaily=Math.sqrt(series.reduce((sum,x)=>sum+(x-mean)*(x-mean),0)/Math.max(1,series.length))*100;
  return {equity,ret,dd,volDaily,score:ret-.48*dd-.20*volDaily};
 }
-function renderDay(day,previousDay=null){
- if(!state.simulation)return;const s=state.simulation,fromDay=previousDay===null?state.day:previousDay;state.day=clamp(day,0,s.days);if(state.day===fromDay+1)animateCashflows(fromDay,state.day);
- const snap=s.market[state.day],total=s.results.reduce((sum,p)=>sum+(p.equityPath[state.day]||s.capital),0)-s.capital*6;
- $('runDay').textContent=`DAY ${String(state.day).padStart(3,'0')} / ${String(s.days).padStart(3,'0')}`;
- $('scrub').value=state.day;$('scrubLabel').textContent=`${state.day} / ${s.days}`;
- $('priceNow').textContent='$'+snap.price.toFixed(2);$('sentimentNow').textContent=Math.round(50+snap.sentiment*44)+' / 100';$('activeEvent').textContent=snap.event?.title||'常规交易日';
+function renderAgentCards(){
+ const research=state.research,s=state.simulation,day=state.day;
+ const ranks=s?[...s.portfolios].map(p=>({id:p.id,score:riskMetricsAt(p,day,s.capital).score})).sort((a,b)=>b.score-a.score):[];
+ $('arenaGrid').innerHTML=factionDefs.map(a=>{
+  const report=research&&research.reports.find(x=>x.id===a.id),p=s&&s.portfolios.find(x=>x.id===a.id);
+  const equity=p?(p.equityPath[day]??s.capital):null,ret=p?(equity/s.capital-1)*100:null;
+  const cash=p?(p.cashPath[day]??s.capital):null,weight=p?(p.weightPath[day]??0):(report?report.exposure/100:0);
+  const trades=p?s.logs.filter(x=>x.agentId===a.id&&x.day<=day&&x.action!=='HOLD').length:0;
+  const last=p?[...s.logs].reverse().find(x=>x.agentId===a.id&&x.day<=day):null;
+  const rank=p?ranks.findIndex(x=>x.id===a.id)+1:null;
+  const selected=state.selectedAgentId===a.id?'selected':'';
+  const stance=report?report.stance+' · '+report.confidence+'%':'待启动';
+  const equityText=equity===null?'等待启动':money(equity);
+  const changeText=ret===null?'独立资金池尚未建立':signedPct(ret)+' · '+money(equity-s.capital);
+  const decision=last?'最近决策：'+(last.action==='BUY'?'买入':last.action==='SELL'?'卖出':'观望'):'等待首次决策';
+  return '<article class="pod agent-card '+selected+'" data-id="'+a.id+'" style="--accent:'+a.color+'" role="button" tabindex="0" aria-label="查看'+a.name+'独立账户">'+
+   '<div class="avatar-frame"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
+   '<div class="agent-copy"><div class="agent-card-top"><div><strong>'+a.name+'</strong><small>'+a.en+'</small></div><span class="stance">'+stance+'</span></div>'+
+   '<div class="agent-card-equity">'+equityText+'</div><div class="agent-card-change" style="color:'+(ret===null?'#8797a1':ret>=0?'var(--green)':'var(--red)')+'">'+changeText+'</div>'+
+   '<div class="agent-card-meta"><span>现金 <b>'+(cash===null?'—':money(cash))+'</b></span><span>仓位 <b>'+Math.round(weight*100)+'%</b></span><span>成交 <b>'+trades+'</b></span></div>'+
+   '<div class="agent-card-footer"><span>'+decision+'</span><span>'+(rank?'RANK #'+rank:'查看 Agent →')+'</span></div></div></article>';
+ }).join('');
+}
+function selectAgent(id){
+ if(!factionDefs.some(a=>a.id===id))return;
+ state.selectedAgentId=id;
+ renderAgentCards();
+ renderAgentDetail();
+}
+function renderAgentDetail(){
+ const id=state.selectedAgentId||'value',a=factionDefs.find(x=>x.id===id)||factionDefs[0];
+ const report=state.research&&state.research.reports.find(x=>x.id===id),s=state.simulation,p=s&&s.portfolios.find(x=>x.id===id),day=state.day;
+ const equity=p?(p.equityPath[day]??s.capital):null,cash=p?(p.cashPath[day]??s.capital):null,shares=p?(p.sharesPath[day]??0):null,weight=p?(p.weightPath[day]??0):(report?report.exposure/100:0);
+ const metrics=p?riskMetricsAt(p,day,s.capital):null,logs=p?s.logs.filter(x=>x.agentId===id&&x.day<=day):[],trades=logs.filter(x=>x.action!=='HOLD').length,last=logs.at(-1);
+ const daily=p&&day>0?equity-p.equityPath[day-1]:0;
+ const signals=report?report.signals.map(x=>'<span class="signal">'+x+'</span>').join(''):'<span class="signal">等待研究数据</span>';
+ const thesis=report?report.thesis:'创建实验后，这个 Agent 会根据自己的研究框架生成独立观点。';
+ const method=a.method;
+ const risk=report?report.risk:a.risk,trigger=report?report.trigger:a.trigger,invalidation=report?report.invalidation:a.invalidation;
+ const lastAction=last?last.action+' · '+last.reason+' · 当日净值变化 '+money(daily):'尚无交易日记录；独立账户等待模拟推进。';
+ $('agentDetail').innerHTML='<div class="detail-identity">'+
+  '<div class="avatar-frame detail-avatar"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
+  '<div><div class="kicker">SELECTED / '+a.id.toUpperCase()+' AGENT</div><h3 class="detail-name" id="detailName">'+a.name+'</h3><div class="detail-en">'+a.en+'</div>'+
+  '<div class="detail-tags"><span class="stance">'+(report?report.stance:'等待研究')+'</span><span class="tag">'+(report?'CONFIDENCE '+report.confidence+'%':'NO RESEARCH YET')+'</span><span class="tag">'+(p?'SEPARATE PORTFOLIO':'PORTFOLIO NOT STARTED')+'</span></div>'+
+  '<p class="detail-thesis" id="detailThesis">'+thesis+'</p><p class="detail-method" id="detailMethod">'+method+'</p></div></div>'+
+  '<div class="detail-signals" id="detailSignals">'+signals+'</div>'+
+  '<div class="detail-kpis">'+
+   '<div class="detail-kpi"><small>ACCOUNT EQUITY</small><b id="detailEquity">'+(equity===null?'—':money(equity))+'</b></div>'+
+   '<div class="detail-kpi"><small>AVAILABLE CASH</small><b id="detailCash">'+(cash===null?'—':money(cash))+'</b></div>'+
+   '<div class="detail-kpi"><small>SHARES HELD</small><b id="detailShares">'+(shares===null?'—':fmt(shares,4))+'</b></div>'+
+   '<div class="detail-kpi"><small>POSITION WEIGHT</small><b id="detailWeight">'+Math.round(weight*100)+'%</b></div>'+
+   '<div class="detail-kpi"><small>EXECUTED TRADES</small><b id="detailTrades">'+trades+'</b></div>'+
+   '<div class="detail-kpi"><small>MAX DRAWDOWN</small><b id="detailDrawdown">'+(metrics?metrics.dd.toFixed(2)+'%':'—')+'</b></div>'+
+  '</div>'+
+  '<div class="detail-notes">'+
+   '<div class="detail-note"><small>RISK / BEAR CASE</small><p id="detailRisk">'+risk+'</p></div>'+
+   '<div class="detail-note"><small>ENTRY TRIGGER</small><p id="detailTrigger">'+trigger+'</p></div>'+
+   '<div class="detail-note risk"><small>INVALIDATION</small><p id="detailInvalidation">'+invalidation+'</p></div>'+
+   '<div class="detail-note"><small>LAST DECISION</small><p id="detailLastAction">'+lastAction+'</p></div>'+
+  '</div>';
+}
+function renderDay(day){
+ if(!state.simulation)return;
+ const s=state.simulation;state.day=clamp(day,0,s.days);
+ const snap=s.market[state.day],total=s.portfolios.reduce((sum,p)=>sum+(p.equityPath[state.day]||s.capital),0)-s.capital*6;
+ $('runDay').textContent='DAY '+String(state.day).padStart(3,'0')+' / '+String(s.days).padStart(3,'0');
+ $('scrub').value=state.day;$('scrubLabel').textContent=state.day+' / '+s.days;
+ $('priceNow').textContent='$'+snap.price.toFixed(2);
+ $('sentimentNow').textContent=Math.round(50+snap.sentiment*44)+' / 100';
+ $('macroNow').textContent=(snap.macro>=0?'+':'')+snap.macro.toFixed(2);
+ $('sectorNow').textContent=(snap.sector>=0?'+':'')+snap.sector.toFixed(2);
+ $('volNow').textContent=snap.vol.toFixed(2)+'x';
+ $('activeEvent').textContent=snap.event?snap.event.title:'常规交易日';
+ $('regimeNow').textContent=snap.regime;
  $('decisionCount').textContent=String(s.logs.filter(x=>x.day<=state.day).length);
  $('totalPnl').textContent=(total>=0?'+':'−')+'$'+fmt(Math.abs(total));
- $('totalReturn').textContent=signedPct(total/(s.capital*6)*100)+' / 6 portfolios';$('totalPnl').style.color=total>=0?'var(--green)':'var(--red)';$('totalReturn').style.color=total>=0?'var(--green)':'var(--red)';$('totalPnl').style.color=total>=0?'var(--green)':'var(--red)';$('totalReturn').style.color=total>=0?'var(--green)':'var(--red)';
- const currentRanks=[...s.portfolios].map(p=>({id:p.id,score:riskMetricsAt(p,state.day,s.capital).score})).sort((a,b)=>b.score-a.score);
- $('arenaGrid').querySelectorAll('.pod').forEach(node=>{
-  const p=s.portfolios.find(x=>x.id===node.dataset.id),metrics=riskMetricsAt(p,state.day,s.capital),equity=metrics.equity,ret=metrics.ret,rank=currentRanks.findIndex(x=>x.id===p.id)+1;
-  const log=[...s.logs].reverse().find(x=>x.agentId===p.id&&x.day<=state.day),tradeCount=s.logs.filter(x=>x.agentId===p.id&&x.day<=state.day&&x.action!=='HOLD').length,currentDD=p.maxDDPath[state.day]||0;
-  node.innerHTML=`<div class="pod-head"><b>${p.name}</b><small>#${String(rank).padStart(2,'0')}</small></div><div class="pod-equity">${money(equity)}</div><div class="pod-change" style="color:${ret>=0?'var(--green)':'var(--red)'}">${signedPct(ret)} · ${money(equity-s.capital)}</div><div class="pod-meta">仓位 ${Math.round((log?.weight||0)*100)}% · ${tradeCount} 笔成交 · 回撤 ${currentDD.toFixed(1)}%</div>`;
- });
- $('arenaGrid').querySelector('.vault').style.borderColor=total>=0?'#7b986e':'#9a6860';
- const f=[['宏观流动性',snap.macro,'#7dd6df','利率与风险偏好'],['市场情绪',snap.sentiment,'#f1a66e','情绪温度 / 恐惧贪婪'],['行业动量',snap.sector,'#65d8a5','行业景气情景'],['波动水平',(snap.vol-1)/1.2,'#c6a1f2','波动率状态']];
- $('factorGrid').innerHTML=f.map(([name,v,color,note])=>{const score=Math.round(50+v*45),width=clamp(50+v*45,4,96);return `<div class="factor" style="--factor-color:${color}"><div class="factor-top"><span>${name}</span><span>${score}/100</span></div><strong style="color:${color}">${v>=0?'+':''}${v.toFixed(2)}</strong><div class="meter"><span style="width:${width}%"></span></div><div class="factor-note">${note}</div></div>`;}).join('');
+ $('totalReturn').textContent=signedPct(total/(s.capital*6)*100)+' · 六个独立账户等权汇总';
+ $('totalPnl').style.color=total>=0?'var(--green)':'var(--red)';
+ renderAgentCards();renderAgentDetail();
+ const factors=[['宏观流动性',snap.macro,'#7dd6df','利率与风险偏好'],['市场情绪',snap.sentiment,'#f1a66e','情绪温度 / 恐惧贪婪'],['行业动量',snap.sector,'#65d8a5','行业景气情景'],['波动水平',(snap.vol-1)/1.2,'#c6a1f2','波动率状态']];
+ $('factorGrid').innerHTML=factors.map(([name,v,color,note])=>{const score=Math.round(50+v*45),width=clamp(50+v*45,4,96);return '<div class="factor" style="--factor-color:'+color+'"><div class="factor-top"><span>'+name+'</span><span>'+score+'/100</span></div><strong style="color:'+color+'">'+(v>=0?'+':'')+v.toFixed(2)+'</strong><div class="meter"><span style="width:'+width+'%"></span></div><div class="factor-note">'+note+'</div></div>';}).join('');
  renderChart();renderEvents();renderStandings();renderLedger();
-}
-function animateCashflows(fromDay,toDay){
- const s=state.simulation,layer=$('cashflowLayer'),grid=$('arenaGrid'),vault=grid.querySelector('.vault');if(!s||!layer||!vault)return;
- const gridRect=grid.getBoundingClientRect(),vaultRect=vault.getBoundingClientRect();
- const vaultPoint={x:vaultRect.left-gridRect.left+vaultRect.width/2,y:vaultRect.top-gridRect.top+vaultRect.height/2};
- for(const p of s.portfolios){
-  const delta=p.equityPath[toDay]-p.equityPath[fromDay];if(Math.abs(delta)<.5)continue;
-  const pod=grid.querySelector(`.pod[data-id="${p.id}"]`);if(!pod)continue;
-  const rect=pod.getBoundingClientRect(),podPoint={x:rect.left-gridRect.left+rect.width/2,y:rect.top-gridRect.top+rect.height/2};
-  const profit=delta>0,start=profit?vaultPoint:podPoint,end=profit?podPoint:vaultPoint,dx=end.x-start.x,dy=end.y-start.y;
-  const intensity=Math.min(4,Math.max(1,Math.round(Math.abs(delta)/Math.max(250,s.capital*.003))));
-  for(let i=0;i<intensity;i++){
-   const bill=document.createElement('div');bill.className='cashflow-bill';bill.dataset.flow=profit?'profit':'loss';bill.dataset.agentId=p.id;bill.dataset.delta=delta.toFixed(4);
-   bill.innerHTML='<span class="bill-side">✦</span><span class="bill-center">100</span><span class="bill-side">✦</span>';
-   bill.style.left=`${start.x+(i-(intensity-1)/2)*7}px`;bill.style.top=`${start.y+(i-(intensity-1)/2)*5}px`;
-   bill.style.setProperty('--dx',`${dx}px`);bill.style.setProperty('--dy',`${dy}px`);bill.style.setProperty('--spin',`${(i%2?1:-1)*(18+i*7)}deg`);bill.style.animationDelay=`${i*55}ms`;
-   layer.appendChild(bill);bill.addEventListener('animationend',()=>bill.remove(),{once:true});setTimeout(()=>bill.remove(),1550);
-  }
-  const amount=document.createElement('div');amount.className=`cashflow-amount ${profit?'profit':'loss'}`;amount.textContent=`${profit?'+':'−'}${money(Math.abs(delta))}`;
-  amount.style.left=`${(start.x+end.x)/2}px`;amount.style.top=`${(start.y+end.y)/2-24}px`;amount.style.animationDelay=`${intensity*55}ms`;layer.appendChild(amount);amount.addEventListener('animationend',()=>amount.remove(),{once:true});setTimeout(()=>amount.remove(),1550);
- }
 }
 function renderChart(){
  const s=state.simulation;if(!s)return;const colors=factionDefs.map(a=>a.color),W=760,H=270,L=48,R=14,T=15,B=30;
@@ -391,26 +425,43 @@ function renderLedger(){
  const show=list.slice(-80).reverse();
  $('ledgerBody').innerHTML=show.length?show.map(x=>`<tr><td>D${String(x.day).padStart(3,'0')}</td><td><b>${x.agent}</b><div style="color:#72828c;font-size:9px">${x.agentId.toUpperCase()} AGENT</div></td><td><span class="badge ${x.action.toLowerCase()}">${x.action==='BUY'?'买入':x.action==='SELL'?'卖出':'观望'}</span></td><td>$${x.price.toFixed(2)} / ${x.action==='HOLD'?'—':'$'+x.fillPrice.toFixed(2)}</td><td>${Math.round(x.weight*100)}%</td><td>${x.quantity?fmt(x.quantity,4):'—'}</td><td>${x.notional?money(x.notional):'—'}</td><td>${fmt(x.sharesHeld,4)} 股 / ${money(x.cashBalance)}</td><td>${x.fee?money(x.fee):'—'}</td><td title="${x.reason}">${x.reason} · ${x.event}<div class="ledger-context">市场 ${x.marketReturnPct>=0?'+':''}${x.marketReturnPct.toFixed(2)}% · 情绪 ${x.sentiment}/100 · 宏观 ${x.macro>=0?'+':''}${x.macro.toFixed(2)} · 行业 ${x.sector>=0?'+':''}${x.sector.toFixed(2)} · 波动 ${x.volatility.toFixed(2)}x</div></td></tr>`).join(''):'<tr><td colspan="10" class="empty">当前筛选下没有记录。</td></tr>';
 }
-function step(n=1){if(!state.simulation)return;const previous=state.day,next=clamp(state.day+n,0,state.simulation.days);renderDay(next,previous);if(state.day>=state.simulation.days){stopPlayback();$('runState').textContent='SETTLED';}else if(state.running)$('runState').textContent='LIVE';}
+function step(n=1){if(!state.simulation)return;const next=clamp(state.day+n,0,state.simulation.days);renderDay(next);if(state.day>=state.simulation.days){stopPlayback();$('runState').textContent='SETTLED';}else if(state.running)$('runState').textContent='LIVE';}
 function play(){if(!state.simulation||state.day>=state.simulation.days)return;stopPlayback();state.running=true;$('runState').textContent='LIVE';$('pauseBtn').disabled=false;state.timer=setInterval(()=>step(1),420);}
 function pause(){stopPlayback();if(state.simulation)$('runState').textContent='PAUSED';}
 function reset(){pause();state.day=0;$('runState').textContent='READY';renderDay(0);}
 function exportRun(){
- if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.3.2',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.3.2',simulator:'paper-sim-v0.3.2'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perFactionStartingCapital:s.capital},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath})),operations:s.logs};
+ if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.4.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.3.2',simulator:'paper-sim-v0.4.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perFactionStartingCapital:s.capital},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath})),operations:s.logs};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ai-arena-${hash(s.subject).toString(16)}-${s.days}d-demo.json`;a.click();URL.revokeObjectURL(url);toast('完整实验 JSON 已生成（合成演示数据）');
 }
+function launchExperiment(){
+ const name=$('company').value.trim();
+ if(!name){toast('请先输入公司名称或代码');$('company').focus();return;}
+ pause();
+ state.research=researchCompany(name);
+ state.selectedAgentId='value';
+ renderResearch();
+ $('setupModal').classList.add('hidden');
+ runSimulation();
+ toast('实验已启动：六个 Agent 拥有独立资金池');
+}
 let toastTimer=null;function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2200);}
-$('days').addEventListener('input',()=>{$('daysOut').textContent=$('days').value+' 天';$('configDays').textContent=$('days').value+' DAYS';});
-$('researchBtn').addEventListener('click',()=>{const name=$('company').value.trim();if(!name){toast('请先输入公司名称或代码');$('company').focus();return;}pause();state.research=researchCompany(name);renderResearch();$('research').scrollIntoView({behavior:'smooth',block:'start'});});
+$('days').addEventListener('input',()=>{$('daysOut').textContent=$('days').value+' 天';});
+$('researchBtn').addEventListener('click',launchExperiment);
 $('company').addEventListener('keydown',e=>{if(e.key==='Enter')$('researchBtn').click();});
-$('runBtn').addEventListener('click',runSimulation);
+$('newRunBtn').addEventListener('click',()=>$('setupModal').classList.remove('hidden'));
+$('closeSetup').addEventListener('click',()=>$('setupModal').classList.add('hidden'));
+$('cancelSetup').addEventListener('click',()=>$('setupModal').classList.add('hidden'));
+$('setupModal').addEventListener('click',e=>{if(e.target===$('setupModal')&&state.simulation)$('setupModal').classList.add('hidden');});
+$('arenaGrid').addEventListener('click',e=>{const card=e.target.closest('.agent-card');if(card)selectAgent(card.dataset.id);});
+$('arenaGrid').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const card=e.target.closest('.agent-card');if(card){e.preventDefault();selectAgent(card.dataset.id);}}});
 $('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',pause);$('nextBtn').addEventListener('click',()=>step(1));$('next5Btn').addEventListener('click',()=>step(5));$('finishBtn').addEventListener('click',()=>{pause();step(state.simulation.days-state.day);});
 $('resetBtn').addEventListener('click',reset);$('scrub').addEventListener('input',e=>{pause();step(+e.target.value-state.day);$('runState').textContent=state.day===state.simulation.days?'SETTLED':'REPLAY';});
 $('agentFilter').addEventListener('change',renderLedger);$('actionFilter').addEventListener('change',renderLedger);$('dayFilter').addEventListener('change',renderLedger);$('exportBtn').addEventListener('click',exportRun);
 $('closeRules').addEventListener('click',()=>$('rulesModal').classList.add('hidden'));$('rulesOpen').addEventListener('click',()=>$('rulesModal').classList.remove('hidden'));
 $('rulesModal').addEventListener('click',e=>{if(e.target===$('rulesModal'))$('rulesModal').classList.add('hidden');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesModal').classList.add('hidden');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('rulesModal').classList.add('hidden');if(state.simulation)$('setupModal').classList.add('hidden');}});
 $('researchBtn').addEventListener('contextmenu',e=>{e.preventDefault();$('rulesModal').classList.remove('hidden');});
+renderAgentCards();renderAgentDetail();
 })();
 </script>
 </body>
