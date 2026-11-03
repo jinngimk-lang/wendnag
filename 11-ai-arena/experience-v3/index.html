@@ -252,7 +252,7 @@ function runSimulation(){
  const fac={...state.research.factors},factions=factionDefs.map(x=>({...x}));
  let price=100,macro=fac.macro,sentiment=fac.sentiment,sector=fac.momentum,vol=fac.volatility,previousSentiment=sentiment;
  const market=[{day:0,price,macro,sentiment,sector,vol,return:0,event:null,regime:'等待开盘'}];
- const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],cashPath:[capital],sharesPath:[0],weightPath:[0],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
+ const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],cashPath:[capital],sharesPath:[0],weightPath:[0],targetWeightPath:[0],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
  const logs=[],events=[],priceHistory=[price],benchmarkFee=capital*.0015,benchmarkShares=(capital-benchmarkFee)/price,benchmarkPath=[capital-benchmarkFee];
  const initialCash=capital-benchmarkFee;
  const feeRate=.0015,slippage=.001;
@@ -284,7 +284,7 @@ function runSimulation(){
     commission=notional*feeRate;slippageCost=Math.abs(delta*(fillPrice-price));
     p.cash-=delta*fillPrice+commission;p.shares=targetShares;p.trades++;p.turnover+=notional;p.fees+=commission+slippageCost;
    }
-   p.equity=p.cash+p.shares*price;p.cashPath.push(p.cash);p.sharesPath.push(p.shares);p.weightPath.push(weight);
+   p.equity=p.cash+p.shares*price;p.cashPath.push(p.cash);p.sharesPath.push(p.shares);p.weightPath.push(p.equity>0?(p.shares*price/p.equity):0);p.targetWeightPath.push(weight);
    p.peak=Math.max(p.peak,p.equity);const currentDD=(1-p.equity/p.peak)*100;p.maxDD=Math.max(p.maxDD,currentDD);p.drawdownPath.push(currentDD);p.maxDDPath.push(p.maxDD);
    const dayReturn=p.equityPath.length?p.equity/p.equityPath.at(-1)-1:0;
    p.returns.push(dayReturn);p.equityPath.push(p.equity);p.previousWeight=weight;
@@ -330,7 +330,7 @@ function renderAgentCards(){
   const equityText=equity===null?'等待启动':money(equity);
   const changeText=ret===null?'独立资金池尚未建立':signedPct(ret)+' · '+money(equity-s.capital);
   const decision=last?'最近决策：'+(last.action==='BUY'?'买入':last.action==='SELL'?'卖出':'观望'):'等待首次决策';
-  return '<article class="pod agent-card '+selected+'" data-id="'+a.id+'" style="--accent:'+a.color+'" role="button" tabindex="0" aria-label="查看'+a.name+'独立账户">'+
+  return '<article class="agent-card '+selected+'" data-id="'+a.id+'" style="--accent:'+a.color+'" role="button" tabindex="0" aria-label="查看'+a.name+'独立账户">'+
    '<div class="avatar-frame"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
    '<div class="agent-copy"><div class="agent-card-top"><div><strong>'+a.name+'</strong><small>'+a.en+'</small></div><span class="stance">'+stance+'</span></div>'+
    '<div class="agent-card-equity">'+equityText+'</div><div class="agent-card-change" style="color:'+(ret===null?'#8797a1':ret>=0?'var(--green)':'var(--red)')+'">'+changeText+'</div>'+
@@ -439,7 +439,7 @@ function play(){if(!state.simulation||state.day>=state.simulation.days)return;st
 function pause(){stopPlayback();if(state.simulation)$('runState').textContent='PAUSED';}
 function reset(){pause();state.day=0;$('runState').textContent='READY';renderDay(0);}
 function exportRun(){
- if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.4.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.3.2',simulator:'paper-sim-v0.4.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perFactionStartingCapital:s.capital},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath})),operations:s.logs};
+ if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.4.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.3.2',simulator:'paper-sim-v0.4.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perFactionStartingCapital:s.capital},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath,targetWeightPath:p.targetWeightPath})),operations:s.logs};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ai-arena-${hash(s.subject).toString(16)}-${s.days}d-demo.json`;a.click();URL.revokeObjectURL(url);toast('完整实验 JSON 已生成（合成演示数据）');
 }
 function launchExperiment(){
