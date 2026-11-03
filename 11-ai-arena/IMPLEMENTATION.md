@@ -82,3 +82,8 @@ The latest Finance-first UI is in `experience-v3/`. It covers six independent ru
 ## 11. Finance Research Lab V0.3.1 auditability refinement
 
 V0.3.1 adds faction-specific trigger/invalidation fields, dynamic thesis comparison, per-operation market-factor/event snapshots, replay-aware event counts, corrected benchmark entry-fee accounting and versioned JSON provenance. The full real-data/agent service boundary is documented in experience-v3/REAL_DATA_BLUEPRINT.md. The prototype remains synthetic; these refinements do not represent actual issuer research or live LLM workers.
+
+
+## 12. Finance Research Lab V0.3.2 — Capital Flow motion
+
+One-day playback now animates original bill-note elements from the central performance vault to a faction on positive daily equity change, and from a faction back to the vault on negative change. The signed delta determines direction and displayed amount; small changes that would round to zero are suppressed. Aggregate P&L color follows the same sign. Multi-day jumps and arbitrary timeline scrubs do not replay synthetic money transfers. The effect is a spectator visualization only; separate faction portfolios do not actually transfer cash. Both directions and animation cleanup are browser-tested.
