@@ -104,3 +104,36 @@ The following default-branch snapshots and root license files were fetched from 
 2. Use TradingAgents for finance-role inspiration, OASIS for audience interaction patterns, and Concordia / Generative Agents / AgentSociety for social-state and memory concepts.
 3. AutoGen's archived status and root license make it a weaker default choice for new integration.
 4. No upstream source code has been copied or vendored into this prototype.
+
+
+## G. Finance-agent and simulator research — 2026-11-03
+
+The following upstream READMEs and root LICENSE files were fetched again on 2026-11-03. This is a targeted architecture/license spot-check, not a full dependency or legal review.
+
+### 1. [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) — Apache-2.0
+
+Its current README describes specialist fundamentals, sentiment, news and technical analysts; bull/bear researcher debate; trader; risk team; and portfolio-manager approval before simulated execution. The October 2026 release notes specifically mention fixes around filings that could be published after a run date and settlement over long market holidays. Strong reference for role graph, cross-exam and point-in-time discipline. Do not reuse its entire trading runtime without benchmarking data assumptions and model costs.
+
+### 2. [AI4Finance-Foundation/FinRobot](https://github.com/AI4Finance-Foundation/FinRobot) — Apache-2.0
+
+The current project separates a production PydanticAI + FastAPI + React/Tauri implementation from earlier educational generations. Its core principle is especially relevant: deterministic financial calculations are computed by code; LLMs handle reasoning, synthesis and narration; outputs retain provenance. Its Lead Agent pipeline uses specialized data, analysis, modeling, synthesis and report roles plus bull/bear/judge debate. This is the strongest direct reference for a typed research/report backend.
+
+### 3. [microsoft/qlib](https://github.com/microsoft/qlib) — MIT
+
+Qlib describes an end-to-end quantitative investment pipeline spanning data processing, factor research, model training, backtesting, risk modeling, portfolio optimization and execution. It also highlights point-in-time data support and references RD-Agent for factor mining/model optimization. Candidate for a later quant research adapter; not a required dependency for the first real-data vertical slice.
+
+### 4. [nautechsystems/nautilus_trader](https://github.com/nautechsystems/nautilus_trader) — LGPL-3.0
+
+NautilusTrader describes a deterministic event-driven runtime with modular market-data/venue adapters, historical tick/bar/order-book backtesting and shared strategy semantics across research/live environments. Technically relevant for a mature simulator. Defer adoption until simulator requirements justify the Rust/Python footprint and LGPL compliance review.
+
+### 5. [mementum/backtrader](https://github.com/mementum/backtrader) — GPL-3.0
+
+Backtrader remains a useful source of backtesting concepts, but the copyleft license makes it a poor default to vendor into a proprietary product without deliberate legal review. No code was copied.
+
+### Connector validation note
+
+The connected Alpaca read-only MCP returned NVDA asset metadata, a 21-session IEX daily-bar sample for 2026-10-05 through 2026-11-02, and a stock snapshot. This validates access from the ChatGPT session only; it does not mean the browser app has credentials or direct MCP access. The returned snapshot included a wide bid/ask spread, so any production adapter must validate feed, timestamp, spread quality and stale/outlier conditions.
+
+### Integration decision
+
+No dependency was added and no upstream code was copied in this research pass. The preferred direction is a small typed Agent orchestration service plus an independent deterministic simulator; use Qlib/NautilusTrader only when measured needs justify their adoption. See experience-v3/REAL_DATA_BLUEPRINT.md.
