@@ -87,3 +87,9 @@ V0.3.1 adds faction-specific trigger/invalidation fields, dynamic thesis compari
 ## 12. Finance Research Lab V0.3.2 — Capital Flow motion
 
 One-day playback now animates original bill-note elements from the central performance vault to a faction on positive daily equity change, and from a faction back to the vault on negative change. The signed delta determines direction and displayed amount; small changes that would round to zero are suppressed. Aggregate P&L color follows the same sign. Multi-day jumps and arbitrary timeline scrubs do not replay synthetic money transfers. The effect is a spectator visualization only; separate faction portfolios do not actually transfer cash. Both directions and animation cleanup are browser-tested.
+
+## 13. Backend evidence gateway contract V0.1
+
+Added `backend/research_gateway.py` as a standard-library-only foundation for the real-data architecture. The module defines exact issuer-resolution outcomes, immutable evidence records with UTC publication/availability/retrieval timestamps and provider/license metadata, deterministic point-in-time snapshot freezing, typed faction research with snapshot-bound evidence references and weight caps, and an append-only in-memory SHA-256 hash chain. Twelve unit tests cover ambiguity, look-ahead exclusion, provenance/license gates, immutability, evidence-reference validation and tamper detection.
+
+This is a contract layer, not a provider integration or production API. No network fetch, credentials, LLM runtime, database persistence or broker capability is present. GitHub Actions now runs these backend tests and the existing Playwright browser suite for AI Arena changes.
