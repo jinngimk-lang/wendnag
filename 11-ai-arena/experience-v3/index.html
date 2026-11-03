@@ -121,6 +121,11 @@ button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,inpu
 @media(max-width:700px){.hero{display:block}.hero-side{text-align:left;margin-top:10px}.market-overview{padding:15px}.market-head{display:block}.market-status{margin-top:12px}.market-summary{display:block}.run-controls{justify-content:flex-start;margin-top:13px}.market-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.market-stat:last-child{grid-column:1/-1}.market-replay{gap:8px}.agent-grid{grid-template-columns:1fr}.agent-card{grid-template-columns:92px minmax(0,1fr)}.avatar-frame{width:92px;height:112px}.detail-identity{grid-template-columns:96px minmax(0,1fr);gap:12px}.detail-avatar{width:96px;height:120px}.detail-name{font-size:17px}.detail-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-notes{grid-template-columns:1fr}.setup-fields{grid-template-columns:1fr 1fr}.setup-fields .field:first-child{grid-column:1/-1}.setup-card{padding:18px}.setup-actions{flex-direction:column-reverse}.setup-actions button{width:100%}}
 @media(max-width:380px){.agent-card{grid-template-columns:80px minmax(0,1fr);gap:10px;padding:9px}.avatar-frame{width:80px;height:100px}.agent-card-equity{font-size:16px}.agent-card-top strong{font-size:12px}.detail-kpis{grid-template-columns:1fr 1fr}}
 
+
+/* Reset legacy arena grid-area assignments: Agent cards are now normal independent grid items. */
+.agent-grid .agent-card[data-id]{grid-area:auto!important;position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:auto!important;max-width:none!important;min-height:166px;transform:none}
+.agent-grid .agent-card[data-id]:hover{transform:translateY(-2px)}
+
 </style>
 </head>
 <body>
