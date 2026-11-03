@@ -1,18 +1,16 @@
 from pathlib import Path
-import os
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
-URL=(ROOT/'index.html').as_uri()
 
 def run():
     errors=[]
     with sync_playwright() as p:
-        browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+        browser=p.chromium.launch(**({'executable_path':'/usr/bin/chromium'} if Path('/usr/bin/chromium').exists() else {}),headless=True,args=['--no-sandbox'])
         page=browser.new_page(viewport={'width':1440,'height':1000},device_scale_factor=1)
         page.on('pageerror',lambda e: errors.append(str(e)))
         page.on('console',lambda msg: errors.append(msg.text) if msg.type=='error' else None)
-        page.set_content((ROOT/( 'packed-index.html' if os.getenv('PACKED') else 'index.html')).read_text(encoding='utf-8'),wait_until='load')
+        page.set_content((ROOT/'index.html').read_text(encoding='utf-8'),wait_until='load')
         page.wait_for_selector('.pod')
         assert page.title().startswith('AI ARENA / CAPITAL THEATER')
         assert page.locator('.pod').count()==4
