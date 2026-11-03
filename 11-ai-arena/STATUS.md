@@ -65,9 +65,9 @@
 - Deterministic point-in-time evidence-pack freezing; excludes evidence not available at `as_of`, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting IDs.
 - Typed faction research contract validates all evidence references against the same frozen snapshot and enforces the target-weight cap.
 - Append-only in-memory ledger uses payload hashes and previous-event hashes; corruption and time reversal are detected.
-- Added a no-network SEC EDGAR submissions/companyfacts parser. It anchors facts to accession `acceptanceDateTime`, rejects unmatched accessions/form mismatches and defaults license status to `review_required`.
+- Added a no-network SEC EDGAR submissions/companyfacts parser. It anchors facts to accession `acceptanceDateTime`, rejects unmatched accessions/form mismatches and conflicting accession metadata, includes fiscal frame in fact identity, and defaults license status to `review_required`.
 - Added GitHub Actions validation for backend contracts and browser regression.
-- Nineteen standard-library backend tests pass. No SEC fetcher, API credential, external LLM, database persistence or broker integration has been added.
+- Twenty-one standard-library backend tests pass. No SEC fetcher, API credential, external LLM, database persistence or broker integration has been added.
 
 ## Delivered
 
