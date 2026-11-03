@@ -48,14 +48,16 @@ def run():
         assert page.locator("#researchGrid .faction").count() == 6
         assert page.locator("#researchGrid .team-row").count() == 18
         page.wait_for_timeout(250)
-        page.screenshot(path=str(SHOTS / "research-desktop.png"), full_page=True)
+        page.locator("#researchGrid").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 150, behavior: 'instant'})")
+        page.wait_for_timeout(180)
+        page.screenshot(path=str(SHOTS / "research-desktop.png"), full_page=False)
 
         page.locator("#runBtn").click()
         page.locator("#nextBtn").click()
         page.wait_for_timeout(160)
         page.locator("#simulation").screenshot(path=str(SHOTS / "arena-desktop.png"))
         page.set_viewport_size({"width": 390, "height": 844})
-        page.locator("#simulation").scroll_into_view_if_needed()
+        page.locator("#simulation").evaluate("(el) => window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'instant'})")
         page.wait_for_timeout(180)
         page.screenshot(path=str(SHOTS / "arena-mobile.png"), full_page=False)
 
