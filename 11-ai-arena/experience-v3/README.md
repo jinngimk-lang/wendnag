@@ -41,6 +41,14 @@ python -m venv .venv
 PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py
 ```
 
+## Backend evidence gateway core (V0.1)
+
+The provider-agnostic standard-library contract lives in `../backend/research_gateway.py`: exact issuer resolution, immutable source-attributed evidence, point-in-time snapshot freezing, evidence-linked typed faction output and a hash-chained in-memory event ledger. It has no live provider integration or persistence yet. Run its tests from `11-ai-arena/` with:
+
+```bash
+python -m unittest discover -s backend/tests -v
+```
+
 ## Truth boundary — must remain visible
 
 **V0.3.2 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
