@@ -1,4 +1,4 @@
-# Finance Arena V0.3.1 — Research-to-Paper-Simulation Contract
+# Finance Arena V0.3.2 — Research-to-Paper-Simulation Contract
 
 ## Product loop
 
@@ -17,7 +17,7 @@ The production target replaces the synthetic research pack with a common immutab
 | Sentiment | attention, news tone, crowding and reflexivity | sentiment level/change, crowding, reversal risk |
 | Macro / Regime | liquidity, rates, sector cycle, risk appetite | macro regime, correlation shift, volatility and tail risk |
 
-Each faction exposes lead analyst, bear-case challenger and risk officer role templates. In V0.3.1 they are explanatory templates, **not actual independent LLM workers**.
+Each faction exposes lead analyst, bear-case challenger and risk officer role templates. In V0.3.2 they are explanatory templates, **not actual independent LLM workers**.
 
 ## Fairness contract
 
@@ -40,6 +40,7 @@ Each faction owns an independent cash/share ledger and target-weight policy. The
 - Execution rows contain market/fill price, quantity, target weight, notional, fee, slippage, cash, shares and equity.
 - Buy-and-hold benchmark deducts the entry fee from invested capital before calculating shares.
 - Replay hides future event counts, future event cards, future ledger rows and future chart points.
+- On a one-day forward step, bill notes animate from the aggregate vault to a faction on positive daily equity change, and from the faction back to the vault on negative daily change. Count/intensity and amount labels derive from the signed equity delta; this is a visual metaphor, not an inter-faction cash transfer. Aggregate P&L text changes green/red with its sign.
 - JSON export includes a `SYNTHETIC_DEMO_ONLY` evidence-pack declaration, run ID, strategy/simulator versions, benchmark assumptions and full operation context.
 
 ## Illustrative score
