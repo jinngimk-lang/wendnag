@@ -124,3 +124,11 @@ MVP match:
 - 2026-10-30: Marketing reach metrics are simulated unless calibrated by real campaign data.
 - 2026-10-30: Life outputs are branching scenarios, not deterministic predictions.
 - 2026-10-30: Deliver a dependency-free HTML/CSS/JS prototype as the first reviewable product artifact; keep all demo events and metrics explicitly simulated.
+
+## 2026-11-03 visual experience decision (revisable)
+
+We explicitly declined to continue indefinite surface-level iteration on the V0.1 broadcast dashboard. Created a parallel, independently testable **Capital Theater** under `experience-v2/`: money-flow events become the main visual metaphor, backed by deterministic accounting and an explicit simulation label. Finance is the validation vertical; Marketing and Life remain available in V0.1.
+
+The visual rule is **data-to-effect, never effect-to-data**. Winning cash visuals flow from the central notional pool to the Agent; losing cash visuals flow back. Nothing about particle counts, coin stacks, sound or lighting is allowed to change balances. Ranking remains risk-adjusted, and the sample fixture never becomes a personalized company forecast.
+
+Before investing in large GPU/WebGL animations or photorealistic source assets, compare both directions with actual user tests; retire or redesign the new direction if it increases false confidence. For research and engineering checkpoints see `experience-v2/VISUAL_RESEARCH.md` and `experience-v2/CHECKPOINT.md`.
