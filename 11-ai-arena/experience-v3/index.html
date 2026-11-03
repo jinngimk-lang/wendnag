@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d13">
+<title>AI ARENA / FINANCE RESEARCH LAB</title>
+<meta name="description" content="六派系独立投研、可配置周期的模拟交易与完整操作复盘。">
+<style>
+:root{--bg:#080d13;--panel:#111a23;--panel2:#15212b;--line:#2b3945;--muted:#91a0aa;--text:#f3f2ec;--gold:#e9c78d;--gold2:#a77a45;--green:#5fe0a8;--red:#ff887e;--blue:#8db9ee;--purple:#c6a1f2;--cyan:#7dd6df;--orange:#f1a66e;--sans:Inter,"Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1a2732 0,#080d13 52%);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}button:disabled{opacity:.42;cursor:not-allowed}a{color:inherit;text-decoration:none}.shell{min-height:100vh;display:grid;grid-template-columns:66px minmax(0,1fr)}.rail{height:100vh;position:sticky;top:0;background:#0c141c;border-right:1px solid #24313b;display:flex;align-items:center;flex-direction:column;padding:18px 0;gap:26px;z-index:5}.mark{width:36px;height:36px;border:1px solid #98744a;border-radius:10px;transform:rotate(45deg);display:grid;place-items:center;background:linear-gradient(135deg,#493824,#171d22);color:var(--gold);font-size:17px}.mark span{transform:rotate(-45deg)}.railnav{display:grid;gap:12px}.railnav a{width:38px;height:38px;display:grid;place-items:center;border:1px solid transparent;border-radius:10px;color:#758692}.railnav a.active,.railnav a:hover{color:var(--gold);border-color:#665236;background:#30291f}.rail-foot{margin-top:auto;writing-mode:vertical-rl;color:#61717d;font:9px var(--mono);letter-spacing:.2em}.app{min-width:0}.top{height:62px;border-bottom:1px solid #23303a;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,58px);background:#0b1219cc;backdrop-filter:blur(14px);position:sticky;top:0;z-index:4}.wordmark{font:700 13px var(--mono);letter-spacing:.16em}.wordmark b{color:var(--gold)}.topmeta{display:flex;align-items:center;gap:14px;color:var(--muted);font:10px var(--mono);letter-spacing:.08em}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--green);box-shadow:0 0 12px #5fe0a855;margin-right:6px}.demo-pill,.tag{border:1px solid #394854;border-radius:5px;padding:5px 8px;color:#aab7bf;font:9px var(--mono);letter-spacing:.08em}.wrap{width:min(1480px,100%);margin:0 auto;padding:30px clamp(16px,3.8vw,58px) 64px}.hero{display:flex;justify-content:space-between;gap:30px;align-items:end;margin:16px 0 28px}.eyebrow,.kicker{font:10px var(--mono);letter-spacing:.18em;color:var(--gold2);text-transform:uppercase}.hero h1{font-size:clamp(28px,3.2vw,46px);line-height:1.16;letter-spacing:-.04em;margin:12px 0}.hero h1 em{font-style:normal;color:var(--gold)}.hero p{max-width:740px;color:#9eacb5;line-height:1.75;font-size:13px;margin:0}.hero-side{text-align:right;color:#8d9aa3;font:10px/1.8 var(--mono);white-space:nowrap}.hero-side strong{color:var(--gold);font-weight:500}.panel{background:linear-gradient(145deg,#141e28,#0e161e);border:1px solid #2b3945;border-radius:14px;box-shadow:0 14px 40px #0003}.setup{padding:20px 22px;display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(130px,.7fr) minmax(145px,.8fr) minmax(150px,.85fr) auto;gap:15px;align-items:end}.field label{display:block;color:#a7b4bc;font:10px var(--mono);letter-spacing:.09em;margin-bottom:9px}.input-wrap{display:flex;align-items:center;background:#0a1118;border:1px solid #394957;border-radius:8px;padding:0 12px;height:42px}.input-wrap span{color:var(--gold);margin-right:9px}.input-wrap input{width:100%;background:none;border:0;outline:0;color:var(--text);min-width:0;font-size:13px}.input-wrap input:focus{outline:0}.field select,.field input[type=number]{height:42px;width:100%;background:#0a1118;border:1px solid #394957;border-radius:8px;color:var(--text);padding:0 10px;font-size:12px}.range-row{display:flex;align-items:center;gap:8px;height:42px}.range-row input{width:100%;accent-color:var(--gold)}.range-row output{min-width:50px;text-align:right;color:var(--gold);font:700 14px var(--mono)}.hint{font-size:10px;color:#71818b;margin-top:7px;line-height:1.4}.btn{height:42px;border:1px solid #465562;border-radius:8px;background:#17232d;color:#dce3e6;padding:0 15px;font-size:12px;white-space:nowrap}.btn:hover{border-color:var(--gold);color:var(--gold)}.btn.primary{background:linear-gradient(120deg,#f4d7a2,#d8a95e);color:#1a1c1d;border-color:#f0ce92;font-weight:750;box-shadow:0 5px 20px #d3a55b22}.btn.primary:hover{filter:brightness(1.06);color:#111}.btn.small{height:32px;padding:0 10px;font-size:11px}.btn.ghost{background:transparent}.trust{margin:12px 2px 0;color:#75848e;font-size:10px;line-height:1.6}.trust strong{color:#d3b681;font-weight:600}.section{margin-top:24px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:0 2px 13px}.section-head h2{font-size:18px;margin:5px 0 0;letter-spacing:-.02em}.section-head p{margin:0;color:#81909a;font-size:11px}.research-status{display:flex;align-items:center;gap:8px;color:#a7b4bc;font:10px var(--mono)}.research-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.faction{padding:16px;position:relative;overflow:hidden;min-height:235px;border-top:2px solid var(--accent)}.faction:after{content:"";position:absolute;right:-40px;top:-50px;width:130px;height:130px;border-radius:50%;background:var(--accent);opacity:.055;filter:blur(15px);pointer-events:none}.faction-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.faction-name{display:flex;align-items:center;gap:9px}.faction-icon{width:31px;height:31px;border-radius:9px;background:color-mix(in srgb,var(--accent) 15%,#101820);border:1px solid color-mix(in srgb,var(--accent) 35%,#283541);display:grid;place-items:center;color:var(--accent);font:700 12px var(--mono)}.faction-name strong{display:block;font-size:14px}.faction-name small{display:block;color:#82919b;font:9px var(--mono);margin-top:3px}.stance{font:10px var(--mono);border:1px solid #3c4a55;border-radius:5px;padding:4px 7px;color:#bdc8cd}.faction h3{font-size:13px;line-height:1.5;margin:14px 0 7px}.faction .thesis{color:#aab6bd;font-size:11px;line-height:1.65;min-height:36px;margin:0}.signals{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0}.signal{background:#0c141c;border:1px solid #283743;border-radius:5px;padding:4px 6px;color:#91a1ab;font:9px var(--mono)}.team{border-top:1px solid #283541;margin-top:12px;padding-top:10px;display:grid;gap:6px}.team-row{display:grid;grid-template-columns:65px 1fr;gap:8px;font-size:10px;line-height:1.45}.team-row b{color:var(--accent);font-weight:600}.team-row span{color:#95a3ad}.faction details{margin-top:10px}.faction summary{color:var(--gold);font-size:10px;cursor:pointer;list-style:none}.faction summary::-webkit-details-marker{display:none}.faction summary:after{content:"＋";float:right}.faction details[open] summary:after{content:"−"}.detail-body{padding-top:9px;color:#9eabb3;font-size:10px;line-height:1.65}.detail-body b{color:#d9e0e3}.debate{padding:17px 19px;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px}.debate-col{border-right:1px solid #2b3945;padding-right:16px}.debate-col:last-child{border:0;padding:0}.debate-col small{color:var(--gold2);font:9px var(--mono);letter-spacing:.1em}.debate-col h3{font-size:12px;margin:8px 0}.debate-col p{font-size:11px;color:#a0adb5;line-height:1.6;margin:0}.config{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr 1.3fr auto;align-items:center;gap:18px}.config-stat{border-right:1px solid #2c3944}.config-stat:last-of-type{border:0}.config-stat small{display:block;color:#85939c;font:9px var(--mono);letter-spacing:.12em}.config-stat strong{display:block;font:700 17px var(--mono);margin-top:7px}.config-stat span{display:block;color:#75848e;font-size:10px;margin-top:4px}.run-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.run-controls{display:flex;gap:7px;flex-wrap:wrap}.arena{padding:17px;overflow:hidden}.arena-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 4px 13px;border-bottom:1px solid #2b3945;color:#aab6bd;font:10px var(--mono)}.arena-top strong{color:var(--green)}.arena-top .right{color:#778792}.arena-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;grid-template-areas:"a . b" "c vault d" "e . f";gap:12px;align-items:stretch;padding:18px 2px}.pod{border:1px solid #33424e;border-left:2px solid var(--accent);border-radius:9px;padding:12px;background:linear-gradient(145deg,#17232d,#101820);min-width:0}.pod[data-id=value]{grid-area:a}.pod[data-id=growth]{grid-area:b}.pod[data-id=trend]{grid-area:c}.pod[data-id=quant]{grid-area:d}.pod[data-id=sentiment]{grid-area:e}.pod[data-id=macro]{grid-area:f}.pod-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.pod-head b{font-size:12px}.pod-head small{color:#80909b;font:9px var(--mono)}.pod-equity{font:700 19px var(--mono);margin:10px 0 4px}.pod-change{font:10px var(--mono)}.pod-meta{color:#81909a;font-size:9px;margin-top:8px}.vault{grid-area:vault;align-self:center;justify-self:center;width:min(100%,210px);aspect-ratio:1;border-radius:50%;border:1px solid #80633d;background:radial-gradient(circle at 45% 35%,#34413e,#1c292a 58%,#0e171b);box-shadow:0 0 0 9px #d4ac5a0b,0 0 45px #d4ac5a18,inset 0 0 25px #d9b26d22;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px}.vault small{font:9px var(--mono);color:#b59a70;letter-spacing:.12em}.vault strong{font:800 clamp(20px,2vw,30px) var(--mono);color:var(--green);margin:9px 0}.vault span{color:#a0afb5;font-size:10px}.arena-foot{border-top:1px solid #2b3945;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:13px 4px 0}.arena-foot small{display:block;color:#81909a;font:9px var(--mono);letter-spacing:.1em}.arena-foot b{display:block;font:700 13px var(--mono);margin-top:6px}.metrics{display:grid;grid-template-columns:1.35fr .9fr;gap:13px}.chart-panel,.factor-panel,.events-panel,.ledger-panel{padding:17px}.chart-wrap{width:100%;overflow:hidden}.chart-wrap svg{width:100%;height:auto;display:block}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:9px;color:#9baab2;font-size:9px}.legend i{display:inline-block;width:12px;height:3px;vertical-align:middle;margin-right:4px}.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.factor{padding:11px;background:#0d151d;border:1px solid #2a3944;border-radius:8px}.factor-top{display:flex;justify-content:space-between;gap:8px;color:#a0adb5;font-size:10px}.factor strong{display:block;font:700 18px var(--mono);margin-top:8px}.meter{height:4px;background:#263540;border-radius:9px;margin-top:8px;overflow:hidden}.meter span{display:block;height:100%;background:var(--factor-color,var(--gold));width:50%;border-radius:9px}.factor-note{font-size:9px;color:#73838d;margin-top:6px}.events-list{display:grid;gap:8px;margin-top:12px}.event{display:grid;grid-template-columns:55px 1fr;gap:9px;padding:9px 0;border-bottom:1px solid #27343e}.event:last-child{border:0}.event-day{font:9px var(--mono);color:var(--gold)}.event b{display:block;font-size:10px}.event p{margin:4px 0 0;color:#8d9ca5;font-size:9px;line-height:1.5}.ledger-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}.ledger-toolbar select{height:32px;background:#0b131a;border:1px solid #354550;color:#d7dfe2;border-radius:6px;padding:0 8px;font-size:10px}.ledger-scroll{overflow:auto;max-height:480px;border:1px solid #2b3945;border-radius:8px}table{width:100%;border-collapse:collapse;min-width:760px;font-size:10px}th{position:sticky;top:0;background:#17232d;color:#a0adb5;text-align:left;font:9px var(--mono);letter-spacing:.06em;padding:10px 9px}td{padding:9px;border-top:1px solid #26343e;color:#aebbc2;white-space:nowrap}td b{color:#e6e9e8;font-weight:600}.buy{color:var(--green)!important}.sell{color:var(--red)!important}.hold{color:#a9b7c0!important}.badge{display:inline-block;border:1px solid #3a4a55;border-radius:4px;padding:3px 5px;font:9px var(--mono)}.empty{padding:30px;text-align:center;color:#82909a;font-size:11px}.hidden{display:none!important}.foot{border-top:1px solid #27343e;margin-top:28px;padding-top:14px;display:flex;justify-content:space-between;gap:12px;color:#63737e;font:9px var(--mono)}.modal{position:fixed;inset:0;background:#000a;z-index:10;display:grid;place-items:center;padding:20px}.modal-card{max-width:580px;width:100%;padding:20px;background:#15212b;border:1px solid #56636a;border-radius:12px}.modal-card h3{margin:0 0 8px}.modal-card p{color:#9eabb3;font-size:11px;line-height:1.65}.modal-card button{float:right}.toast{position:fixed;bottom:20px;right:20px;background:#1a2a31;border:1px solid #4c6d63;color:#bce8d2;padding:10px 14px;border-radius:8px;font-size:11px;z-index:12;box-shadow:0 10px 30px #0006}
+@media(max-width:1050px){.setup{grid-template-columns:1.3fr .8fr .8fr .9fr}.setup .btn{grid-column:1/-1}.research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics{grid-template-columns:1fr}.config{grid-template-columns:1fr 1fr}.config-stat:nth-child(2){border:0}.debate{grid-template-columns:1fr 1fr}.debate-col:nth-child(2){border:0}.debate-col:last-child{grid-column:1/-1;border-top:1px solid #2b3945;padding-top:12px}}
+@media(max-width:700px){.shell{display:block;padding-bottom:58px}.rail{position:fixed;top:auto;bottom:0;width:100%;height:58px;border-right:0;border-top:1px solid #293743;flex-direction:row;justify-content:space-around;padding:7px 12px}.mark,.rail-foot{display:none}.railnav{display:flex;gap:10px}.railnav a{width:42px;height:42px}.top{height:54px;padding:0 15px}.topmeta{gap:7px;font-size:8px}.wrap{padding:21px 13px 42px}.hero{display:block;margin:8px 0 20px}.hero h1{font-size:29px}.hero-side{text-align:left;margin-top:10px}.setup{grid-template-columns:1fr 1fr;padding:15px;gap:12px}.setup .field:first-child{grid-column:1/-1}.setup .btn{grid-column:1/-1;width:100%}.research-grid{grid-template-columns:1fr}.faction{min-height:0}.debate{grid-template-columns:1fr;padding:14px}.debate-col,.debate-col:nth-child(2){border:0;border-bottom:1px solid #2b3945;padding:0 0 12px}.debate-col:last-child{grid-column:auto;border:0;padding:0}.config{grid-template-columns:1fr 1fr;padding:14px}.config-stat{border:0;padding:6px 0}.run-head{display:block}.run-controls{margin-top:10px}.arena{padding:12px}.arena-grid{grid-template-columns:1fr 1fr;grid-template-areas:"vault vault" "a b" "c d" "e f";gap:8px;padding:13px 0}.vault{width:160px}.pod{padding:10px}.pod-equity{font-size:15px}.arena-foot{grid-template-columns:1fr 1fr}.factor-grid{grid-template-columns:1fr 1fr}.foot{display:block;line-height:1.8}.section-head{align-items:start;flex-direction:column}.ledger-toolbar{align-items:start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="rail"><div class="mark"><span>◇</span></div><nav class="railnav"><a class="active" href="#setup" title="研究设置">⌕</a><a href="#research" title="独立投研">▤</a><a href="#simulation" title="模拟交易">◉</a><a href="#ledger" title="操作记录">≡</a></nav><div class="rail-foot">FINANCE RESEARCH LAB · 03</div></aside>
+<main class="app">
+<header class="top"><a class="wordmark" href="#setup">AI <b>ARENA</b> / FINANCE LAB</a><div class="topmeta"><span><i class="dot"></i>RESEARCH → PAPER SIMULATION</span><span class="demo-pill">V 0.3 · LOCAL DEMO</span><button class="btn small ghost" id="rulesOpen">模拟规则</button></div></header>
+<div class="wrap">
+<section class="hero"><div><div class="eyebrow">MULTI-AGENT INVESTMENT RESEARCH / 03</div><h1>先让六种观点交锋。<br><em>再让市场检验每个决策。</em></h1><p>输入公司，六个独立投研派系分别研究、互相质疑，再在同一段市场情景中独立管理组合。周期由你设定，每次买入、卖出、观望与风险变化都留下记录。</p></div><div class="hero-side">ONE COMPANY · SIX FACTIONS<br>RESEARCH / DEBATE / PAPER TRADE<br><strong>所有演示行情与结论均为合成数据</strong></div></section>
+
+<section id="setup" class="panel setup" aria-label="研究与模拟设置">
+ <div class="field"><label for="company">01 / 研究对象（公司或股票代码）</label><div class="input-wrap"><span>⌕</span><input id="company" maxlength="72" value="NVIDIA / NVDA" placeholder="例如：NVIDIA / NVDA"></div><div class="hint">仅作为本地演示场景名称；不会读取真实公司数据。</div></div>
+ <div class="field"><label for="days">02 / 模拟周期（交易日）</label><div class="range-row"><input id="days" type="range" min="20" max="252" step="1" value="90"><output id="daysOut">90 天</output></div><div class="hint">20–252 个模拟交易日</div></div>
+ <div class="field"><label for="capital">03 / 每派系初始资金</label><select id="capital"><option value="50000">$50,000</option><option value="100000" selected>$100,000</option><option value="250000">$250,000</option><option value="500000">$500,000</option></select><div class="hint">六派系相同起点</div></div>
+ <div class="field"><label for="riskMode">04 / 组合风险约束</label><select id="riskMode"><option value="conservative">稳健 · 单股上限 35%</option><option value="balanced" selected>均衡 · 单股上限 60%</option><option value="aggressive">积极 · 单股上限 85%</option></select><div class="hint">所有派系使用同一上限</div></div>
+ <button class="btn primary" id="researchBtn">启动六派系投研 ↗</button>
+</section>
+<div class="trust"><strong>数据边界：</strong>当前为本地交互原型，六派系研究观点、情景因子、行情、事件与成交均由可复现的合成数据生成；未连接真实公告、财报、行情、新闻、LLM Agent 或券商。界面用于验证产品流程，不是投资建议或真实回测。</div>
+
+<section id="research" class="section hidden">
+ <div class="section-head"><div><div class="kicker">01 / INDEPENDENT RESEARCH</div><h2>六派系独立投研报告</h2><p>同一份合成信息底稿；不同研究框架、独立结论、独立风险约束。</p></div><div class="research-status"><span class="dot"></span><span id="researchStatus">RESEARCH COMPLETE</span><span class="tag">6 FACTIONS · 18 ROLE TEMPLATES</span></div></div>
+ <div class="research-grid" id="researchGrid"></div>
+ <div class="section-head" style="margin-top:15px"><div><div class="kicker">CROSS-EXAMINATION</div><h2>投研交叉质询</h2></div><span class="tag">THESIS ≠ FACT</span></div>
+ <div class="panel debate" id="debate"></div>
+ <div class="panel config" style="margin-top:13px">
+  <div class="config-stat"><small>RESEARCH SUBJECT</small><strong id="configSubject">NVIDIA / NVDA</strong><span>本地演示研究任务</span></div>
+  <div class="config-stat"><small>SIMULATION WINDOW</small><strong id="configDays">90 DAYS</strong><span>交易日；不含周末概念</span></div>
+  <div class="config-stat"><small>STARTING CAPITAL / FACTION</small><strong id="configCapital">$100,000</strong><span>相同本金、费用、滑点与市场路径</span></div>
+  <button class="btn primary" id="runBtn">开始模拟交易 →</button>
+ </div>
+</section>
+
+<section id="simulation" class="section hidden">
+ <div class="run-head"><div class="section-head" style="margin:0"><div><div class="kicker">02 / PAPER TRADING ARENA</div><h2>资金竞技场 · 市场持续变化</h2><p>六派系在同一条价格路径上独立调整仓位；每个交易日均记录决策。</p></div></div><div class="run-controls"><button class="btn small" id="playBtn">▶ 自动运行</button><button class="btn small" id="pauseBtn" disabled>暂停</button><button class="btn small" id="nextBtn">下一日 →</button><button class="btn small" id="next5Btn">推进 5 日</button><button class="btn small" id="finishBtn">直达结算</button><button class="btn small ghost" id="resetBtn">重置</button></div></div>
+ <div class="panel arena">
+  <div class="arena-top"><span><i class="dot"></i><b id="runState">READY</b> · <span id="runSubject">NVIDIA / NVDA</span></span><span class="right" id="runDay">DAY 000 / 090</span></div>
+  <div class="arena-grid" id="arenaGrid">
+   <article class="pod" data-id="value" style="--accent:#e9c78d"></article><article class="pod" data-id="growth" style="--accent:#65d8a5"></article><article class="pod" data-id="trend" style="--accent:#8db9ee"></article><article class="pod" data-id="quant" style="--accent:#c6a1f2"></article><article class="pod" data-id="sentiment" style="--accent:#f1a66e"></article><article class="pod" data-id="macro" style="--accent:#7dd6df"></article>
+   <div class="vault"><small>AGGREGATE PAPER P&L</small><strong id="totalPnl">+$0</strong><span id="totalReturn">0.00% · 6 portfolios</span><small style="margin-top:8px">SYNTHETIC CAPITAL</small></div>
+  </div>
+  <div class="arena-foot"><div><small>SIMULATED SHARE PRICE</small><b id="priceNow">$100.00</b></div><div><small>MARKET SENTIMENT</small><b id="sentimentNow">50 / 100</b></div><div><small>ACTIVE EVENT</small><b id="activeEvent">等待市场事件</b></div><div><small>DECISIONS RECORDED</small><b id="decisionCount">0</b></div></div>
+ </div>
+ <div class="panel" style="padding:13px 16px;margin-top:12px">
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;font:10px var(--mono);color:#93a1aa"><span>REPLAY / DAY-BY-DAY AUDIT</span><b id="scrubLabel">0 / 90</b></div>
+  <input id="scrub" type="range" min="0" max="90" value="0" style="width:100%;accent-color:var(--gold);margin:12px 0 0">
+ </div>
+ <div class="metrics section">
+  <article class="panel chart-panel"><div class="section-head"><div><div class="kicker">PORTFOLIO PERFORMANCE</div><h2>六派系净值轨迹</h2></div><span class="tag">SAME MARKET PATH</span></div><div class="chart-wrap" id="chartWrap"><svg id="equityChart" viewBox="0 0 760 270" role="img" aria-label="六派系模拟净值曲线"></svg></div><div class="legend" id="chartLegend"></div></article>
+  <article class="panel factor-panel"><div class="section-head"><div><div class="kicker">MARKET STATE / SENTIMENT</div><h2>市场环境与情绪因子</h2></div><span class="tag" id="regimeTag">SYNTHETIC</span></div><div class="factor-grid" id="factorGrid"></div></article>
+ </div>
+ <div class="metrics section">
+  <article class="panel events-panel"><div class="section-head"><div><div class="kicker">WORLD EVENTS</div><h2>模拟市场事件</h2></div><span class="tag" id="eventTotal">0 EVENTS</span></div><div class="events-list" id="eventsList"></div></article>
+  <article class="panel chart-panel"><div class="section-head"><div><div class="kicker">RISK / PERFORMANCE</div><h2>实时派系排名</h2></div><span class="tag">RETURN · DRAWDOWN · VOL</span></div><div id="standings"></div></article>
+ </div>
+</section>
+
+<section id="ledger" class="section hidden">
+ <div class="section-head"><div><div class="kicker">03 / IMMUTABLE DECISION LEDGER</div><h2>完整操作记录</h2><p>买入、卖出、观望、风险调整与事件触发均可追溯。</p></div><button class="btn small" id="exportBtn">导出完整实验 JSON ↓</button></div>
+ <article class="panel ledger-panel">
+  <div class="ledger-toolbar"><div style="color:#8797a1;font-size:10px" id="ledgerSummary">等待模拟结果</div><div style="display:flex;gap:7px;flex-wrap:wrap"><select id="agentFilter"><option value="all">全部派系</option></select><select id="actionFilter"><option value="all">全部决策</option><option value="BUY">买入</option><option value="SELL">卖出</option><option value="HOLD">观望</option></select><select id="dayFilter"><option value="all">全部周期</option><option value="early">前 1/3</option><option value="middle">中间 1/3</option><option value="late">后 1/3</option></select></div></div>
+  <div class="ledger-scroll"><table><thead><tr><th>交易日</th><th>派系 / Agent</th><th>决策</th><th>市场价 / 成交价</th><th>目标仓位</th><th>成交数量</th><th>成交金额</th><th>持仓 / 现金</th><th>费用 + 滑点</th><th>触发原因 / 市场背景</th></tr></thead><tbody id="ledgerBody"><tr><td colspan="10" class="empty">完成投研并启动模拟后，这里会生成逐日操作记录。</td></tr></tbody></table></div>
+  <div class="hint">记录为本地合成模拟。费用采用统一演示费率；真实环境应记录订单 ID、成交回报、数据快照、模型/策略版本和状态哈希。</div>
+ </article>
+</section>
+<div class="foot"><span>AI ARENA / FINANCE RESEARCH LAB · V0.3 · LOCAL SYNTHETIC DATA</span><span>NO LIVE MARKET DATA · NO BROKER · NO REAL TRADES</span></div>
+</div>
+</main>
+</div>
+<div id="toast" class="toast hidden" role="status"></div>
+<div id="rulesModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="modal-card"><button class="btn small" id="closeRules">关闭</button><div class="kicker">SIMULATION CONTRACT</div><h3 id="rulesTitle">公平模拟与数据边界</h3><p>六派系共享同一条合成价格路径、相同初始资金、交易费用、滑点与仓位上限。策略规则彼此独立，任何 Agent 只能提交目标仓位，由模拟器统一计算成交与净值。</p><p>当前没有接入真实公司财报、公告、新闻、市场行情、外部 LLM Agent 或券商。公司名称只作为演示任务标签和可复现随机种子的一部分。所有观点、事件、情绪、成交与收益均为合成数据。</p><p>未来真实数据版本必须保存来源、发布时间、抓取时间、授权信息、时点快照与引用；严禁未来数据泄漏。模拟成交与真实交易必须严格分离。</p></div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const factionDefs=[
+{id:'value',name:'价值派',en:'VALUE & QUALITY',icon:'V',color:'#e9c78d',roles:['基本面主研','空头挑战','资本风控'],method:'现金流质量、估值安全边际、资产负债表与资本回报',thesis:'等待价格相对内在价值出现足够安全边际，优先保护本金。',risk:'价值陷阱、盈利质量恶化、长期低估值与流动性折价。'},
+{id:'growth',name:'成长派',en:'GROWTH',icon:'G',color:'#65d8a5',roles:['成长分析师','预期差挑战','集中度风控'],method:'收入增长、利润率扩张、市场空间与盈利预期变化',thesis:'寻找增长持续性与预期上修的交集，愿意为确定性成长支付溢价。',risk:'增长兑现不及预期、估值压缩、融资与竞争压力。'},
+{id:'trend',name:'趋势派',en:'TECHNICAL / MOMENTUM',icon:'T',color:'#8db9ee',roles:['趋势研究员','反转挑战','止损风控'],method:'价格结构、均线斜率、相对强弱、成交量与趋势延续',thesis:'不预测拐点，等待价格确认后跟随趋势，失效时快速退出。',risk:'震荡市反复止损、跳空、趋势反转与信号滞后。'},
+{id:'quant',name:'量化派',en:'QUANT',icon:'Q',color:'#c6a1f2',roles:['因子研究员','模型审查','波动风控'],method:'多因子打分、信号稳定性、波动率目标与组合约束',thesis:'将可重复的信号转成规则化仓位，控制单一因子和回撤暴露。',risk:'过拟合、因子失效、交易成本侵蚀与样本漂移。'},
+{id:'sentiment',name:'情绪派',en:'SENTIMENT',icon:'S',color:'#f1a66e',roles:['舆情研究员','反身性挑战','拥挤度风控'],method:'新闻情绪、市场注意力、资金拥挤、预期差与情绪反转',thesis:'识别情绪扩散与拥挤程度，在确认和过热之间动态调整暴露。',risk:'噪声新闻、情绪反转、拥挤交易与叙事失真。'},
+{id:'macro',name:'宏观派',en:'MACRO / REGIME',icon:'M',color:'#7dd6df',roles:['宏观策略师','情景挑战','尾部风控'],method:'利率、流动性、美元/信用环境、行业周期与风险偏好',thesis:'先判断市场环境，再决定风险预算；宏观逆风时优先降低仓位。',risk:'政策路径误判、宏观数据滞后、相关性突变与尾部冲击。'}
+];
+const eventTemplates=[
+{title:'流动性边际改善',kind:'macro',macro:.28,sentiment:.12,sector:.05,shock:.009,desc:'风险偏好回升，长久期资产获得支撑。'},
+{title:'行业需求预期上修',kind:'sector',macro:.05,sentiment:.2,sector:.34,shock:.014,desc:'行业景气预期改善，但需要后续订单验证。'},
+{title:'盈利预期分化',kind:'earnings',macro:0,sentiment:-.18,sector:-.12,shock:-.012,desc:'市场开始重新评估增长兑现节奏。'},
+{title:'突发负面舆情',kind:'sentiment',macro:-.08,sentiment:-.42,sector:-.08,shock:-.021,desc:'短期注意力与风险厌恶同时上升。'},
+{title:'监管与政策不确定性',kind:'policy',macro:-.18,sentiment:-.22,sector:-.24,shock:-.017,desc:'风险溢价上升，仓位约束开始发挥作用。'},
+{title:'资金拥挤与波动放大',kind:'volatility',macro:-.1,sentiment:.18,sector:.08,shock:-.026,desc:'交易拥挤度上升，价格波动与滑点同步扩大。'},
+{title:'竞争格局出现变化',kind:'company',macro:0,sentiment:-.08,sector:-.2,shock:-.014,desc:'市场开始讨论长期利润率和份额变化。'},
+{title:'风险偏好快速修复',kind:'macro',macro:.22,sentiment:.32,sector:.12,shock:.018,desc:'资金回流高弹性板块，趋势策略更积极。'},
+{title:'需求数据低于预期',kind:'earnings',macro:-.05,sentiment:-.25,sector:-.26,shock:-.019,desc:'市场下调短期增长假设，估值容忍度下降。'}
+];
+let state={research:null,simulation:null,day:0,timer:null,running:false,logs:[],events:[],lastSeed:0};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fmt=(n,d=0)=>Math.round(n).toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
+const money=n=>(n<0?'−':'')+'$'+fmt(Math.abs(n),0);
+const signedPct=n=>(n>=0?'+':'−')+Math.abs(n).toFixed(2)+'%';
+const pct=n=>n.toFixed(1)+'%';
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function rng(seed){let x=seed>>>0;return()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function normal(random){return (random()+random()+random()+random()+random()+random()-3)*.816;}
+function researchCompany(name){
+ const seed=hash(name.trim().toLowerCase()||'unnamed-company'),r=rng(seed);
+ const f={quality:r(),growth:r(),valuation:r(),momentum:r()*2-1,sentiment:r()*2-1,macro:r()*2-1,volatility:.55+r()*1.2};
+ const scores={
+  value:.52*(f.quality-.5)+.72*(.55-f.valuation)-.12*f.volatility,
+  growth:.72*(f.growth-.45)+.25*(f.quality-.5)-.12*f.valuation,
+  trend:.8*f.momentum+.18*f.sentiment,
+  quant:.32*(f.quality-.5)+.32*(f.growth-.5)+.38*f.momentum-.22*(f.volatility-.9),
+  sentiment:.78*f.sentiment+.18*f.momentum-.12*(f.volatility-1),
+  macro:.68*f.macro+.2*(f.quality-.5)-.18*(f.volatility-1)
+ };
+ const signals={
+  value:[`质量因子 ${Math.round(f.quality*100)}/100`,`估值分位 ${Math.round(f.valuation*100)}/100`,`波动等级 ${f.volatility.toFixed(2)}x`],
+  growth:[`成长因子 ${Math.round(f.growth*100)}/100`,`质量因子 ${Math.round(f.quality*100)}/100`,`预期修正 ${Math.round((f.growth-.5)*40)} pts`],
+  trend:[`趋势强度 ${signedPct(f.momentum*12)}`,`动量状态 ${f.momentum>.25?'向上':f.momentum<-.25?'向下':'震荡'}`,`波动等级 ${f.volatility.toFixed(2)}x`],
+  quant:[`质量因子 ${Math.round(f.quality*100)}/100`,`成长因子 ${Math.round(f.growth*100)}/100`,`风险预算 ${Math.round(100/f.volatility)}%`],
+  sentiment:[`情绪温度 ${Math.round(50+f.sentiment*45)}/100`,`拥挤程度 ${Math.round((.5+Math.abs(f.sentiment)*.4)*100)}/100`,`注意力变化 ${signedPct(f.sentiment*8)}`],
+  macro:[`流动性脉冲 ${signedPct(f.macro*8)}`,`风险偏好 ${f.macro>.2?'改善':f.macro<-.2?'收缩':'中性'}`,`波动等级 ${f.volatility.toFixed(2)}x`]
+ };
+ const titles={value:'先看估值折价，再看现金流是否能兑现',growth:'增长质量决定估值溢价能否持续',trend:'等待价格确认，不在无趋势区间过度交易',quant:'以多因子与波动预算构建可复现组合',sentiment:'情绪扩散和拥挤度决定交易节奏',macro:'宏观环境决定风险预算，而非单点预测'};
+ const reports=factionDefs.map(def=>{
+  const score=scores[def.id],stance=score>.22?'偏多':score<-.22?'谨慎':'中性',confidence=Math.round(57+Math.abs(score)*34+r() * 8);
+  const thesis=score>.22?`${titles[def.id]}。当前合成情景对该派系相对有利，倾向分阶段建立风险敞口。`:score<-.22?`${titles[def.id]}。当前合成情景存在不利信号，优先等待确认并控制仓位。`:`${titles[def.id]}。当前信号相互抵消，暂不做强方向押注，等待更清晰的触发条件。`;
+  const bear=def.id==='value'?'若盈利质量和现金流同步恶化，低估值可能只是价值陷阱。':def.id==='growth'?'若增长预期无法兑现，估值压缩可能快于基本面改善。':def.id==='trend'?'若价格跌回关键趋势区间，趋势信号将快速失效。':def.id==='quant'?'若信号相关性突然上升，历史因子组合可能失去分散效果。':def.id==='sentiment'?'若舆情热度来自噪声或短期事件，情绪指标可能反向误导。':'若政策路径与市场定价背离，宏观状态判断可能滞后。';
+  return {...def,score,stance,confidence,thesis,bear,signals:signals[def.id],exposure:Math.round(clamp(.18+score*.36,.05,.82)*100),seed:seed};
+ });
+ return {subject:name.trim()||'未命名公司',seed,factors:f,reports};
+}
+function renderResearch(){
+ const r=state.research;
+ $('researchGrid').innerHTML=r.reports.map(a=>`<article class="panel faction" style="--accent:${a.color}" data-id="${a.id}">
+  <div class="faction-top"><div class="faction-name"><span class="faction-icon">${a.icon}</span><div><strong>${a.name}</strong><small>${a.en}</small></div></div><span class="stance">${a.stance} · ${a.confidence}%</span></div>
+  <h3>${a.thesis}</h3><p class="thesis">${a.method}</p><div class="signals">${a.signals.map(x=>`<span class="signal">${x}</span>`).join('')}</div>
+  <div class="team">${a.roles.map((role,i)=>`<div class="team-row"><b>${role}</b><span>${i===0?'独立形成核心论点与触发条件':i===1?a.bear:'设定仓位上限、回撤阈值与退出条件'}</span></div>`).join('')}</div>
+  <details><summary>查看完整研究结论与风险</summary><div class="detail-body"><b>研究结论：</b>${a.thesis}<br><b>主要风险：</b>${a.risk}<br><b>反方质询：</b>${a.bear}<br><b>模拟初始仓位倾向：</b>${a.exposure}%（规则样例，不是建议）<br><b>证据状态：</b>合成情景指标；没有真实来源引用。</div></details>
+ </article>`).join('');
+ const sorted=[...r.reports].sort((a,b)=>b.score-a.score),bull=sorted[0],bear=sorted.at(-1);
+ $('debate').innerHTML=`<div class="debate-col"><small>01 / STRONGEST THESIS</small><h3>${bull.name} · ${bull.stance}</h3><p>${bull.thesis} 反方提醒：${bull.bear}</p></div><div class="debate-col"><small>02 / KEY DISAGREEMENT</small><h3>增长预期 vs. 估值纪律</h3><p>成长派关注未来兑现，价值派要求安全边际。两者可能对同一条增长线索给出相反仓位；模拟器保留这种分歧，不强行合并成一个“AI 共识”。</p></div><div class="debate-col"><small>03 / RISK REVIEW</small><h3>${bear.name} · ${bear.stance}</h3><p>${bear.risk} 风控角色将把仓位、波动和回撤约束转成明确的模拟规则。</p></div>`;
+ $('configSubject').textContent=r.subject;$('configDays').textContent=$('days').value+' DAYS';$('configCapital').textContent=money(+$('capital').value);
+ $('research').classList.remove('hidden');$('simulation').classList.add('hidden');$('ledger').classList.add('hidden');
+ $('researchStatus').textContent='RESEARCH COMPLETE · SYNTHETIC';$('runBtn').disabled=false;
+}
+function targetWeight(id,base,env,price,history,capWeight,previousSentiment){
+ const mom=history.length>5?(price/history[Math.max(0,history.length-6)]-1)*8:0;
+ const vol=env.vol,macro=env.macro,sentiment=env.sentiment,sector=env.sector;
+ let w=0;
+ if(id==='value')w=.34+(base.quality-.5)*.28+(0.52-base.valuation)*.5+macro*.035-vol*.025;
+ if(id==='growth')w=.30+base.growth*.42+mom*.09-base.valuation*.10+sector*.075+macro*.04;
+ if(id==='trend')w=.26+mom*.42+(mom>0?.12:-.08)+sector*.09;
+ if(id==='quant')w=.36+(base.quality-.5)*.16+(base.growth-.5)*.14+mom*.16+sector*.07+sentiment*.035-(vol-.9)*.18;
+ if(id==='sentiment')w=.27+sentiment*.23+(sentiment-previousSentiment)*.18+mom*.12;
+ if(id==='macro')w=.42+macro*.28+sector*.055-(vol-1)*.16;
+ return clamp(w,0,capWeight);
+}
+function runSimulation(){
+ stopPlayback();
+ const days=+$('days').value,capital=+$('capital').value,risk=$('riskMode').value,subject=state.research.subject;
+ const capWeight=risk==='conservative'?.35:risk==='aggressive'?.85:.60;
+ const seed=hash(subject.toLowerCase()+`|${days}|${capital}|${risk}`),random=rng(seed);
+ const fac={...state.research.factors},factions=factionDefs.map(x=>({...x}));
+ let price=100,macro=fac.macro,sentiment=fac.sentiment,sector=fac.momentum,vol=fac.volatility,previousSentiment=sentiment;
+ const market=[{day:0,price,macro,sentiment,sector,vol,return:0,event:null,regime:'等待开盘'}];
+ const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
+ const logs=[],events=[],priceHistory=[price],benchmarkShares=capital/price,benchmarkFee=capital*.0015,benchmarkPath=[capital-benchmarkFee];
+ const initialCash=capital-benchmarkFee;
+ const feeRate=.0015,slippage=.001;
+ const eventDays=new Set();for(let d=7;d<days;d+=Math.max(9,Math.round(days/7)))eventDays.add(d);
+ for(let day=1;day<=days;day++){
+  macro=clamp(macro*.90+normal(random)*.12,-1,1);sentiment=clamp(sentiment*.78+normal(random)*.24,-1,1);sector=clamp(sector*.88+normal(random)*.17,-1,1);vol=clamp(vol*.86+random()*.26-.10,.45,2.1);
+  let event=null;
+  if(eventDays.has(day)||random()<.035){
+   const template=eventTemplates[Math.floor(random()*eventTemplates.length)];
+   macro=clamp(macro+template.macro*.48,-1,1);sentiment=clamp(sentiment+template.sentiment*.52,-1,1);sector=clamp(sector+template.sector*.46,-1,1);vol=clamp(vol+(template.kind==='volatility'?.35:.08),.45,2.2);
+   event={day,title:template.title,kind:template.kind,desc:template.desc,shock:template.shock};events.push(event);
+  }
+  const idio=normal(random)*.0085*vol;
+  const daily=clamp(.00022+macro*.0010+sector*.0009+sentiment*.00065+idio+(event?event.shock:0),-.095,.095);
+  const prevPrice=price,priorSentiment=previousSentiment;price=Math.max(8,price*(1+daily));priceHistory.push(price);
+  const daySnap={day,price,macro,sentiment,sector,vol,return:daily,event,regime:macro>.22?'风险偏好改善':macro<-.22?'风险收缩':'混合震荡'};
+  market.push(daySnap);
+  const sentimentScore=Math.round(50+sentiment*44);
+  for(const p of portfolios){
+   const prevEquity=p.cash+p.shares*prevPrice;
+   const weight=targetWeight(p.id,fac,daySnap,price,priceHistory,capWeight,priorSentiment);
+   const targetValue=prevEquity*weight;
+   const targetShares=targetValue/price;
+   const delta=targetShares-p.shares;
+   const notionalAtMarket=Math.abs(delta*price),slippageRate=slippage*(.65+vol*.22);
+   let action='HOLD',fillPrice=price,notional=0,commission=0,slippageCost=0,quantity=0;
+   if(notionalAtMarket>prevEquity*.004){
+    action=delta>0?'BUY':'SELL';quantity=Math.abs(delta);fillPrice=price*(1+(delta>0?slippageRate:-slippageRate));notional=Math.abs(delta*fillPrice);
+    commission=notional*feeRate;slippageCost=Math.abs(delta*(fillPrice-price));
+    p.cash-=delta*fillPrice+commission;p.shares=targetShares;p.trades++;p.turnover+=notional;p.fees+=commission+slippageCost;
+   }
+   p.equity=p.cash+p.shares*price;
+   p.peak=Math.max(p.peak,p.equity);const currentDD=(1-p.equity/p.peak)*100;p.maxDD=Math.max(p.maxDD,currentDD);p.drawdownPath.push(currentDD);p.maxDDPath.push(p.maxDD);
+   const dayReturn=p.equityPath.length?p.equity/p.equityPath.at(-1)-1:0;
+   p.returns.push(dayReturn);p.equityPath.push(p.equity);p.previousWeight=weight;
+   const reasons={value:`估值安全边际与质量因子；目标仓位 ${Math.round(weight*100)}%`,growth:`成长质量与趋势预期；目标仓位 ${Math.round(weight*100)}%`,trend:`价格动量与趋势确认；目标仓位 ${Math.round(weight*100)}%`,quant:`多因子信号与波动预算；目标仓位 ${Math.round(weight*100)}%`,sentiment:`情绪温度 ${sentimentScore}/100 与拥挤度；目标仓位 ${Math.round(weight*100)}%`,macro:`宏观风险状态与波动约束；目标仓位 ${Math.round(weight*100)}%`};
+   logs.push({day,agentId:p.id,agent:p.name,action,price,fillPrice,quantity,weight,notional,commission,slippageCost,fee:commission+slippageCost,cashBalance:p.cash,sharesHeld:p.shares,reason:reasons[p.id],event:event?.title||'常规市场波动',equity:p.equity,sentiment:sentimentScore});
+  }
+  benchmarkPath.push(benchmarkShares*price);
+  previousSentiment=sentiment;
+ }
+ const results=portfolios.map(p=>{
+  const totalReturn=(p.equity/capital-1)*100,volDaily=Math.sqrt(p.returns.reduce((s,x)=>s+x*x,0)/Math.max(1,p.returns.length))*100;
+  const score=totalReturn-.48*p.maxDD-.20*volDaily;
+  return {...p,totalReturn,volDaily,score,finalWeight:p.shares*price/p.equity,winDays:p.returns.filter(x=>x>0).length};
+ }).sort((a,b)=>b.score-a.score);
+ const benchmarkReturn=(benchmarkPath.at(-1)/capital-1)*100;
+ state.simulation={subject,days,capital,risk,capWeight,seed,market,portfolios,results,benchmarkPath,benchmarkReturn,events,logs,feeRate,slippage};
+ state.day=0;state.logs=logs;state.events=events;
+ $('simulation').classList.remove('hidden');$('ledger').classList.remove('hidden');$('runSubject').textContent=subject;
+ $('scrub').max=days;$('scrub').value=0;$('scrubLabel').textContent=`0 / ${days}`;$('runState').textContent='READY';$('eventTotal').textContent=events.length+' EVENTS';
+ $('agentFilter').innerHTML='<option value="all">全部派系</option>'+factionDefs.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
+ renderDay(0);renderChart();renderEvents();renderStandings();renderLedger();
+ $('simulation').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function stopPlayback(){if(state.timer){clearInterval(state.timer);state.timer=null;}state.running=false;if($('pauseBtn'))$('pauseBtn').disabled=true;}
+function renderDay(day){
+ if(!state.simulation)return;const s=state.simulation;state.day=clamp(day,0,s.days);
+ const snap=s.market[state.day],total=s.results.reduce((sum,p)=>sum+(p.equityPath[state.day]||s.capital),0)-s.capital*6;
+ $('runDay').textContent=`DAY ${String(state.day).padStart(3,'0')} / ${String(s.days).padStart(3,'0')}`;
+ $('scrub').value=state.day;$('scrubLabel').textContent=`${state.day} / ${s.days}`;
+ $('priceNow').textContent='$'+snap.price.toFixed(2);$('sentimentNow').textContent=Math.round(50+snap.sentiment*44)+' / 100';$('activeEvent').textContent=snap.event?.title||'常规交易日';
+ $('decisionCount').textContent=String(s.logs.filter(x=>x.day<=state.day).length);
+ $('totalPnl').textContent=(total>=0?'+':'−')+'$'+fmt(Math.abs(total));
+ $('totalReturn').textContent=signedPct(total/(s.capital*6)*100)+' / 6 portfolios';
+ const currentRanks=[...s.portfolios].map(p=>({id:p.id,score:(p.equityPath[state.day]/s.capital-1)*100-.48*(p.maxDDPath[state.day]||0)})).sort((a,b)=>b.score-a.score);
+ $('arenaGrid').querySelectorAll('.pod').forEach(node=>{
+  const p=s.portfolios.find(x=>x.id===node.dataset.id),equity=p.equityPath[state.day]||s.capital,ret=(equity/s.capital-1)*100,rank=currentRanks.findIndex(x=>x.id===p.id)+1;
+  const log=[...s.logs].reverse().find(x=>x.agentId===p.id&&x.day<=state.day),tradeCount=s.logs.filter(x=>x.agentId===p.id&&x.day<=state.day&&x.action!=='HOLD').length,currentDD=p.maxDDPath[state.day]||0;
+  node.innerHTML=`<div class="pod-head"><b>${p.name}</b><small>#${String(rank).padStart(2,'0')}</small></div><div class="pod-equity">${money(equity)}</div><div class="pod-change" style="color:${ret>=0?'var(--green)':'var(--red)'}">${signedPct(ret)} · ${money(equity-s.capital)}</div><div class="pod-meta">仓位 ${Math.round((log?.weight||0)*100)}% · ${tradeCount} 笔成交 · 回撤 ${currentDD.toFixed(1)}%</div>`;
+ });
+ $('arenaGrid').querySelector('.vault').style.borderColor=total>=0?'#7b986e':'#9a6860';
+ const f=[['宏观流动性',snap.macro,'#7dd6df','利率与风险偏好'],['市场情绪',snap.sentiment,'#f1a66e','情绪温度 / 恐惧贪婪'],['行业动量',snap.sector,'#65d8a5','行业景气情景'],['波动水平',(snap.vol-1)/1.2,'#c6a1f2','波动率状态']];
+ $('factorGrid').innerHTML=f.map(([name,v,color,note])=>{const score=Math.round(50+v*45),width=clamp(50+v*45,4,96);return `<div class="factor" style="--factor-color:${color}"><div class="factor-top"><span>${name}</span><span>${score}/100</span></div><strong style="color:${color}">${v>=0?'+':''}${v.toFixed(2)}</strong><div class="meter"><span style="width:${width}%"></span></div><div class="factor-note">${note}</div></div>`;}).join('');
+ renderChart();renderEvents();renderStandings();renderLedger();
+}
+function renderChart(){
+ const s=state.simulation;if(!s)return;const colors=factionDefs.map(a=>a.color),W=760,H=270,L=48,R=14,T=15,B=30;
+ const values=s.portfolios.flatMap(p=>p.equityPath.map(v=>v/s.capital*100)).concat(s.benchmarkPath.map(v=>v/s.capital*100));
+ let lo=Math.min(90,...values)-2,hi=Math.max(110,...values)+2;if(hi-lo<12){lo-=4;hi+=4;}
+ const x=i=>L+i/s.days*(W-L-R),y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+ let out='';for(let i=0;i<5;i++){const v=lo+(hi-lo)*i/4;out+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#2b3b47" stroke-dasharray="3 6"/><text x="2" y="${y(v)+4}" fill="#7e8e98" font-size="10">${v.toFixed(0)}</text>`;}
+ for(let i=0;i<=s.days;i+=Math.max(1,Math.round(s.days/4)))out+=`<text x="${x(i)-12}" y="${H-6}" fill="#7e8e98" font-size="10">D${String(i).padStart(3,'0')}</text>`;
+ const visibleThrough=state.day===s.days?s.days:state.day;
+ for(let i=0;i<s.portfolios.length;i++){const p=s.portfolios[i],path=p.equityPath.slice(0,visibleThrough+1).map((v,j)=>`${j?'L':'M'}${x(j).toFixed(1)},${y(v/s.capital*100).toFixed(1)}`).join(' ');out+=`<path d="${path}" fill="none" stroke="${colors[i]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>`;}
+ const bp=s.benchmarkPath.slice(0,visibleThrough+1).map((v,j)=>`${j?'L':'M'}${x(j).toFixed(1)},${y(v/s.capital*100).toFixed(1)}`).join(' ');out+=`<path d="${bp}" fill="none" stroke="#f2f0e8" stroke-width="1.5" stroke-dasharray="5 5" opacity=".75"/>`;
+ const sx=x(state.day),sy=y(s.portfolios[0].equityPath[state.day]/s.capital*100);out+=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" stroke="#e9c78d" stroke-dasharray="3 4" opacity=".7"/><circle cx="${sx}" cy="${sy}" r="4" fill="#e9c78d" stroke="#111a23" stroke-width="2"/>`;
+ $('equityChart').innerHTML=out;$('chartLegend').innerHTML=factionDefs.map(a=>`<span><i style="background:${a.color}"></i>${a.name}</span>`).join('')+'<span><i style="background:#f2f0e8"></i>基准买入持有</span>';
+}
+function renderEvents(){
+ const s=state.simulation;if(!s)return;
+ const visible=s.events.filter(e=>e.day<=state.day).slice(-8).reverse();
+ $('eventsList').innerHTML=visible.length?visible.map(e=>`<div class="event"><div class="event-day">DAY ${String(e.day).padStart(3,'0')}</div><div><b>${e.title}</b><p>${e.desc}</p></div></div>`).join(''):'<div class="empty">当前时间点尚未触发情景事件。继续推进模拟周期。</div>';
+}
+function renderStandings(){
+ const s=state.simulation;if(!s)return;
+ const current=[...s.portfolios].map(p=>{const equity=p.equityPath[state.day]||s.capital,ret=(equity/s.capital-1)*100,dd=p.maxDDPath[state.day]||0;return {...p,equity,ret,dd,currentScore:ret-.48*dd};}).sort((a,b)=>b.currentScore-a.currentScore);
+ const rows=current.map((p,i)=>`<div style="display:grid;grid-template-columns:24px 1fr auto;gap:9px;align-items:center;padding:11px 2px;border-bottom:1px solid #283742"><span style="color:var(--gold);font:10px var(--mono)">${String(i+1).padStart(2,'0')}</span><div><b style="font-size:11px">${p.name}</b><div style="color:#7e8e98;font-size:9px;margin-top:4px">累计 ${signedPct(p.ret)} · 最大回撤 ${p.dd.toFixed(1)}%</div></div><strong style="font:700 12px var(--mono);color:${p.ret>=0?'var(--green)':'var(--red)'}">${money(p.equity)}</strong></div>`).join('');
+ const b=s.benchmarkPath[state.day]||s.capital;
+ $('standings').innerHTML=rows+`<div style="padding:11px 2px;color:#9ba8af;font-size:10px">基准买入持有：<b style="color:#f2f0e8">${money(b)}</b> · ${signedPct((b/s.capital-1)*100)}</div><div class="hint">最终排名采用风险调整分数；当前显示值按回放日净值计算。</div>`;
+}
+function renderLedger(){
+ const s=state.simulation;if(!s)return;
+ const agent=$('agentFilter').value,action=$('actionFilter').value,period=$('dayFilter').value;
+ let list=s.logs.filter(x=>x.day<=state.day);
+ if(agent!=='all')list=list.filter(x=>x.agentId===agent);if(action!=='all')list=list.filter(x=>x.action===action);
+ if(period!=='all'){const a=Math.ceil(s.days/3);list=list.filter(x=>period==='early'?x.day<=a:period==='middle'?x.day>a&&x.day<=a*2:x.day>a*2);}
+ $('ledgerSummary').textContent=`已记录 ${list.length.toLocaleString()} 条可见决策 / 当前 DAY ${state.day} · 共 ${s.logs.length.toLocaleString()} 条`;
+ const show=list.slice(-80).reverse();
+ $('ledgerBody').innerHTML=show.length?show.map(x=>`<tr><td>D${String(x.day).padStart(3,'0')}</td><td><b>${x.agent}</b><div style="color:#72828c;font-size:9px">${x.agentId.toUpperCase()} AGENT</div></td><td><span class="badge ${x.action.toLowerCase()}">${x.action==='BUY'?'买入':x.action==='SELL'?'卖出':'观望'}</span></td><td>$${x.price.toFixed(2)} / ${x.action==='HOLD'?'—':'$'+x.fillPrice.toFixed(2)}</td><td>${Math.round(x.weight*100)}%</td><td>${x.quantity?fmt(x.quantity,4):'—'}</td><td>${x.notional?money(x.notional):'—'}</td><td>${fmt(x.sharesHeld,4)} 股 / ${money(x.cashBalance)}</td><td>${x.fee?money(x.fee):'—'}</td><td title="${x.reason}">${x.reason} · ${x.event}</td></tr>`).join(''):'<tr><td colspan="10" class="empty">当前筛选下没有记录。</td></tr>';
+}
+function step(n=1){if(!state.simulation)return;state.day=clamp(state.day+n,0,state.simulation.days);renderDay(state.day);if(state.day>=state.simulation.days){stopPlayback();$('runState').textContent='SETTLED';}else if(state.running)$('runState').textContent='LIVE';}
+function play(){if(!state.simulation||state.day>=state.simulation.days)return;stopPlayback();state.running=true;$('runState').textContent='LIVE';$('pauseBtn').disabled=false;state.timer=setInterval(()=>step(1),420);}
+function pause(){stopPlayback();if(state.simulation)$('runState').textContent='PAUSED';}
+function reset(){pause();state.day=0;$('runState').textContent='READY';renderDay(0);}
+function exportRun(){
+ if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.3',generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath})),operations:s.logs};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ai-arena-${hash(s.subject).toString(16)}-${s.days}d-demo.json`;a.click();URL.revokeObjectURL(url);toast('完整实验 JSON 已生成（合成演示数据）');
+}
+let toastTimer=null;function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2200);}
+$('days').addEventListener('input',()=>{$('daysOut').textContent=$('days').value+' 天';$('configDays').textContent=$('days').value+' DAYS';});
+$('researchBtn').addEventListener('click',()=>{const name=$('company').value.trim();if(!name){toast('请先输入公司名称或代码');$('company').focus();return;}pause();state.research=researchCompany(name);renderResearch();$('research').scrollIntoView({behavior:'smooth',block:'start'});});
+$('company').addEventListener('keydown',e=>{if(e.key==='Enter')$('researchBtn').click();});
+$('runBtn').addEventListener('click',runSimulation);
+$('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',pause);$('nextBtn').addEventListener('click',()=>step(1));$('next5Btn').addEventListener('click',()=>step(5));$('finishBtn').addEventListener('click',()=>{pause();step(state.simulation.days-state.day);});
+$('resetBtn').addEventListener('click',reset);$('scrub').addEventListener('input',e=>{pause();step(+e.target.value-state.day);$('runState').textContent=state.day===state.simulation.days?'SETTLED':'REPLAY';});
+$('agentFilter').addEventListener('change',renderLedger);$('actionFilter').addEventListener('change',renderLedger);$('dayFilter').addEventListener('change',renderLedger);$('exportBtn').addEventListener('click',exportRun);
+$('closeRules').addEventListener('click',()=>$('rulesModal').classList.add('hidden'));$('rulesOpen').addEventListener('click',()=>$('rulesModal').classList.remove('hidden'));
+$('rulesModal').addEventListener('click',e=>{if(e.target===$('rulesModal'))$('rulesModal').classList.add('hidden');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesModal').classList.add('hidden');});
+$('researchBtn').addEventListener('contextmenu',e=>{e.preventDefault();$('rulesModal').classList.remove('hidden');});
+})();
+</script>
+</body>
+</html>
