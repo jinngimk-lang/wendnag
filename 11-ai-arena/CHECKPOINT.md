@@ -65,3 +65,13 @@ Implement Finance Arena's deterministic historical/paper-trading backend slice a
 The new `experience-v2/` is the **Capital Theater** alternative to the earlier broadcast dashboard. The primary action is now watching physical money flows anchored to explicit per-round P&L rather than reading tables first. Four fixed-demo Agents share $100k simulated capital; all six rounds can be replayed deterministically. The simulator and live Agent integrations are still absent. Read `experience-v2/CHECKPOINT.md`, `README.md`, `VISUAL_RESEARCH.md`, `TEST_REPORT.md`, and `index.html` when working on the next visual iteration.
 
 Do **not** assume V0.2 has won over V0.1 without observed user testing. Judge whether money-flow visuals increase correct comprehension of profit, loss, drawdown, and the simulated nature of outcomes. Figma connected account currently lacks a Design seat, so the HTML source is the actual editable master.
+
+## 2026-11-03 V0.3 Finance Research Lab checkpoint
+
+The user's clarification supersedes the narrower V0.2 demo flow: input a company, let independent factions research it, choose the simulation length, then observe evolving market events/sentiment and inspect every operation. V0.3 is implemented at `experience-v3/index.html`.
+
+Six factions (value, growth, trend, quant, sentiment, macro) each show lead/challenger/risk role templates, independent stance/thesis/confidence/risks and cross-examination. User selects 20–252 trading days, equal starting capital and shared risk cap. Six separate rule-based portfolios share one deterministic synthetic market path; macro, sentiment, sector and volatility change daily and influence strategy weights. Every faction emits one BUY/SELL/HOLD decision per day with execution price, quantity, target weight, notional, cash/shares, fees/slippage, reason and event. Replay, filters and JSON export are implemented.
+
+**Not real research yet:** no company filings, live prices/news, external LLM workers or broker. All V0.3 numbers are synthetic and company text only seeds the demo. Read `experience-v3/README.md`, `ARCHITECTURE.md`, `TEST_REPORT.md` and `CHECKPOINT.md`. QA: isolated venv + Playwright passes; 252-day run creates 1,512 decisions; responsive 1440/1024/768/390/320; no console errors.
+
+Next: licensed point-in-time research/data provider → common immutable evidence pack → isolated LLM role workers → deterministic paper simulator and append-only ledger → held-out baseline/leakage tests. Keep V0.1/V0.2 intact for comparison.
