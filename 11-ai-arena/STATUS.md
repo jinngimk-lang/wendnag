@@ -1,8 +1,8 @@
-# STATUS — 2026-10-30
+# STATUS — 2026-11-03
 
 ## Current phase
 
-**Phase 1 — clickable prototype completed.** The three-arena HTML experience is implemented and browser-smoke-tested. This is a front-end demonstration, not a production multi-agent simulator.
+**Phase 2 — two competing UI directions tested.** V0.1 three-arena control-room prototype remains available; new V0.2 `experience-v2/index.html` is an independent, finance-first Capital Theater with data-tied physical money flow. Both are front-end demonstrations, not production multi-agent simulators.
 
 ## Repository state
 
@@ -11,6 +11,18 @@
 - Existing draft PR: [#26](https://github.com/jinngimk-lang/wendnag/pull/26)
 - Dedicated folder: `11-ai-arena/`
 - BP source and investor-deck workstreams remain untouched.
+
+## New delivery — Capital Theater V0.2 (2026-11-03)
+
+- `experience-v2/index.html` is a standalone, fully editable HTML/CSS/JS experience, not a compressed source package.
+- Four agents, common $100k simulated capital, six deterministic rounds; paper-bill gain/loss animation is linked to signed P&L deltas.
+- Central aggregate P&L vault, four agent pods, risk-adjusted scoreboard, relative-value chart, six-round replay, event ledger and rule disclosure.
+- Start / pause / resume / advance / settle / reset / scrub controls; optional sound off by default; reduced-motion support.
+- Browser smoke QA passed for desktop and 1024/768/390/320px viewports, including a caught-and-fixed percentage-formatting error.
+- `experience-v2/README.md`, `VISUAL_RESEARCH.md`, `TEST_REPORT.md`, `CHECKPOINT.md` record the visual pivot, open-source research, boundaries and context recovery.
+- Figma remains View-seat-only; no editable native Figma design or paid image generation claimed.
+- No unvalidated market data, live trading or actual agent service. Entered company name only changes the demonstration label.
+- V0.1 is retained to enable usability A/B tests; it is not overwritten.
 
 ## Delivered
 
