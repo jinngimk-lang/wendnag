@@ -65,8 +65,9 @@
 - Deterministic point-in-time evidence-pack freezing; excludes evidence not available at `as_of`, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting IDs.
 - Typed faction research contract validates all evidence references against the same frozen snapshot and enforces the target-weight cap.
 - Append-only in-memory ledger uses payload hashes and previous-event hashes; corruption and time reversal are detected.
+- Added a no-network SEC EDGAR submissions/companyfacts parser. It anchors facts to accession `acceptanceDateTime`, rejects unmatched accessions/form mismatches and defaults license status to `review_required`.
 - Added GitHub Actions validation for backend contracts and browser regression.
-- No real provider adapter, API credential, external LLM, database persistence or broker integration has been added.
+- Nineteen standard-library backend tests pass. No SEC fetcher, API credential, external LLM, database persistence or broker integration has been added.
 
 ## Delivered
 
@@ -114,7 +115,7 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 
 ## Next actions
 
-1. Implement the first reviewed provider adapters: SEC issuer/ticker mapping and filing/facts ingestion with accession and accepted-time provenance.
+1. Build a compliant SEC fetcher around the parser: mandatory User-Agent, conservative request pacing, retry/backoff, caching and accession lineage; keep license status blocked until terms review.
 2. Add a licensed market-data adapter with explicit feed, bar availability time, stale/outlier and spread-quality checks.
 3. Persist frozen evidence snapshots and the append-only ledger; add replay-by-event-sequence and state hashes.
 4. Connect structured faction workers to the shared evidence pack, with evidence/counter-evidence references and event-triggered refreshes.
