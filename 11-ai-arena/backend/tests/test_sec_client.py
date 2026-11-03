@@ -51,6 +51,8 @@ class SECClientTests(unittest.TestCase):
         with self.assertRaises(SECFetchError):
             SECClient("AI Arena research bot")
         with self.assertRaises(SECFetchError):
+            SECClient("AI Arena research contact research@example.com\\nInjected: header")
+        with self.assertRaises(SECFetchError):
             SECClient.from_env()
 
     def test_only_https_sec_hosts_are_allowed(self):
@@ -125,8 +127,9 @@ class SECClientTests(unittest.TestCase):
 
     def test_cik_normalization_rejects_empty_input(self):
         self.assertEqual(SECClient.normalize_cik("123"), "0000000123")
-        with self.assertRaises(SECFetchError):
-            SECClient.normalize_cik("ABC")
+        for invalid in ("ABC", "ABC123", "12345678901", 0, True, 1.5):
+            with self.subTest(invalid=invalid), self.assertRaises(SECFetchError):
+                SECClient.normalize_cik(invalid)
 
 
 if __name__ == "__main__":
