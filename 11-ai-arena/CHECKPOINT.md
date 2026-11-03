@@ -59,3 +59,9 @@ Implement Finance Arena's deterministic historical/paper-trading backend slice a
 4. `11-ai-arena/IMPLEMENTATION.md`.
 5. `11-ai-arena/ARCHITECTURE.md`, `DESIGN.md`, `RESEARCH.md`.
 6. `11-ai-arena/prototype/README.md` and `prototype/TEST_REPORT.md`.
+
+## 2026-11-03 V0.2 visual branch checkpoint
+
+The new `experience-v2/` is the **Capital Theater** alternative to the earlier broadcast dashboard. The primary action is now watching physical money flows anchored to explicit per-round P&L rather than reading tables first. Four fixed-demo Agents share $100k simulated capital; all six rounds can be replayed deterministically. The simulator and live Agent integrations are still absent. Read `experience-v2/CHECKPOINT.md`, `README.md`, `VISUAL_RESEARCH.md`, `TEST_REPORT.md`, and `index.html` when working on the next visual iteration.
+
+Do **not** assume V0.2 has won over V0.1 without observed user testing. Judge whether money-flow visuals increase correct comprehension of profit, loss, drawdown, and the simulated nature of outcomes. Figma connected account currently lacks a Design seat, so the HTML source is the actual editable master.
