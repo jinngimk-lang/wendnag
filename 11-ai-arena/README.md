@@ -31,9 +31,9 @@ One shared Arena Engine; three domain-specific worlds. Every match has:
 
 ## Current phase
 
-Phase 1 clickable prototype is implemented in `prototype/`. It demonstrates all three arenas with seeded, clearly labelled demo events and metrics. It is not a production system: no real trading, ad buying, auto-publishing, personal data collection or life-outcome prediction is performed.
+V0.1 `prototype/` demonstrates all three arenas; V0.2 `experience-v2/` tests the Capital Theater visual direction; V0.3 `experience-v3/` adds the Finance Research Lab flow: six faction research views, configurable simulation days, synthetic market/sentiment changes, independent paper portfolios, daily operation logs and replay. All remain local demonstrations: no real company data, live LLM workers, broker execution, ad buying, auto-publishing, personal data collection or life-outcome prediction is performed.
 
-See `IMPLEMENTATION.md` for the front-end architecture and `prototype/TEST_REPORT.md` for browser verification.
+See `IMPLEMENTATION.md` for the original front-end architecture, `experience-v3/ARCHITECTURE.md` for the Finance research-to-simulation contract, and `experience-v3/TEST_REPORT.md` for current browser verification.
 
 ## Context recovery
 
