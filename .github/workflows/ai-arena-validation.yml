@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - "feat/ai-arena-concept-research"
+      - "feat/ai-arena-independent-agent-workspace-v04"
     paths:
       - "11-ai-arena/**"
       - ".github/workflows/ai-arena-validation.yml"
