@@ -93,3 +93,9 @@ One-day playback now animates original bill-note elements from the central perfo
 Added `backend/research_gateway.py` as a standard-library-only foundation for the real-data architecture. The module defines exact issuer-resolution outcomes, immutable evidence records with UTC publication/availability/retrieval timestamps and provider/license metadata, deterministic point-in-time snapshot freezing, typed faction research with snapshot-bound evidence references and weight caps, and an append-only in-memory SHA-256 hash chain. Twelve unit tests cover ambiguity, look-ahead exclusion, provenance/license gates, immutability, evidence-reference validation and tamper detection.
 
 This is a contract layer, not a provider integration or production API. No network fetch, credentials, LLM runtime, database persistence or broker capability is present. GitHub Actions now runs these backend tests and the existing Playwright browser suite for AI Arena changes.
+
+## 14. SEC EDGAR submissions/companyfacts parser V0.1
+
+Added `backend/adapters/sec_edgar.py` as a no-network normalization adapter. It joins companyfacts observations to submissions by accession number and uses the exact filing `acceptanceDateTime` as both publication and availability time. It never substitutes period end or date-only `filingDate` for the information-availability gate. Missing acceptance times, unmatched accessions and form mismatches are excluded; issuer candidates preserve ticker/exchange ambiguity. License status defaults to `review_required`, so the common evidence snapshot fails closed until terms review is explicitly completed. The adapter has six focused tests in addition to the 12 evidence-contract tests.
+
+The adapter consumes already-fetched JSON only. A compliant SEC HTTP fetcher, network access, persistence, live LLM workers and broker actions remain unimplemented.
