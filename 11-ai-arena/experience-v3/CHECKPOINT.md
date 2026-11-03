@@ -94,3 +94,16 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Visual report JSON: 1440 / 1024 / 768 / 390 / 320px; all horizontalOverflow=false, factions=6, roleTemplates=18, pageErrors=[]; result=PASS.
 
 - The local README now documents the portable clean-venv install/test commands; it no longer exposes this runtime's preinstalled package path.
+
+
+## 2026-11-03 — V0.4.0 independent-Agent workstation redesign
+
+- User clarified the core accounting and product model: one Agent = one independent capital pool / paper portfolio. A central shared vault or inter-Agent money-flow visualization is conceptually wrong and has been removed.
+- Rebuilt the main page as one integrated workstation: shared market environment, six independent Agent account cards, selected-Agent research/account workspace, six-account equity comparison, shared factor/event panels, ranking and per-Agent audit ledger.
+- Moved company label, duration, per-Agent starting capital and common risk-cap configuration into a dedicated new-experiment modal.
+- The simulator now records per-Agent cashPath, sharesPath and weightPath alongside equityPath. These are replay-safe day-indexed account states; the common market remains shared and strategy functions still do not write authoritative accounting values.
+- Added keyboard-accessible Agent card selection and a selected-Agent detail workspace with thesis, signals, risks, triggers, invalidation, cash, shares, weight, trade count and drawdown.
+- Updated README and architecture contract; added AGENT_VISUAL_SYSTEM.md with six distinct personas, a shared 4:5 cinematic portrait art direction, prompt briefs and stable asset paths.
+- Browser regression and visual QA scripts were rewritten for the new layout. GitHub Actions now includes this work branch in its push validation trigger and runs the suite in an isolated Python virtual environment.
+- Portrait image slots are wired by stable Agent IDs, but the six generated image files are not yet present. Higgsfield GPT Image 2.5 preflight estimated 3 credits for six 1K portraits and reported no free generation allowance. Do not spend credits until the user explicitly approves.
+- No live company research, real market data, LLM workers, broker or real trades have been connected. V0.4.0 remains a synthetic local prototype.
