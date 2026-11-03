@@ -99,6 +99,42 @@ Required checks:
 - Keep PR #27 Draft and do not merge or deploy to the production AegistonTeam website.
 - Do not mix the separate LegalLens video task or the unrelated BP project into this landing-page work.
 
-## 8. Next concrete action
+## 8. V5 implementation result (2026-11-03)
 
-Create the V5 offline HTML candidate in the virtual-environment workspace using V4's interaction model and source assets; make the image references self-contained, improve section rhythm, run the listed QA, then write actual outputs and test evidence back into this checkpoint and PR #27.
+The first V5 review candidate has been built from the local V4 source and assets.
+
+### Output artifacts
+
+- Single-file offline HTML: `AegistonTeam_V5_离线预览.html`
+- SHA-256: `3109c52a5af44478d60bad451261269dbf5a6546516947db6ab93f40535e761f`
+- Size: 1,371,124 bytes
+- Source + QA package: `AegistonTeam_V5_源码与验收包.zip`
+- ZIP SHA-256: `345f62851f1c3f7441c92b5f90e6559186347f61f5b22c87d8ea0964bf5dd970`
+- Desktop full-page capture SHA-256: `78f20ab55a787f48db0c128f9081a242289050efffa901f3a807e395ea6bce2e`
+- Mobile full-page capture SHA-256: `992290aedccc8489fae38d8913945bfdbfc010cf3e78a3d7bd66fae19bcbe180`
+
+These are downloadable ChatGPT-session artifacts. The HTML and ZIP binaries are not yet committed to GitHub; do not claim that they are present in the repository.
+
+### Implemented
+
+- All eight visible content-image placements are embedded as PNG/WebP data URIs in the single HTML; no separate asset host or relative image path is needed.
+- Warm-white comic visual anchor and original mascot identity retained.
+- Real workspace and team-structure screenshots retained without redrawing internal UI.
+- Equal-weight three-card grid replaced by a more varied illustration-led three-moment composition.
+- Screenshot tabs, accessible lightbox with Escape close/focus restoration, accordion, mobile navigation, hero parallax, scroll reveals, footer runner/replay, and reduced-motion fallback retained or improved.
+
+### QA outcome
+
+See [V5-QA-2026-11-03.md](./V5-QA-2026-11-03.md) for the full evidence.
+
+- HTML parsing and no-remote-asset checks passed.
+- Inline JS `node --check` passed.
+- Chromium 144 / Playwright: zero page errors; all eight content images loaded.
+- Desktop 1440px: no horizontal overflow.
+- Mobile 390px: no horizontal overflow.
+- Tab switch, lightbox open/close and image load, story screenshot lightbox, accordion, mobile nav, replay, reduced-motion, and internal anchor checks passed.
+- Direct `file://` navigation is blocked by sandbox administrator policy; exact HTML bytes were tested via Playwright `page.set_content`. This is recorded as a test limitation, not hidden.
+
+## 9. Current status and next action
+
+V5 is a technically validated **review candidate**, not yet approved by the user. Keep PR #27 Draft. Do not merge, publish, or deploy to the production AegistonTeam site. The next step is user visual review; after feedback, make only the necessary corrections and update this checkpoint and QA evidence.
