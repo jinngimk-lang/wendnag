@@ -78,3 +78,19 @@ This coefficient set is only a prototype fixture, not a validated investment obj
 ## Backend evidence gateway core V0.1
 
 The first executable backend contract lives in `../backend/research_gateway.py` and intentionally uses the Python standard library. It provides exact issuer resolution, deeply immutable evidence records with publication/availability/retrieval timestamps and source/license provenance, point-in-time snapshot freezing, evidence-linked typed faction outputs, and an append-only in-memory hash chain. It fails closed on ambiguous issuer identity, future evidence, foreign issuers, unapproved licenses, conflicting IDs, invalid evidence references and portfolio weights above the risk cap. It does not fetch provider data or persist events yet; those are the next integration layers.
+
+
+## V0.4.0 UX and account-isolation clarification
+
+The V0.3.x arena visualization implied that six factions were positioned around a shared central vault. That metaphor is retired. It is not an acceptable representation of the accounting model.
+
+- One faction/Agent maps to exactly one paper portfolio.
+- Each portfolio owns its own cash balance, share balance, equity path, cash path, share path, target-weight path, drawdown path and operation rows.
+- The shared market is an external common input only: price path, macro, sentiment, sector momentum, volatility and event sequence are identical across all six Agents.
+- Starting capital, commission, slippage, risk cap, simulation clock and settlement rules remain equal across portfolios.
+- The simulator remains the only authority that changes cash, shares, fills, fees and equity. Strategy functions return a target weight; they never write portfolio accounting state.
+- The combined P&L is an explicitly labelled sum of six independent account P&Ls. It is not a wallet, reserve, clearing account or source of transfers.
+- The main workstation places market state, all six portfolio cards, selected-Agent research/account detail, comparative curves, event feed, ranking and audit ledger in one dashboard. Experiment configuration lives in a separate entry modal.
+- Portrait asset slots are keyed by stable Agent IDs and use a shared crop ratio / image style contract. See AGENT_VISUAL_SYSTEM.md.
+
+The UI must not render a central vault, money-flow animation, or copy suggesting that capital moves between Agents. Any aggregate view must preserve the independent-account label.
