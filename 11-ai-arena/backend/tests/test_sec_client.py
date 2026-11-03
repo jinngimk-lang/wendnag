@@ -51,7 +51,7 @@ class SECClientTests(unittest.TestCase):
         with self.assertRaises(SECFetchError):
             SECClient("AI Arena research bot")
         with self.assertRaises(SECFetchError):
-            SECClient("AI Arena research contact research@example.com\\nInjected: header")
+            SECClient("AI Arena research contact research@example.com\nInjected: header")
         with self.assertRaises(SECFetchError):
             SECClient.from_env()
 
