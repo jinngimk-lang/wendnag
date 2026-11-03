@@ -1,8 +1,12 @@
-# AI Arena — Finance Research Lab V0.3.2
+# AI Arena — Finance Research Lab V0.3.3
 
 Finance Arena 的 research-to-paper-simulation 原型。它不再只是“输入公司名后看四个固定收益席位”，而是把完整比赛过程拆成：
 
 **公司/代码输入 → 六派系独立投研 → 反方交叉质询 → 用户设置交易周期 → 共同市场环境 → 独立模拟组合 → 每日操作账本 → 回放与复盘。**
+
+## V0.3.3 视觉重设计
+
+Finance Research Lab 已围绕高级金融研究控制台重新组织：研究主标题与参数面板、六派系投研卡片、结构化交叉质询、中央盈亏金库、市场因子分析和可审计账本。原有确定性模拟器、DOM ID、事件处理与会计逻辑保持不变。设计规范见 MOTIONSITES_REDESIGN_SPEC.md；正式 HTML 内嵌 CSS/JS，仍可离线单文件运行。
 
 ## 当前交互能力
 
@@ -41,6 +45,10 @@ python -m venv .venv
 PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py
 ```
 
+## Visual QA report
+
+Final screenshot review, viewport matrix, MotionSites rubric scores and regression evidence: VISUAL_QA_REPORT.md.
+
 ## Backend evidence gateway core (V0.1)
 
 The provider-agnostic standard-library contract lives in `../backend/research_gateway.py`: exact issuer resolution, immutable source-attributed evidence, point-in-time snapshot freezing, evidence-linked typed faction output and a hash-chained in-memory event ledger. The no-network SEC EDGAR submissions/companyfacts parser also maps filing accessions to exact `acceptanceDateTime` availability; license status defaults to `review_required`. A separate opt-in SEC JSON client requires `SEC_USER_AGENT`, limits requests to HTTPS SEC hosts, paces requests, retries transient errors and bounds response sizes; it has only been tested with mocked transport, not a live SEC request. Durable persistence is still pending. Run its tests from `11-ai-arena/` with:
@@ -51,10 +59,10 @@ python -m unittest discover -s backend/tests -v
 
 ## Truth boundary — must remain visible
 
-**V0.3.2 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
+**V0.3.3 仍是本地合成演示，不是实际公司投研。** 当前没有从公司输入解析真实发行人，也没有读取真实财报、公告、行情、新闻或社交情绪；没有外部 LLM Agent、券商或真实成交。公司名称仅作为场景标签和确定性随机种子。六个派系由独立本地规则生成；18 个角色是工作流模板，不是 18 次真实模型调用。模拟收益不是历史回测、未来预测或投资建议。
 
 ## Real-data integration gate
 
 真正的公司投研必须先完成 `REAL_DATA_BLUEPRINT.md` 中的公司实体解析、许可数据接入、point-in-time 证据快照、独立 Agent worker、确定性模拟器和可审计事件账本。不能用公司名称 seed 出来的合成因子冒充真实公司研究，也不能把 ChatGPT 会话里的 MCP 数据访问误称为网页应用已经接通。
 
-V0.1 控制室和 V0.2 Capital Theater 保留作视觉对照；V0.3.2 是 Finance-first 交互验证版本。
+V0.1 控制室和 V0.2 Capital Theater 保留作视觉对照；V0.3.3 是 Finance-first 交互验证版本。

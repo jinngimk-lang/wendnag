@@ -1,0 +1,50 @@
+# Visual QA — Finance Research Lab V0.3.3
+
+**Review date:** 2026-11-03  
+**Target:** 11-ai-arena/experience-v3/index.html  
+**Design method:** MotionSites Web Builder — brief → examples → spec → implementation → screenshot review → fix loop.
+
+## Result
+
+**PASS** Local isolated .venv Playwright checks passed. The visual suite captured the first viewport at 1440, 1024, 768, 390 and 320px, then captured the research and live-arena states. No horizontal overflow or browser/page errors were reported.
+
+| Viewport | Width | Horizontal overflow | Visual check |
+|---|---:|---|---|
+| Desktop | 1440px | No | Pass |
+| Laptop | 1024px | No | Pass |
+| Tablet | 768px | No | Pass |
+| Mobile | 390px | No | Pass |
+| Compact mobile | 320px | No | Pass |
+
+## MotionSites review rubric
+
+| Dimension | Score / 10 | Evidence |
+|---|---:|---|
+| First glance | 9 | Research promise and primary action read immediately. |
+| Signature | 9 | Central P&L vault plus accounting-linked six-faction cash flow. |
+| Typography | 8 | Editorial Chinese headline, calm body copy, mono data labels. |
+| Composition and space | 8 | Clear setup → research → simulation → audit hierarchy. |
+| Colour and light | 9 | Graphite base, restrained gold CTA/vault, semantic P&L colours. |
+| Media integration | 8 | No decorative video; the portfolio chart and data-linked flow are the relevant visual media for this dense tool. |
+| Motion | 8 | Staggered blur-rise, subtle orbit, signed 1.15s money flow; reduced-motion branch. |
+| Mobile | 8 | 44px navigation/actions, single-column research, vault-first arena, contained ledger scroll. |
+| Copy | 8 | Specific research and synthetic-data disclosure; no unsupported real-data claims. |
+| Polish | 8 | Consistent surfaces/radii, focus states, favicon, no external font/CDN requests. |
+
+**Average: 8.3 / 10; no dimension below 7.** This clears the skill's review threshold.
+
+## Final fix loop
+
+1. **Typography / hierarchy:** increased the hero to clamp(34px,3.8vw,58px), tightened tracking to -0.045em, and separated mono metadata from readable body copy.
+2. **Composition:** widened the shell rail to 76px, limited the content to 1600px, added a gold hairline to the setup disclosure, and gave the arena a dedicated central vault stage.
+3. **Mobile:** reduced header chrome, retained 44px bottom-nav hit targets, moved the vault above two-column portfolio pods, collapsed setup/factors at 380px, and kept the ledger's horizontal overflow inside its own container.
+
+## Functional regression
+
+- tests/test_ui.py: **PASS** — six factions, 18 role templates, cross-examination, signed profit/loss flow, no zero-dollar labels, cleanup, six daily decisions, filters, replay, export, deterministic rerun, responsive checks and 252-day / 1,512-operation stress.
+- backend/tests: **30/30 PASS** — evidence snapshots, issuer ambiguity, typed research contracts, hash chain, SEC parsing and client safeguards.
+- tests/visual_qa.py: **PASS** — screenshots and shots/report.json generated locally; the GitHub Actions workflow uploads the same directory as finance-lab-visual-qa.
+
+## Boundaries
+
+The UI redesign does not make the prototype a live financial product. Company names remain labels/seeds; research, prices, sentiment, events, fills and returns remain synthetic. No live data, external LLM, broker or real order execution is connected.

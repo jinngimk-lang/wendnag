@@ -74,3 +74,13 @@ No live company research, licensed financial data, market news, LLM workers, bro
 ## Recovery
 
 Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `experience-v3/README.md`, `experience-v3/ARCHITECTURE.md` and `experience-v3/REAL_DATA_BLUEPRINT.md` before continuing. Keep V0.1 and V0.2 unchanged for comparison.
+
+## 2026-11-03 — V0.3.3 MotionSites UI/UX redesign
+
+- User requested a complete front-end UI/UX redesign using Motionsites-AI/claude-skill, with a deliverable HTML in this repository.
+- Target remains 11-ai-arena/experience-v3/index.html on feat/ai-arena-concept-research; Draft PR #26 remains open and unmerged.
+- Studied MotionSites halo-usd-landing, intelligence-layer and agent-wave, plus the spec, craft, surface, motion and review guidance. Chose a dense product dashboard direction rather than a marketing/video hero.
+- Added MOTIONSITES_REDESIGN_SPEC.md and embedded a standalone V0.3.3 design system into the HTML. No simulation JS or accounting rules were changed.
+- Local .venv Playwright regression passed after redesign; all six factions, 18 role templates, money-flow direction, ledger, replay, export, deterministic rerun and 252-day / 1,512-decision stress remain covered.
+- Desktop and mobile screenshots reviewed. A separate tests/visual_qa.py captures five responsive widths plus research and arena states and checks page/console errors and horizontal overflow. VISUAL_QA_REPORT.md records a 8.3/10 MotionSites review score (no category below 7).
+- Next: run GitHub Actions in its isolated Python venv; inspect uploaded screenshots; keep PR #26 Draft until final QA is green.

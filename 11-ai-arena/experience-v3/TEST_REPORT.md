@@ -62,3 +62,15 @@ This validates front-end interaction and deterministic local simulation only. It
 - SEC client: explicit User-Agent contact requirement, HTTPS SEC host allowlist, CIK normalization, Retry-After handling, 4/sec pacing, bounded 5xx retries, cache copy isolation, response-size cap and invalid-JSON/non-retryable status rejection. All HTTP tests use a fake transport; no live SEC request was made.
 
 The backend is a contract core plus a mocked/tested SEC transport/parser, not an active live-data service. No market-data/news/macro/sentiment adapter, persistence layer, external LLM call or broker action is implemented.
+
+
+## V0.3.3 MotionSites UI/UX redesign QA
+
+- Visual direction calibrated against MotionSites examples Halo / USD Halo, Intelligence Layer and Agent Wave; original Finance Lab composition and product logic retained.
+- New MOTIONSITES_REDESIGN_SPEC.md records tokens, component geometry, motion, breakpoints and product truth boundary.
+- Local isolated .venv browser regression: PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py — PASS.
+- Visual snapshot suite: PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/visual_qa.py; captures desktop, laptop, tablet, mobile, compact, research and arena states under shots/.
+- Screenshot review: desktop first viewport has clear headline → setup → six-faction hierarchy; mobile setup remains readable with 44px+ primary controls; central vault and six portfolio pods remain the visual signature.
+- Browser checks cover 1440 / 1024 / 768 / 390 / 320px; no page/console errors or horizontal overflow.
+- Existing 252-day stress, 1,512 daily decisions, bidirectional accounting-linked money flow, replay, filters, export and deterministic rerun remain covered by tests/test_ui.py.
+- No external fonts, CDN, npm dependencies or image assets introduced.

@@ -46,3 +46,12 @@ jobs:
           .venv/bin/python -m playwright install --with-deps chromium
       - name: Run browser regression suite
         run: .venv/bin/python 11-ai-arena/experience-v3/tests/test_ui.py
+      - name: Capture responsive visual QA
+        run: .venv/bin/python 11-ai-arena/experience-v3/tests/visual_qa.py
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finance-lab-visual-qa
+          path: 11-ai-arena/experience-v3/shots/
+          if-no-files-found: warn

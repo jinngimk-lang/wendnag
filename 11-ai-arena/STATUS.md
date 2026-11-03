@@ -125,3 +125,12 @@ The connected Figma account reports a View seat. No editable Figma file was crea
 ## Context recovery
 
 Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECKPOINT.md`, `IMPLEMENTATION.md`, `DESIGN.md`, `ARCHITECTURE.md`, `experience-v3/CHECKPOINT.md`, `experience-v3/REAL_DATA_BLUEPRINT.md` and `prototype/README.md`. Chat memory is not the source of truth.
+
+
+## New delivery — Finance Research Lab V0.3.3 visual redesign (2026-11-03)
+
+- Reworked the complete experience-v3 UI with a MotionSites-calibrated dark finance-console design system while preserving the existing simulator and accounting behavior.
+- Added a central P&L vault stage, six faction portfolio pods, more legible research cards, setup controls, market analytics and audit ledger styling.
+- Added MOTIONSITES_REDESIGN_SPEC.md and VISUAL_QA_REPORT.md; no remote fonts, CDN, npm dependency or decorative stock imagery.
+- Local isolated .venv Playwright regression and 30 backend unit tests passed. Visual snapshots cover 1440 / 1024 / 768 / 390 / 320px with no horizontal overflow or browser errors.
+- GitHub Actions now captures and uploads the responsive visual QA screenshot artifact. All financial values and research remain synthetic; no live data or broker integration is claimed.
