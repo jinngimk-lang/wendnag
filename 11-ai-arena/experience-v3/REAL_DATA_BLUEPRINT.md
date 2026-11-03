@@ -1,6 +1,6 @@
 # Finance Arena — Real Company Research Integration Blueprint
 
-**Status:** architecture proposal; not connected to the static HTML demo. Do not describe V0.3.1 as live company research.
+**Status:** production target; provider integrations are still not connected. A standard-library backend contract core now implements exact issuer resolution, immutable source-attributed evidence records, point-in-time snapshot freezing, typed faction outputs and an in-memory hash-chained ledger. This is not a live data provider or production persistence service. V0.3.2 remains a synthetic front-end demo.
 
 ## 1. Input resolution
 
