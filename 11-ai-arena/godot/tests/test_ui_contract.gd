@@ -1,28 +1,28 @@
 extends SceneTree
 
-const ArenaHUD = preload("res://scripts/arena_hud.gd")
+const MainScene = preload("res://scenes/main.tscn")
 
 func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	_check(ArenaHUD.layout_mode_for(1600) == "desktop", "wide screens use desktop layout")
-	_check(ArenaHUD.layout_mode_for(1024) == "tablet", "medium screens use tablet layout")
-	_check(ArenaHUD.layout_mode_for(768) == "tablet", "small tablets keep the compact layout")
-	_check(ArenaHUD.layout_mode_for(390) == "mobile", "phones use mobile layout")
-	_check(ArenaHUD.layout_mode_for(320) == "mobile", "minimum width remains supported")
-
-	var hud = ArenaHUD.new()
-	root.add_child(hud)
+	var app = MainScene.instantiate()
+	root.add_child(app)
 	await process_frame
-	_check(hud.get_node_or_null("HUDRoot/Header") != null, "HUD header must be built")
-	_check(hud.get_node_or_null("HUDRoot/BottomDock/ReplaySlider") != null, "replay slider must be interactive")
-	_check(hud.get_node_or_null("HUDRoot/AgentRail") != null, "Agent rail must be present")
-	_check(hud.apply_responsive_layout(390) == "mobile", "responsive layout must switch at phone width")
-	_check(hud.get_meta("layout_mode") == "mobile", "mobile mode must be recorded")
-	hud.apply_responsive_layout(1600)
-	_check(hud.get_meta("layout_mode") == "desktop", "desktop mode must be restored")
-
+	_check(app.apply_responsive_layout(1600.0) == "desktop", "wide desktop layout must be selected")
+	_check(app.apply_responsive_layout(1024.0) == "tablet", "tablet layout must be selected")
+	_check(app.apply_responsive_layout(768.0) == "tablet", "small tablet layout must be selected")
+	_check(app.apply_responsive_layout(390.0) == "mobile", "phone layout must be selected")
+	_check(app.apply_responsive_layout(320.0) == "mobile", "minimum-width layout must be selected")
+	_check(app.simulation.current_day == 0, "the UI must start on the opening market day")
+	app.advance_one_day()
+	_check(app.simulation.current_day == 1, "the Next Day action must advance the simulator once")
+	app.enter_research_room("quant")
+	_check(app.current_view == "room", "the Agent room action must change the visible workspace")
+	_check(app.selected_agent == "quant", "the Agent room must retain the selected faction")
+	app.return_to_arena()
+	_check(app.current_view == "arena", "the back action must restore the arena view")
+	app.queue_free()
 	print("AI ARENA UI CONTRACT: PASS")
 	quit(0)
 

@@ -68,6 +68,14 @@ jobs:
         working-directory: 11-ai-arena/godot
         run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_arena.gd
 
+      - name: Run 3D world contract
+        working-directory: 11-ai-arena/godot
+        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_world_contract.gd
+
+      - name: Run responsive UI contract
+        working-directory: 11-ai-arena/godot
+        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_ui_contract.gd
+
       - name: Run main scene smoke test
         working-directory: 11-ai-arena/godot
         run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --quit-after 4

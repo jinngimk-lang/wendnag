@@ -9,24 +9,20 @@ func _run() -> void:
 	var world = ArenaWorld.new()
 	root.add_child(world)
 	await process_frame
-
-	var positions: Dictionary = world.get_station_positions()
-	_check(positions.size() == 6, "arena must expose six station anchors")
-	for agent_id in ["value", "growth", "trend", "quant", "sentiment", "macro"]:
-		_check(positions.has(agent_id), "%s station anchor must exist" % agent_id)
-		_check(world.get_node_or_null("ArenaStage/Stations/" + agent_id) != null, "%s 3D station must exist" % agent_id)
-		_check(world.get_node_or_null("RoomViews/" + agent_id) != null, "%s research room must exist" % agent_id)
-
-	world.enter_room("quant")
-	_check(world.current_view == "room", "enter_room must switch to the room view")
-	_check(world.selected_agent == "quant", "room switch must preserve the selected Agent")
+	_check(world.agent_anchors.size() == 6, "the 3D arena must expose six Agent podium anchors")
+	_check(world.current_mode == "arena", "the initial 3D mode must be the arena")
+	_check(world.select_agent("growth"), "a faction podium must be selectable")
+	world.enter_room("growth")
+	await process_frame
+	_check(world.current_mode == "room", "entering a research room must change the 3D environment")
+	_check(world.current_agent == "growth", "the selected Agent must own the room")
 	world.return_to_arena()
-	_check(world.current_view == "arena", "return_to_arena must restore the arena view")
-
-	_check(world.animate_cashflow("value", 100.0) == "to_agent", "positive equity change must animate toward Agent")
-	_check(world.animate_cashflow("value", -100.0) == "to_vault", "negative equity change must animate toward vault")
-	_check(world.animate_cashflow("value", 0.0) == "none", "zero equity change must not spawn a note")
-
+	await process_frame
+	_check(world.current_mode == "arena", "return action must restore the shared arena")
+	_check(ArenaWorld.cashflow_direction_for(200.0) == "to_agent", "positive P&L must route notes toward the Agent")
+	_check(ArenaWorld.cashflow_direction_for(-200.0) == "to_vault", "negative P&L must route notes toward the vault")
+	_check(ArenaWorld.cashflow_direction_for(0.0) == "none", "zero P&L must not spawn cash notes")
+	world.queue_free()
 	print("AI ARENA WORLD CONTRACT: PASS")
 	quit(0)
 
