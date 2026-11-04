@@ -98,9 +98,9 @@ func apply_responsive_layout(width: float) -> String:
 			_detail_panel.offset_right = -12.0
 			_detail_panel.offset_top = -408.0
 			_detail_panel.offset_bottom = -150.0
-		elif mode == "tablet":
+		else:
 			_detail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
-			_detail_panel.offset_top = 102.0
+			_detail_panel.offset_top = 108.0 if mode == "desktop" else 102.0
 			_detail_panel.offset_bottom = -128.0
 	if _mobile_agents != null:
 		_mobile_agents.visible = mode == "mobile" or compact_tablet
