@@ -80,7 +80,6 @@ def bevel(obj, width=0.04, segments=3):
     mod = obj.modifiers.new("Soft machined edges", "BEVEL")
     mod.width = width
     mod.segments = segments
-    obj.modifiers.new("Weighted corner normals", "WEIGHTED_NORMAL")
     return obj
 
 def cube(name, loc, scale, mat, col, bevel_width=0.035):
@@ -161,7 +160,7 @@ def apply_atlas_uv(obj, column, row):
 
 def add_monitor(col, x, y, z, accent, width=1.35, height=0.82, tilt=0.0):
     frame = material("Monitor frame", (0.018, 0.026, 0.034, 1), 0.45, 0.28)
-    screen = material("Screen glow " + str(accent), (0.035, 0.075, 0.09, 1), 0.15, 0.25)
+    screen = material("Screen glow " + accent.name, (0.035, 0.075, 0.09, 1), 0.15, 0.25)
     cube("Monitor bezel", (x, y, z), (width, 0.10, height), frame, col, 0.055)
     cube("Abstract market display", (x, y - 0.057, z), (width - 0.12, 0.018, height - 0.12), screen, col, 0.012)
     for row in range(3):
@@ -219,7 +218,7 @@ def add_screen_wall(col, accent, count=6):
 def add_glass_partition(col, x, y, z, height, accent):
     glass = material("Smoked glass", (0.07, 0.13, 0.16, 0.35), 0.15, 0.18)
     cube("Glass partition", (x, y, z + height / 2), (0.08, 0.08, height), glass, col, 0.01)
-    brass = material("Accent trim " + str(accent), accent, 0.55, 0.3)
+    brass = material("Accent trim " + accent.name, tuple(accent.diffuse_color), 0.55, 0.3)
     cube("Glass trim", (x, y, z + height), (0.10, 0.12, 0.06), brass, col, 0.01)
 
 def build_agent(faction, output_dir):
