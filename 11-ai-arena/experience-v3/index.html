@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#080d13">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2715%27 fill=%27%23080d13%27/%3E%3Cpath d=%27M32 7 57 32 32 57 7 32Z%27 fill=%27none%27 stroke=%27%23e9c78d%27 stroke-width=%274%27/%3E%3Cpath d=%27M32 20 44 32 32 44 20 32Z%27 fill=%27%23e9c78d%27/%3E%3C/svg%3E">
-<title>AI ARENA / FINANCE RESEARCH LAB · V0.4.0</title>
+<title>AI ARENA / FINANCE RESEARCH LAB · V0.5.0</title>
 <meta name="description" content="六个独立 Agent 账户、共同市场环境、投研与模拟交易一体化工作站。">
 <style>
 html,body{background:#080d13;color:#f2f4f2}
@@ -103,7 +103,7 @@ button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,inpu
 @media(max-width:380px){.topmeta .demo-pill{display:none}.wrap{padding-left:12px;padding-right:12px}.hero h1{font-size:30px}.setup{grid-template-columns:1fr}.setup .field:first-child,.setup>.btn{grid-column:1/-1}.range-row output{min-width:44px}.arena-grid{gap:7px}.pod{padding:10px 8px}.pod-equity{font-size:14px}.factor-grid{grid-template-columns:1fr}.ledger-toolbar>div:last-child{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.vault:before{animation:none!important}}
 
-/* V0.4.0 — unified independent-agent research & paper portfolio workstation */
+/* V0.5.0 — unified independent-agent research & paper portfolio workstation */
 .wrap{width:min(1680px,100%);padding:26px clamp(14px,2.8vw,42px) 56px}
 .hero{align-items:center;margin:10px 0 20px}.hero h1{font-size:clamp(26px,2.8vw,38px);margin:8px 0}.hero p{max-width:800px}.hero-side{display:grid;gap:7px;text-align:right}.hero-side strong{color:var(--gold)}
 .top{padding:0 clamp(14px,2.8vw,42px)}.top-actions{display:flex;align-items:center;gap:8px}
@@ -130,15 +130,94 @@ button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,inpu
 /* Portraits remain clean while generated assets are awaiting approval; initials are only a temporary slot fallback. */
 .agent-avatar:not([src]){display:none}
 
+
+/* V0.5.0 — faction-first visual system, portrait sprites and dedicated research rooms */
+:root{--bg:#070d13;--panel:#101923;--panel2:#15222d;--line:rgba(150,178,194,.17);--text:#f2f4f2;--muted:#93a2ac}
+body{background:radial-gradient(ellipse at 75% -8%,rgba(43,70,82,.32),transparent 36%),radial-gradient(ellipse at 0% 30%,rgba(28,46,62,.22),transparent 30%),#070d13}
+.top{backdrop-filter:blur(18px);background:rgba(7,13,19,.82);border-bottom:1px solid rgba(155,180,192,.13)}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:230px;padding:clamp(24px,4vw,44px);border:1px solid rgba(192,209,215,.17);border-radius:22px;background:linear-gradient(100deg,rgba(6,13,20,.98) 0%,rgba(8,16,23,.9) 46%,rgba(8,15,21,.5) 100%),url('assets/rooms-sprite.webp') center 44%/cover}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,transparent 0%,rgba(9,15,20,.08) 48%,rgba(7,13,19,.56) 100%);pointer-events:none}
+.hero h1{max-width:800px;font-size:clamp(30px,4.5vw,54px);line-height:1.08;letter-spacing:-.045em}
+.hero p{max-width:760px;color:#bac5ca;line-height:1.8}
+.hero-side{min-width:230px;max-width:290px;padding:18px;border:1px solid rgba(233,199,141,.24);border-radius:15px;background:rgba(8,15,22,.72);box-shadow:0 16px 45px rgba(0,0,0,.18);backdrop-filter:blur(12px)}
+.hero-side strong{display:block;margin:11px 0;color:#f1e4cd;font-size:17px;line-height:1.4}
+.workflow-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0 22px;padding:10px;border:1px solid rgba(145,169,184,.14);border-radius:15px;background:linear-gradient(120deg,rgba(18,29,39,.9),rgba(12,21,29,.82))}
+.flow-step{position:relative;min-width:0;padding:9px 12px;border-right:1px solid rgba(145,169,184,.13)}
+.flow-step:last-child{border-right:0}
+.flow-step small{display:block;margin-bottom:7px;color:#8fa2ad;font:9px var(--mono);letter-spacing:.12em}
+.flow-step b{display:block;color:#e7eceb;font-size:12px;font-weight:600}
+.market-overview{border-radius:19px;border-color:rgba(155,180,192,.18);background:linear-gradient(140deg,rgba(19,31,42,.98),rgba(11,19,27,.98))}
+.section-head h2{letter-spacing:-.025em}
+.agent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.agent-card{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:13px;align-items:center;min-width:0;min-height:164px;padding:12px;border:1px solid rgba(145,169,184,.16);border-radius:16px;background:linear-gradient(145deg,rgba(21,33,44,.98),rgba(11,19,27,.98));overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
+.agent-card:before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--accent);opacity:.85}
+.agent-card:hover,.agent-card.selected{border-color:color-mix(in srgb,var(--accent) 52%,transparent);box-shadow:0 16px 36px rgba(0,0,0,.2);transform:translateY(-2px)}
+.agent-visual{position:relative;width:104px;height:138px;align-self:stretch;overflow:hidden;border-radius:12px;background:#101923}
+.agent-scene{position:absolute;inset:0;background-image:url('assets/rooms-sprite.webp');background-size:300% 200%;background-position:var(--room-pos-x,0%) var(--room-pos-y,0%);filter:saturate(.82) brightness(.72);transform:scale(1.03)}
+.agent-scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,10,15,.04),rgba(5,10,15,.24) 52%,rgba(5,10,15,.7))}
+.agent-card .avatar-frame{position:absolute;left:8px;bottom:0;width:88px;height:112px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 50%,rgba(255,255,255,.2));border-radius:10px;background:rgba(8,14,20,.55);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.agent-avatar{position:absolute!important;left:0!important;top:0!important;width:300%!important;height:200%!important;max-width:none!important;object-fit:fill!important;transform:translate(var(--sprite-shift-x,0%),var(--sprite-shift-y,0%))!important;display:block!important}
+.agent-card .avatar-fallback,.detail-avatar .avatar-fallback{position:absolute;z-index:0;inset:0;display:grid;place-items:center;font-size:27px;color:var(--accent)}
+.agent-copy{position:relative;z-index:1;min-width:0}
+.agent-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.agent-card-top strong{display:block;font-size:16px;line-height:1.35}
+.agent-card-top small{display:block;margin-top:3px;color:#93a4ae;font:9px var(--mono);letter-spacing:.08em}
+.agent-card .stance{flex:0 0 auto;max-width:96px;white-space:normal;text-align:center;font-size:9px}
+.agent-card-equity{margin-top:10px;font-size:20px;font-weight:700;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.agent-card-change{margin-top:2px;font-size:10px}
+.agent-card-meta{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:10px;color:#93a4ae;font-size:10px}
+.agent-card-meta b{color:#e7eceb;font-variant-numeric:tabular-nums}
+.agent-card-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:9px;padding-top:8px;border-top:1px solid rgba(145,169,184,.12);color:#a6b2b9;font-size:9px}
+.agent-card-footer span:last-child{color:var(--accent);font-family:var(--mono);letter-spacing:.05em}
+.agent-workspace-grid{align-items:start}
+.agent-detail{overflow:hidden;padding:18px;border-radius:18px}
+.detail-room{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:112px;margin:-18px -18px 18px;padding:17px 19px;overflow:hidden;border-bottom:1px solid color-mix(in srgb,var(--accent) 32%,transparent);background-image:linear-gradient(90deg,rgba(5,11,17,.84),rgba(5,11,17,.32)),url('assets/rooms-sprite.webp');background-size:cover,300% 200%;background-position:center,var(--room-pos-x,0%) var(--room-pos-y,0%)}
+.detail-room:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,10,15,.52),transparent 80%);pointer-events:none}
+.detail-room span,.detail-room b{position:relative;z-index:1}
+.detail-room span{color:#c1cbd0;font:9px var(--mono);letter-spacing:.14em}
+.detail-room b{color:#f5f3ed;font-size:17px;font-weight:650}
+.detail-identity{grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:start}
+.detail-avatar{position:relative;width:104px;height:132px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 55%,rgba(255,255,255,.18));border-radius:12px;background:#111c25}
+.detail-name{letter-spacing:-.035em}
+.detail-signals{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.role-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:13px 0}
+.role-chip{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 10px;border:1px solid rgba(145,169,184,.15);border-radius:10px;background:rgba(16,27,37,.72);color:#d5dfe2;font-size:11px}
+.role-chip small{color:var(--accent);font:9px var(--mono)}
+.detail-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+.decision-panel{margin-top:15px;padding:15px;border:1px solid rgba(145,169,184,.18);border-radius:15px;background:linear-gradient(145deg,rgba(21,32,42,.98),rgba(10,18,26,.98))}
+.decision-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.decision-head h4{margin:5px 0 0;font-size:15px}
+.decision-badge{padding:7px 10px;border:1px solid rgba(145,169,184,.24);border-radius:999px;color:#c9d4d9;font:10px var(--mono);letter-spacing:.06em}
+.decision-panel[data-action="BUY"] .decision-badge{border-color:rgba(95,224,168,.4);color:#7ee6b6;background:rgba(40,125,90,.12)}
+.decision-panel[data-action="SELL"] .decision-badge{border-color:rgba(255,136,126,.4);color:#ff9c92;background:rgba(145,55,52,.12)}
+.decision-panel[data-action="HOLD"] .decision-badge{color:#c7d0d5}
+.decision-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.decision-metrics>div{min-width:0;padding:10px;border-radius:10px;background:rgba(5,12,18,.46)}
+.decision-metrics small{display:block;color:#8fa0aa;font-size:10px}
+.decision-metrics b{display:block;margin-top:6px;color:#edf0ed;font-size:15px;font-variant-numeric:tabular-nums}
+.decision-reason{margin:0;color:#c1cbd0;font-size:12px;line-height:1.75}
+.decision-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid rgba(145,169,184,.13);color:#82939e;font-size:9px}
+@media(max-width:1120px){.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:18px}.hero-side{max-width:none}.workflow-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.flow-step:nth-child(3){border-right:0}.flow-step:nth-child(n+4){border-top:1px solid rgba(145,169,184,.12)}.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.hero{padding:22px 17px}.workflow-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.flow-step:nth-child(2n){border-right:0}.flow-step:nth-child(n+3){border-top:1px solid rgba(145,169,184,.12)}.agent-grid{grid-template-columns:1fr}.agent-card{grid-template-columns:88px minmax(0,1fr);min-height:146px;padding:10px;gap:11px}.agent-visual{width:88px;height:124px}.agent-card .avatar-frame{left:6px;width:76px;height:100px}.agent-card-equity{font-size:18px}.detail-identity{grid-template-columns:80px minmax(0,1fr);gap:11px}.detail-avatar{width:80px;height:102px}.role-strip{grid-template-columns:1fr}.detail-notes{grid-template-columns:1fr}.decision-metrics{gap:6px}.decision-metrics>div{padding:8px}.decision-metrics b{font-size:13px}}
+@media(max-width:360px){.agent-card{grid-template-columns:72px minmax(0,1fr);gap:9px}.agent-visual{width:72px;height:110px}.agent-card .avatar-frame{left:5px;width:62px;height:84px}.agent-card-top{flex-wrap:wrap}.agent-card-top .stance{max-width:100%}.hero h1{font-size:29px}.decision-head{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 <body>
 <div class="shell">
-<aside class="rail"><div class="mark"><span>◇</span></div><nav class="railnav"><a class="active" href="#market" title="共同市场">⌁</a><a href="#agents" title="独立 Agent">◈</a><a href="#agentWorkspace" title="Agent 工作区">◎</a><a href="#ledger" title="操作账本">≡</a></nav><div class="rail-foot">INDEPENDENT AGENT PORTFOLIOS · 04</div></aside>
+<aside class="rail"><div class="mark"><span>◇</span></div><nav class="railnav"><a class="active" href="#market" title="共同市场">⌁</a><a href="#agents" title="独立 Agent">◈</a><a href="#agentWorkspace" title="Agent 工作区">◎</a><a href="#ledger" title="操作账本">≡</a></nav><div class="rail-foot">INDEPENDENT AGENT PORTFOLIOS · 05</div></aside>
 <main class="app">
-<header class="top"><a class="wordmark" href="#market">AI <b>ARENA</b> / FINANCE LAB</a><div class="topmeta"><span><i class="dot"></i>SHARED MARKET · SEPARATE CAPITAL POOLS</span><span class="demo-pill">V 0.4.0 · PAPER MODE</span><div class="top-actions"><button class="btn small ghost" id="rulesOpen">模拟规则</button><button class="btn small primary" id="newRunBtn">＋ 新建实验</button></div></div></header>
+<header class="top"><a class="wordmark" href="#market">AI <b>ARENA</b> / FINANCE LAB</a><div class="topmeta"><span><i class="dot"></i>SHARED MARKET · SEPARATE CAPITAL POOLS</span><span class="demo-pill">V 0.5.0 · PAPER MODE</span><div class="top-actions"><button class="btn small ghost" id="rulesOpen">模拟规则</button><button class="btn small primary" id="newRunBtn">＋ 新建实验</button></div></div></header>
 <div class="wrap">
-<section class="hero"><div><div class="eyebrow">MULTI-AGENT INVESTMENT RESEARCH / 04</div><h1>六个 Agent。<em>六个独立账户。</em></h1><p>同一市场、同一起点、同一套交易规则；每个 Agent 独立研究、独立决策、独立持仓与核算。你可以在同一个工作台里比较它们的收益、风险、观点和每一笔操作。</p></div><div class="hero-side"><span>ONE MARKET · SIX INDEPENDENT PORTFOLIOS</span><strong>不共享资金池，不转移账户资产</strong><span>所有模拟数据均明确标注为合成演示</span></div></section>
+<section class="hero"><div><div class="eyebrow">MULTI-AGENT INVESTMENT RESEARCH / 05</div><h1>六大投资派系。<em>六个独立投资世界。</em></h1><p>从专属研究空间进入各自的投研流程：独立形成观点、互相挑战、执行交易，并只在自己的资本账户里承担结果。六个派系共享同一市场路径，公平比较每一次决策。</p></div><div class="hero-side"><span>SIX FACTIONS · SIX RESEARCH ROOMS · SIX ACCOUNTS</span><strong>同一市场环境 · 六套独立研究与账户</strong><span>所有模拟数据均明确标注为合成演示</span></div></section>
+<div class="workflow-strip" aria-label="Investment workflow">
+ <div class="flow-step"><small>01 / INPUT</small><b>公司与市场假设</b></div>
+ <div class="flow-step"><small>02 / RESEARCH</small><b>六派系独立研究</b></div>
+ <div class="flow-step"><small>03 / CHALLENGE</small><b>反方与风险审查</b></div>
+ <div class="flow-step"><small>04 / EXECUTE</small><b>独立账户模拟交易</b></div>
+ <div class="flow-step"><small>05 / AUDIT</small><b>复盘、回放与对比</b></div>
+</div>
 <section id="simulation" class="section">
 <article id="market" class="panel market-overview">
  <div class="market-head"><div><div class="kicker">01 / SHARED MARKET ENVIRONMENT</div><h2 id="runSubject">等待创建实验</h2><p>共同市场行情与事件只作为六个账户的外部环境；不会把任何 Agent 的资金或持仓混入其他账户。</p></div><div class="market-status"><span class="tag" id="runState">WAITING</span><span id="runDay">DAY 000 / 090</span></div></div>
@@ -154,12 +233,12 @@ button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,inpu
  </div>
  <div class="market-replay"><span>REPLAY / DAY AUDIT</span><input id="scrub" type="range" min="0" max="90" value="0"><b id="scrubLabel">0 / 90</b></div>
 </article>
-<section id="agents" class="section"><div class="section-head"><div><div class="kicker">02 / SIX INDEPENDENT AGENTS</div><h2>Agent 账户总览</h2><p>每张卡片就是一个独立资金池；点击任意 Agent，查看它自己的研究判断、账户资产和交易记录。</p></div><div class="research-status"><span class="dot"></span><span id="researchStatus">等待启动实验</span><span class="tag">6 AGENTS · 6 PORTFOLIOS</span></div></div><div class="agent-grid" id="arenaGrid"><div class="empty-state">先创建一个实验，六个 Agent 将分别建立自己的账户。</div></div></section>
+<section id="agents" class="section"><div class="section-head"><div><div class="kicker">02 / SIX INDEPENDENT AGENTS</div><h2>六大投资派系 · 专属研究室</h2><p>每个研究室对应一位投资经理、一套研究框架和一个独立账户。选择派系，进入它的研究与交易工作区。</p></div><div class="research-status"><span class="dot"></span><span id="researchStatus">等待启动实验</span><span class="tag">6 AGENTS · 6 PORTFOLIOS</span></div></div><div class="agent-grid" id="arenaGrid"><div class="empty-state">先创建一个实验，六个 Agent 将分别建立自己的账户。</div></div></section>
 <section id="agentWorkspace" class="section"><div class="section-head"><div><div class="kicker">03 / SELECTED AGENT WORKSPACE</div><h2>单个 Agent 的完整工作区</h2><p>研究观点、账户资产、风险指标和历史操作都绑定到当前选中的 Agent。</p></div><span class="tag">ONE AGENT · ONE LEDGER</span></div><div class="agent-workspace-grid"><article class="panel agent-detail" id="agentDetail"><div class="empty-state">选择一个 Agent 查看独立账户。</div></article><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">PORTFOLIO PERFORMANCE</div><h2>六个账户净值轨迹</h2><p>相同市场路径下，独立组合的净值变化。</p></div><span class="tag">6 SEPARATE ACCOUNTS</span></div><div class="chart-wrap" id="chartWrap"><svg id="equityChart" viewBox="0 0 760 270" role="img" aria-label="六个独立 Agent 模拟账户净值曲线"></svg></div><div class="legend" id="chartLegend"></div></article></div></section>
 <div class="metrics section"><article class="panel factor-panel"><div class="section-head"><div><div class="kicker">MARKET STATE / SHARED FACTORS</div><h2>共同市场因子</h2></div><span class="tag">SAME INPUT FOR ALL</span></div><div class="factor-grid" id="factorGrid"></div></article><article class="panel events-panel"><div class="section-head"><div><div class="kicker">WORLD EVENTS</div><h2>市场事件时间线</h2></div><span class="tag" id="eventTotal">0 EVENTS SEEN</span></div><div class="events-list" id="eventsList"><div class="empty">创建实验后显示市场事件。</div></div></article></div>
 <div class="metrics section"><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">RISK / PERFORMANCE</div><h2>独立账户排名</h2></div><span class="tag">RETURN · DRAWDOWN · VOL</span></div><div id="standings"><div class="empty">创建实验后显示排名。</div></div></article><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">FAIRNESS / ACCOUNTING</div><h2>账户隔离原则</h2></div><span class="tag">NO SHARED WALLET</span></div><div class="detail-notes"><div class="detail-note"><small>CAPITAL</small><p>六个 Agent 在同一实验中获得相同的独立初始本金，各自持有现金和股票。</p></div><div class="detail-note"><small>MARKET</small><p>价格、宏观、情绪、行业和事件对所有账户一致，保证比较条件公平。</p></div><div class="detail-note"><small>EXECUTION</small><p>订单、费用、滑点和成交由模拟器逐账户计算，策略不能直接改写净值。</p></div><div class="detail-note risk"><small>TRUTH BOUNDARY</small><p>当前是合成情景演示，不是实时行情、真实回测、投资建议或券商交易。</p></div></div></article></div>
 <section id="ledger" class="section"><div class="section-head"><div><div class="kicker">04 / AUDITABLE RUN LEDGER</div><h2>逐 Agent 操作账本</h2><p>每条记录都归属于一个 Agent；按账户、决策和交易周期筛选。</p></div><button class="btn small" id="exportBtn">导出完整实验 JSON ↓</button></div><article class="panel ledger-panel"><div class="ledger-toolbar"><div style="color:#8797a1;font-size:10px" id="ledgerSummary">等待模拟结果</div><div style="display:flex;gap:7px;flex-wrap:wrap"><select id="agentFilter"><option value="all">全部 Agent</option></select><select id="actionFilter"><option value="all">全部决策</option><option value="BUY">买入</option><option value="SELL">卖出</option><option value="HOLD">观望</option></select><select id="dayFilter"><option value="all">全部周期</option><option value="early">前 1/3</option><option value="middle">中间 1/3</option><option value="late">后 1/3</option></select></div></div><div class="ledger-scroll"><table><thead><tr><th>交易日</th><th>Agent / 独立账户</th><th>决策</th><th>市场价 / 成交价</th><th>目标仓位</th><th>成交数量</th><th>成交金额</th><th>持仓 / 现金</th><th>费用 + 滑点</th><th>触发原因 / 市场背景</th></tr></thead><tbody id="ledgerBody"><tr><td colspan="10" class="empty">创建实验后，这里会生成每个 Agent 各自的逐日操作记录。</td></tr></tbody></table></div><div class="hint">账户资产按 Agent 独立计算。合计盈亏仅为六个独立账户的汇总视图，不存在资金池之间的划转。</div></article></section>
-<div class="foot"><span>AI ARENA / FINANCE RESEARCH LAB · V0.4.0 · LOCAL SYNTHETIC DATA</span><span>NO LIVE MARKET DATA · NO BROKER · NO REAL TRADES</span></div>
+<div class="foot"><span>AI ARENA / FINANCE RESEARCH LAB · V0.5.0 · LOCAL SYNTHETIC DATA</span><span>NO LIVE MARKET DATA · NO BROKER · NO REAL TRADES</span></div>
 </section>
 </div>
 </main>
@@ -171,12 +250,12 @@ button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,inpu
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const factionDefs=[
-{id:'value',avatar:'assets/agents/value.webp',name:'价值派',en:'VALUE & QUALITY',icon:'V',color:'#e9c78d',roles:['基本面主研','空头挑战','资本风控'],method:'现金流质量、估值安全边际、资产负债表与资本回报',thesis:'等待价格相对内在价值出现足够安全边际，优先保护本金。',risk:'价值陷阱、盈利质量恶化、长期低估值与流动性折价。',trigger:'合成估值分位 ≤ 35、质量因子 ≥ 60，且宏观流动性没有持续转负。',invalidation:'质量因子跌破 45、现金流质量假设失效，或流动性持续收缩。'},
-{id:'growth',avatar:'assets/agents/growth.webp',name:'成长派',en:'GROWTH',icon:'G',color:'#65d8a5',roles:['成长分析师','预期差挑战','集中度风控'],method:'收入增长、利润率扩张、市场空间与盈利预期变化',thesis:'寻找增长持续性与预期上修的交集，愿意为确定性成长支付溢价。',risk:'增长兑现不及预期、估值压缩、融资与竞争压力。',trigger:'合成成长因子 ≥ 65、行业动量转正，且预期修正维持上行。',invalidation:'成长因子明显回落、行业动量转负，或波动超过共同风险预算。'},
-{id:'trend',avatar:'assets/agents/trend.webp',name:'趋势派',en:'TECHNICAL / MOMENTUM',icon:'T',color:'#8db9ee',roles:['趋势研究员','反转挑战','止损风控'],method:'价格结构、均线斜率、相对强弱、成交量与趋势延续',thesis:'不预测拐点，等待价格确认后跟随趋势，失效时快速退出。',risk:'震荡市反复止损、跳空、趋势反转与信号滞后。',trigger:'短周期动量转正，价格连续确认并维持在模拟趋势参考线上方。',invalidation:'动量转负、价格跌破趋势失效阈值，或波动突然放大。'},
-{id:'quant',avatar:'assets/agents/quant.webp',name:'量化派',en:'QUANT',icon:'Q',color:'#c6a1f2',roles:['因子研究员','模型审查','波动风控'],method:'多因子打分、信号稳定性、波动率目标与组合约束',thesis:'将可重复的信号转成规则化仓位，控制单一因子和回撤暴露。',risk:'过拟合、因子失效、交易成本侵蚀与样本漂移。',trigger:'多因子综合分数超过阈值，因子方向相对一致且波动低于预算。',invalidation:'因子方向分歧扩大、信号衰减，或交易成本吞噬预期优势。'},
-{id:'sentiment',avatar:'assets/agents/sentiment.webp',name:'情绪派',en:'SENTIMENT',icon:'S',color:'#f1a66e',roles:['舆情研究员','反身性挑战','拥挤度风控'],method:'新闻情绪、市场注意力、资金拥挤、预期差与情绪反转',thesis:'识别情绪扩散与拥挤程度，在确认和过热之间动态调整暴露。',risk:'噪声新闻、情绪反转、拥挤交易与叙事失真。',trigger:'合成情绪改善但拥挤程度仍低于警戒线，且价格未出现明显背离。',invalidation:'注意力激增而价格走弱、情绪快速反转，或拥挤度突破警戒线。'},
-{id:'macro',avatar:'assets/agents/macro.webp',name:'宏观派',en:'MACRO / REGIME',icon:'M',color:'#7dd6df',roles:['宏观策略师','情景挑战','尾部风控'],method:'利率、流动性、美元/信用环境、行业周期与风险偏好',thesis:'先判断市场环境，再决定风险预算；宏观逆风时优先降低仓位。',risk:'政策路径误判、宏观数据滞后、相关性突变与尾部冲击。',trigger:'合成流动性改善、风险偏好修复，且宏观冲击与波动率收敛。',invalidation:'流动性持续收缩、信用风险扩散、政策路径反转或相关性突变。'}
+{id:'value',avatar:'assets/agents-sprite.webp',spriteX:0,spriteY:0,roomX:0,roomY:0,name:'价值派',en:'VALUE & QUALITY',icon:'V',color:'#e9c78d',roles:['基本面主研','空头挑战','资本风控'],method:'现金流质量、估值安全边际、资产负债表与资本回报',thesis:'等待价格相对内在价值出现足够安全边际，优先保护本金。',risk:'价值陷阱、盈利质量恶化、长期低估值与流动性折价。',trigger:'合成估值分位 ≤ 35、质量因子 ≥ 60，且宏观流动性没有持续转负。',invalidation:'质量因子跌破 45、现金流质量假设失效，或流动性持续收缩。'},
+{id:'growth',avatar:'assets/agents-sprite.webp',spriteX:1,spriteY:0,roomX:1,roomY:0,name:'成长派',en:'GROWTH',icon:'G',color:'#65d8a5',roles:['成长分析师','预期差挑战','集中度风控'],method:'收入增长、利润率扩张、市场空间与盈利预期变化',thesis:'寻找增长持续性与预期上修的交集，愿意为确定性成长支付溢价。',risk:'增长兑现不及预期、估值压缩、融资与竞争压力。',trigger:'合成成长因子 ≥ 65、行业动量转正，且预期修正维持上行。',invalidation:'成长因子明显回落、行业动量转负，或波动超过共同风险预算。'},
+{id:'trend',avatar:'assets/agents-sprite.webp',spriteX:2,spriteY:0,roomX:2,roomY:0,name:'趋势派',en:'TECHNICAL / MOMENTUM',icon:'T',color:'#8db9ee',roles:['趋势研究员','反转挑战','止损风控'],method:'价格结构、均线斜率、相对强弱、成交量与趋势延续',thesis:'不预测拐点，等待价格确认后跟随趋势，失效时快速退出。',risk:'震荡市反复止损、跳空、趋势反转与信号滞后。',trigger:'短周期动量转正，价格连续确认并维持在模拟趋势参考线上方。',invalidation:'动量转负、价格跌破趋势失效阈值，或波动突然放大。'},
+{id:'quant',avatar:'assets/agents-sprite.webp',spriteX:0,spriteY:1,roomX:0,roomY:1,name:'量化派',en:'QUANT',icon:'Q',color:'#c6a1f2',roles:['因子研究员','模型审查','波动风控'],method:'多因子打分、信号稳定性、波动率目标与组合约束',thesis:'将可重复的信号转成规则化仓位，控制单一因子和回撤暴露。',risk:'过拟合、因子失效、交易成本侵蚀与样本漂移。',trigger:'多因子综合分数超过阈值，因子方向相对一致且波动低于预算。',invalidation:'因子方向分歧扩大、信号衰减，或交易成本吞噬预期优势。'},
+{id:'sentiment',avatar:'assets/agents-sprite.webp',spriteX:1,spriteY:1,roomX:1,roomY:1,name:'情绪派',en:'SENTIMENT',icon:'S',color:'#f1a66e',roles:['舆情研究员','反身性挑战','拥挤度风控'],method:'新闻情绪、市场注意力、资金拥挤、预期差与情绪反转',thesis:'识别情绪扩散与拥挤程度，在确认和过热之间动态调整暴露。',risk:'噪声新闻、情绪反转、拥挤交易与叙事失真。',trigger:'合成情绪改善但拥挤程度仍低于警戒线，且价格未出现明显背离。',invalidation:'注意力激增而价格走弱、情绪快速反转，或拥挤度突破警戒线。'},
+{id:'macro',avatar:'assets/agents-sprite.webp',spriteX:2,spriteY:1,roomX:2,roomY:1,name:'宏观派',en:'MACRO / REGIME',icon:'M',color:'#7dd6df',roles:['宏观策略师','情景挑战','尾部风控'],method:'利率、流动性、美元/信用环境、行业周期与风险偏好',thesis:'先判断市场环境，再决定风险预算；宏观逆风时优先降低仓位。',risk:'政策路径误判、宏观数据滞后、相关性突变与尾部冲击。',trigger:'合成流动性改善、风险偏好修复，且宏观冲击与波动率收敛。',invalidation:'流动性持续收缩、信用风险扩散、政策路径反转或相关性突变。'}
 ];
 const eventTemplates=[
 {title:'流动性边际改善',kind:'macro',macro:.28,sentiment:.12,sector:.05,shock:.009,desc:'风险偏好回升，长久期资产获得支撑。'},
@@ -331,7 +410,7 @@ function renderAgentCards(){
   const changeText=ret===null?'独立资金池尚未建立':signedPct(ret)+' · '+money(equity-s.capital);
   const decision=last?'最近决策：'+(last.action==='BUY'?'买入':last.action==='SELL'?'卖出':'观望'):'等待首次决策';
   return '<article class="agent-card '+selected+'" data-id="'+a.id+'" style="--accent:'+a.color+'" role="button" tabindex="0" aria-label="查看'+a.name+'独立账户">'+
-   '<div class="avatar-frame"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
+   '<div class="agent-visual"><div class="agent-scene" style="--room-pos-x:'+(a.roomX*50)+'%;--room-pos-y:'+(a.roomY*100)+'%"></div><div class="avatar-frame"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" src="'+a.avatar+'" style="--sprite-shift-x:'+(-a.spriteX*33.333333)+'%;--sprite-shift-y:'+(-a.spriteY*50)+'%" alt="'+a.name+' 人物形象" loading="lazy"></div></div>'+
    '<div class="agent-copy"><div class="agent-card-top"><div><strong>'+a.name+'</strong><small>'+a.en+'</small></div><span class="stance">'+stance+'</span></div>'+
    '<div class="agent-card-equity">'+equityText+'</div><div class="agent-card-change" style="color:'+(ret===null?'#8797a1':ret>=0?'var(--green)':'var(--red)')+'">'+changeText+'</div>'+
    '<div class="agent-card-meta"><span>现金 <b>'+(cash===null?'—':money(cash))+'</b></span><span>仓位 <b>'+Math.round(weight*100)+'%</b></span><span>成交 <b>'+trades+'</b></span></div>'+
@@ -355,12 +434,19 @@ function renderAgentDetail(){
  const method=a.method;
  const risk=report?report.risk:a.risk,trigger=report?report.trigger:a.trigger,invalidation=report?report.invalidation:a.invalidation;
  const lastAction=last?last.action+' · '+last.reason+' · 当日净值变化 '+money(daily):'尚无交易日记录；独立账户等待模拟推进。';
- $('agentDetail').innerHTML='<div class="detail-identity">'+
-  '<div class="avatar-frame detail-avatar"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
+ const decisionLabel=last?(last.action==='BUY'?'买入 / BUY':last.action==='SELL'?'卖出 / SELL':'观望 / HOLD'):'等待首笔决策';
+ const decisionPrice=last&&last.fillPrice?money(last.fillPrice):'—';
+ const decisionQty=last?fmt(last.quantity||0,4):'—';
+ const decisionWeight=last?Math.round((last.weight??weight)*100)+'%':Math.round(weight*100)+'%';
+ const decisionDay=last?'DAY '+String(last.day).padStart(3,'0'):'NOT YET';
+ const decisionReason=last?last.reason:'研究观点已建立。等待共同市场环境满足该派系的入场条件后，才会向这个 Agent 自己的账户写入模拟订单。';
+ $('agentDetail').innerHTML='<div class="detail-room" style="--room-pos-x:'+(a.roomX*50)+'%;--room-pos-y:'+(a.roomY*100)+'%;--accent:'+a.color+'"><span>RESEARCH ROOM / '+a.id.toUpperCase()+'</span><b>'+a.name+' · 独立研究室</b></div><div class="detail-identity">'+
+  '<div class="avatar-frame detail-avatar"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" src="'+a.avatar+'" style="--sprite-shift-x:'+(-a.spriteX*33.333333)+'%;--sprite-shift-y:'+(-a.spriteY*50)+'%" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
   '<div><div class="kicker">SELECTED / '+a.id.toUpperCase()+' AGENT</div><h3 class="detail-name" id="detailName">'+a.name+'</h3><div class="detail-en">'+a.en+'</div>'+
   '<div class="detail-tags"><span class="stance">'+(report?report.stance:'等待研究')+'</span><span class="tag">'+(report?'CONFIDENCE '+report.confidence+'%':'NO RESEARCH YET')+'</span><span class="tag">'+(p?'SEPARATE PORTFOLIO':'PORTFOLIO NOT STARTED')+'</span></div>'+
   '<p class="detail-thesis" id="detailThesis">'+thesis+'</p><p class="detail-method" id="detailMethod">'+method+'</p></div></div>'+
   '<div class="detail-signals" id="detailSignals">'+signals+'</div>'+
+  '<div class="role-strip">'+a.roles.map((role,i)=>'<span class="role-chip"><small>0'+(i+1)+'</small>'+role+'</span>').join('')+'</div>'+
   '<div class="detail-kpis">'+
    '<div class="detail-kpi"><small>ACCOUNT EQUITY</small><b id="detailEquity">'+(equity===null?'—':money(equity))+'</b></div>'+
    '<div class="detail-kpi"><small>AVAILABLE CASH</small><b id="detailCash">'+(cash===null?'—':money(cash))+'</b></div>'+
@@ -374,7 +460,12 @@ function renderAgentDetail(){
    '<div class="detail-note"><small>ENTRY TRIGGER</small><p id="detailTrigger">'+trigger+'</p></div>'+
    '<div class="detail-note risk"><small>INVALIDATION</small><p id="detailInvalidation">'+invalidation+'</p></div>'+
    '<div class="detail-note"><small>LAST DECISION</small><p id="detailLastAction">'+lastAction+'</p></div>'+
-  '</div>';
+  '</div>'+
+  '<section class="decision-panel" id="tradeDecision" data-action="'+(last?last.action:'WAIT')+'">'+
+   '<div class="decision-head"><div><span class="kicker">EXECUTION DESK / '+decisionDay+'</span><h4>交易决策与执行记录</h4></div><b class="decision-badge">'+decisionLabel+'</b></div>'+
+   '<div class="decision-metrics"><div><small>模拟成交价</small><b>'+decisionPrice+'</b></div><div><small>成交数量</small><b>'+decisionQty+'</b></div><div><small>实际仓位</small><b>'+decisionWeight+'</b></div></div>'+
+   '<p class="decision-reason">'+decisionReason+'</p><div class="decision-foot"><span>仅影响 '+a.name+' 的独立账户</span><span>纸面模拟 · 无真实订单</span></div>
+  </section>';
 }
 function renderDay(day){
  if(!state.simulation)return;
@@ -439,7 +530,7 @@ function play(){if(!state.simulation||state.day>=state.simulation.days)return;st
 function pause(){stopPlayback();if(state.simulation)$('runState').textContent='PAUSED';}
 function reset(){pause();state.day=0;$('runState').textContent='READY';renderDay(0);}
 function exportRun(){
- if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.4.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.4.0',simulator:'paper-sim-v0.4.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perAgentStartingCapital:s.capital,accountIsolation:'one_agent_one_portfolio'},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath,targetWeightPath:p.targetWeightPath})),operations:s.logs};
+ if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.5.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.5.0',simulator:'paper-sim-v0.5.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perAgentStartingCapital:s.capital,accountIsolation:'one_agent_one_portfolio'},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath,targetWeightPath:p.targetWeightPath})),operations:s.logs};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ai-arena-${hash(s.subject).toString(16)}-${s.days}d-demo.json`;a.click();URL.revokeObjectURL(url);toast('完整实验 JSON 已生成（合成演示数据）');
 }
 function launchExperiment(){
