@@ -178,7 +178,8 @@ def add_bookshelf(col, x, y, z, accent):
         for book in range(7):
             bw = 0.12 + (book % 3) * 0.015
             bx = x - 0.78 + book * 0.23
-            book_mat = material("Book spine %d %d" % (shelf, book), ((0.18 + 0.05 * (book % 3), 0.13 + 0.03 * (book % 2), 0.09 + 0.04 * (shelf % 2), 1), 0.0, 0.7)
+            book_color = (0.18 + 0.05 * (book % 3), 0.13 + 0.03 * (book % 2), 0.09 + 0.04 * (shelf % 2), 1)
+            book_mat = material("Book spine %d %d" % (shelf, book), book_color, 0.0, 0.7)
             cube("Archive book", (bx, y - 0.25, zz + 0.19), (bw, 0.18, 0.34 + 0.04 * (book % 2)), book_mat, col, 0.008)
 
 def add_lamp(col, x, y, z, accent):
