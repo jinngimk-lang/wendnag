@@ -47,7 +47,7 @@ jobs:
 
       - name: Build Blender source and GLB assets
         id: build_assets
-        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true)
+        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[rebuild-ai-arena-assets]'))
         working-directory: 11-ai-arena/godot
         run: |
           PYTHONPATH=/usr/lib/python3/dist-packages blender --background --factory-startup --python-exit-code 1 --python blender/build_ai_arena_assets.py -- --output assets
