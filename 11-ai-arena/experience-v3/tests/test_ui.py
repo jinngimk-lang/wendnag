@@ -16,7 +16,7 @@ def run():
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
         page.on("pageerror", lambda e: errors.append(str(e)))
         page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-        page.set_content((ROOT / "index.html").read_text(encoding="utf-8"), wait_until="load")
+        page.goto((ROOT / "index.html").as_uri(), wait_until="load")
 
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
         assert page.locator("#setupModal").is_visible()
@@ -24,7 +24,9 @@ def run():
         assert page.locator("#arenaGrid .agent-card").count() == 6
         assert page.locator("#arenaGrid .agent-card").evaluate_all("els => new Set(els.map(e => e.dataset.id)).size") == 6
         assert page.locator("#arenaGrid .agent-card img[data-image-src]").count() == 6
-        assert page.locator("#arenaGrid .agent-card img").evaluate_all("imgs => imgs.every(img => img.getAttribute('src') ? (img.complete && img.naturalWidth > 0) : getComputedStyle(img).display === 'none')")
+        page.wait_for_function("Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).length === 6 && Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).every(img => img.complete && img.naturalWidth > 0)")
+        assert page.locator("#arenaGrid .agent-card img").evaluate_all("imgs => imgs.every(img => img.complete && img.naturalWidth > 0)")
+        assert page.locator("#arenaGrid .agent-scene").count() == 6
         assert page.locator(".vault").count() == 0
         assert page.locator("#cashflowLayer").count() == 0
 
@@ -53,6 +55,9 @@ def run():
                 overlaps = a["x"] < b["x"] + b["w"] and a["x"] + a["w"] > b["x"] and a["y"] < b["y"] + b["h"] and a["y"] + a["h"] > b["y"]
                 assert not overlaps, f"Agent cards overlap: {a} / {b}"
         assert page.locator("#agentDetail .detail-kpi").count() == 6
+        assert page.locator("#agentDetail .detail-room").count() == 1
+        assert page.locator("#agentDetail .role-chip").count() == 3
+        assert page.locator("#tradeDecision").count() == 1
         assert page.locator("#detailName").inner_text() == "价值派"
         assert page.locator("#detailEquity").inner_text() == "$250,000"
         assert page.locator("#runSubject").inner_text() == "ACME Robotics / ACME"
@@ -129,9 +134,9 @@ def run():
         download.save_as(str(target))
         payload = json.loads(target.read_text(encoding="utf-8"))
         assert payload["dataMode"] == "SYNTHETIC_DEMO_ONLY"
-        assert payload["schema"] == "ai-arena-run-v0.4.0"
-        assert payload["versions"]["simulator"] == "paper-sim-v0.4.0"
-        assert payload["versions"]["research"] == "local-rules-v0.4.0"
+        assert payload["schema"] == "ai-arena-run-v0.5.0"
+        assert payload["versions"]["simulator"] == "paper-sim-v0.5.0"
+        assert payload["versions"]["research"] == "local-rules-v0.5.0"
         assert payload["assumptions"]["accountIsolation"] == "one_agent_one_portfolio"
         assert payload["assumptions"]["perAgentStartingCapital"] == 250000
         assert payload["evidencePack"]["sourceCount"] == 0 and payload["evidencePack"]["companyLabelOnly"]
