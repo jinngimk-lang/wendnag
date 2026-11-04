@@ -31,6 +31,10 @@ func _initialize() -> void:
 
 	sim.set_replay_day(999)
 	_check(sim.replay_day == sim.current_day, "replay must clamp to the latest simulated day")
+
+	var twin = ArenaSimulation.new()
+	twin.configure(100000.0, 90, 20261104)
+	_check(is_equal_approx(sim.market_prices[1], twin.market_prices[1]), "same seed must reproduce the same market path")
 	print("AI ARENA SIMULATION CONTRACT: PASS")
 	quit(0)
 
