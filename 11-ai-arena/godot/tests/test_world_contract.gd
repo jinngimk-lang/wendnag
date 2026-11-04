@@ -5,12 +5,11 @@ const ArenaWorld = preload("res://scripts/arena_world.gd")
 var _failed := false
 
 func _initialize() -> void:
-	call_deferred("_run")
+	_run()
 
 func _run() -> void:
 	var world = ArenaWorld.new()
 	root.add_child(world)
-	await process_frame
 	_check(world.agent_anchors.size() == 6, "the 3D arena must expose six Agent podium anchors")
 	_check(world.current_mode == "arena", "the initial 3D mode must be the arena")
 	_check(world.select_agent("growth"), "a faction podium must be selectable")

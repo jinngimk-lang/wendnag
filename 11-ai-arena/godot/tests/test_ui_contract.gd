@@ -5,12 +5,11 @@ const MainScene = preload("res://scenes/main.tscn")
 var _failed := false
 
 func _initialize() -> void:
-	call_deferred("_run")
+	_run()
 
 func _run() -> void:
 	var app = MainScene.instantiate()
 	root.add_child(app)
-	await process_frame
 	_check(app.apply_responsive_layout(1600.0) == "desktop", "wide desktop layout must be selected")
 	_check(app.apply_responsive_layout(1024.0) == "tablet", "tablet layout must be selected")
 	_check(app.apply_responsive_layout(768.0) == "tablet", "small tablet layout must be selected")

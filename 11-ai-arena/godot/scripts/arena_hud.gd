@@ -36,6 +36,7 @@ var _status_label: Label
 var _day_label: Label
 var _slider: HSlider
 var _room_button: Button
+var _mobile_room_button: Button
 var _tab_buttons: Dictionary = {}
 
 func _ready() -> void:
@@ -76,28 +77,40 @@ func set_room_mode(enabled: bool, agent_id: String = "") -> void:
 		_selected_agent = agent_id
 	if _room_button != null:
 		_room_button.text = "← 返回竞技场" if enabled else "进入研究室  ↗"
+	if _mobile_room_button != null:
+		_mobile_room_button.text = "← 返回竞技场" if enabled else "进入研究室 ↗"
 	_refresh_detail()
 
 func apply_responsive_layout(width: float) -> String:
 	var mode := layout_mode_for(width)
 	set_meta("layout_mode", mode)
+	var compact_tablet := mode == "tablet" and width < 920.0
 	if _agent_rail != null:
-		_agent_rail.visible = mode != "mobile"
-		_agent_rail.offset_right = 222.0 if mode == "tablet" else 284.0
+		_agent_rail.visible = mode == "desktop" or (mode == "tablet" and not compact_tablet)
+		_agent_rail.offset_right = 210.0 if mode == "tablet" else 284.0
 	if _detail_panel != null:
-		_detail_panel.visible = mode == "desktop" or (mode == "tablet" and width >= 920.0)
-		_detail_panel.offset_left = -334.0 if mode == "tablet" else -370.0
+		_detail_panel.visible = mode != "mobile"
+		_detail_panel.offset_left = -292.0 if mode == "tablet" else -370.0
+		if mode == "mobile":
+			_detail_panel.visible = true
+			_detail_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+			_detail_panel.offset_left = 12.0
+			_detail_panel.offset_right = -12.0
+			_detail_panel.offset_top = -408.0
+			_detail_panel.offset_bottom = -150.0
+		elif mode == "tablet":
+			_detail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
+			_detail_panel.offset_top = 102.0
+			_detail_panel.offset_bottom = -128.0
 	if _mobile_agents != null:
-		_mobile_agents.visible = mode == "mobile"
+		_mobile_agents.visible = mode == "mobile" or compact_tablet
 	if _bottom_dock != null:
-		_bottom_dock.offset_top = -132.0 if mode == "mobile" else -108.0
+		_bottom_dock.offset_top = -142.0 if mode == "mobile" else -108.0
 	if _header != null:
 		_header.offset_bottom = 82.0 if mode == "mobile" else 76.0
 	if _mobile_agents != null:
 		_mobile_agents.offset_top = 94.0
 		_mobile_agents.offset_bottom = 168.0
-	if _detail_panel != null and mode == "tablet":
-		_detail_panel.offset_top = 102.0
 	if _agent_rail != null and mode == "tablet":
 		_agent_rail.offset_top = 102.0
 	return mode
@@ -203,6 +216,12 @@ func _build_mobile_agents() -> void:
 		button.pressed.connect(_on_agent_pressed.bind(agent_id))
 		row.add_child(button)
 		_mobile_buttons[agent_id] = button
+	_mobile_room_button = Button.new()
+	_mobile_room_button.name = "MobileRoomButton"
+	_mobile_room_button.custom_minimum_size = Vector2(132, 52)
+	_mobile_room_button.text = "进入研究室 ↗"
+	_mobile_room_button.pressed.connect(_on_room_button_pressed)
+	row.add_child(_mobile_room_button)
 
 func _build_detail_panel() -> void:
 	_detail_panel = _panel("DetailPanel")
@@ -458,6 +477,8 @@ func _on_room_button_pressed() -> void:
 		_room_mode = true
 		room_requested.emit(_selected_agent)
 	_room_button.text = "← 返回竞技场" if _room_mode else "进入研究室  ↗"
+	if _mobile_room_button != null:
+		_mobile_room_button.text = "← 返回竞技场" if _room_mode else "进入研究室 ↗"
 
 func _on_slider_changed(value: float) -> void:
 	if not _updating_slider:
