@@ -1,0 +1,23 @@
+{
+  "source": "assets/source/ai_arena_assets.blend",
+  "blender_version": "4.0.2",
+  "agents": [
+    "assets/generated/agents/value.glb",
+    "assets/generated/agents/growth.glb",
+    "assets/generated/agents/trend.glb",
+    "assets/generated/agents/quant.glb",
+    "assets/generated/agents/sentiment.glb",
+    "assets/generated/agents/macro.glb"
+  ],
+  "rooms": [
+    "assets/generated/rooms/value.glb",
+    "assets/generated/rooms/growth.glb",
+    "assets/generated/rooms/trend.glb",
+    "assets/generated/rooms/quant.glb",
+    "assets/generated/rooms/sentiment.glb",
+    "assets/generated/rooms/macro.glb"
+  ],
+  "props": [
+    "assets/generated/banknote.glb"
+  ]
+}
