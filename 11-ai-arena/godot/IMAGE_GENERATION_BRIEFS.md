@@ -32,4 +32,4 @@ A global macro strategy suite: slate-blue stone and glass, large wall display wi
 
 ## Arena hero environment
 
-A cinematic institutional investment arena at dusk: a monumental circular trading floor with six distinct raised research pods around a central brass-and-glass performance vault, high glass atrium, distant city skyline, restrained champagne-gold practical lights, believable architecture and human scale, no people, no text, no screens with legible data, wide 21:9 environment plate.
+A cinematic institutional investment arena at dusk: a monumental circular trading floor with six distinct, clearly separated research pods arranged around an open shared-market floor, each pod has its own discreet account marker and restrained faction accent, a wide market-information display integrated into the rear architecture, high glass atrium, distant city skyline, restrained champagne-gold practical lights, believable architecture and human scale, no central vault, no shared money pool, no people, no text, no screens with legible data, wide 21:9 environment plate.
