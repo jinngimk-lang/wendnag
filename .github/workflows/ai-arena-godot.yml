@@ -36,13 +36,14 @@ jobs:
         if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
 
       - name: Build Blender source and GLB assets
         if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
         working-directory: 11-ai-arena/godot
         run: |
-          blender --background --factory-startup --python blender/build_ai_arena_assets.py -- --output assets
+          PYTHONPATH=/usr/lib/python3/dist-packages blender --background --factory-startup --python-exit-code 1 --python blender/build_ai_arena_assets.py -- --output assets
+          find assets/source assets/generated -maxdepth 3 -type f -printf '%p %s bytes\\n'
 
       - name: Install Godot 4.7.1 stable
         run: |
