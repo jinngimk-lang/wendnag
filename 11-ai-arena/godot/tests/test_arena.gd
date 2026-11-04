@@ -31,8 +31,8 @@ func _initialize() -> void:
 	_check(sim.get_account_snapshot("value").day == 0, "replay snapshot must match the selected day")
 	_check(sim.get_visible_events().all(func(event): return int(event.day) <= 0), "replay must hide future events")
 
-	_check(ArenaSimulation.cashflow_direction(250.0) == "to_agent", "positive P&L must flow toward the Agent")
-	_check(ArenaSimulation.cashflow_direction(-250.0) == "to_vault", "negative P&L must flow back to the vault")
+	_check(ArenaSimulation.cashflow_direction(250.0) == "gain", "positive P&L must register as a gain")
+	_check(ArenaSimulation.cashflow_direction(-250.0) == "loss", "negative P&L must register as a loss")
 	_check(ArenaSimulation.cashflow_direction(0.0) == "none", "zero P&L must not animate cash")
 
 	sim.set_replay_day(999)
