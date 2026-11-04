@@ -154,3 +154,17 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 
 
 - Draft PR #26 now carries the V0.5.0 faction-first implementation and CI evidence; it remains open and unmerged. Work branch: feat/ai-arena-independent-agent-workspace-v04.
+
+
+## 2026-11-04 — Native Godot 4.7.1 3D client
+
+- Added an additive native Godot client at `godot/`; the existing HTML V0.5.0 Finance Arena remains unchanged.
+- Six independent paper accounts share one synthetic market path and common fee/slippage assumptions.
+- Six Agent podiums and six lazily loaded faction research rooms use committed Blender source/GLB assets plus the supplied portrait and room reference atlases.
+- The arena center is a shared-market information display, not a central capital vault. Signed-P&L notes remain local to the same Agent account marker; there is no shared cash pool or inter-Agent transfer.
+- Godot 4.7.1 CI run #41810429080 passed project import, simulation, 3D world, responsive UI, main-scene smoke, generated-asset integrity and packaging.
+- Local isolated Python `.venv` passed 8/8 asset/runtime contract tests and `verify_generated_assets.py --require-generated`.
+- CI artifact: `ai-investment-arena-godot`, artifact ID `13311522692` from run #41810429080.
+- Current feature branch: `feat/ai-arena-godot-3d-experience-v01`; intended stacked PR base: `feat/ai-arena-independent-agent-workspace-v04`.
+- Scope remains synthetic paper mode only. No broker, live market feed, external LLM worker or real order execution is connected. No new paid GPT image-generation call is claimed.
+- Follow-on gaps: a run-setup modal (scenario label, trading days, capital and risk cap), seventh-investor follow/challenge interactions, and local visual QA in the Godot editor.
