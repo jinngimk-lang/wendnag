@@ -1,11 +1,15 @@
 extends SceneTree
 
 const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
+const AgentCatalog = preload("res://scripts/agent_catalog.gd")
 
 func _initialize() -> void:
 	var sim = ArenaSimulation.new()
 	sim.configure(100000.0, 90, 20261104)
 
+	_check(AgentCatalog.all().size() == 6, "six faction catalog entries must be present")
+	_check(AgentCatalog.portrait_texture("value") != null, "portrait sprite atlas must resolve a value portrait")
+	_check(AgentCatalog.room_texture("macro") != null, "room sprite atlas must resolve a macro environment")
 	_check(sim.accounts.size() == 6, "six factions must receive six separate accounts")
 	_check(sim.accounts["value"] != sim.accounts["growth"], "accounts must be distinct dictionaries")
 	_check(is_equal_approx(sim.accounts["value"].cash, 100000.0), "all accounts start with equal capital")

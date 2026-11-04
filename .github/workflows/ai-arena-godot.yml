@@ -55,6 +55,10 @@ jobs:
           echo "/tmp/godot" >> "$GITHUB_PATH"
           /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --version
 
+      - name: Run Python asset contract
+        working-directory: 11-ai-arena/godot
+        run: python3 -m unittest discover -s tests -p "test_*.py"
+
       - name: Import project and parse all scenes
         working-directory: 11-ai-arena/godot
         run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --editor --path . --quit
