@@ -1,0 +1,98 @@
+name: AI Arena Godot 3D
+
+on:
+  push:
+    branches:
+      - feat/ai-arena-godot-3d-experience-v01
+    paths:
+      - "11-ai-arena/godot/**"
+      - ".github/workflows/ai-arena-godot.yml"
+  pull_request:
+    branches:
+      - feat/ai-arena-concept-research
+    paths:
+      - "11-ai-arena/godot/**"
+      - ".github/workflows/ai-arena-godot.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-arena-godot-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  godot-and-blender:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Install Blender when the source builder is present
+        if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+
+      - name: Build Blender source and GLB assets
+        if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        working-directory: 11-ai-arena/godot
+        run: |
+          blender --background --factory-startup --python blender/build_ai_arena_assets.py -- --output assets
+
+      - name: Install Godot 4.7.1 stable
+        run: |
+          mkdir -p /tmp/godot
+          curl -L --fail --retry 3 \
+            https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip \
+            -o /tmp/godot/godot.zip
+          unzip -q /tmp/godot/godot.zip -d /tmp/godot
+          chmod +x /tmp/godot/Godot_v4.7.1-stable_linux.x86_64
+          echo "/tmp/godot" >> "$GITHUB_PATH"
+          /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --version
+
+      - name: Import project and parse all scenes
+        working-directory: 11-ai-arena/godot
+        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --editor --path . --quit
+
+      - name: Run simulation contract
+        working-directory: 11-ai-arena/godot
+        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_arena.gd
+
+      - name: Run main scene smoke test
+        working-directory: 11-ai-arena/godot
+        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --quit-after 4
+
+      - name: Verify generated Blender assets
+        if: hashFiles('11-ai-arena/godot/tools/verify_generated_assets.py') != ''
+        working-directory: 11-ai-arena/godot
+        run: python3 tools/verify_generated_assets.py --require-generated
+
+      - name: Commit generated Blender assets to the feature branch
+        if: github.event_name == 'push' && hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 11-ai-arena/godot/assets/source 11-ai-arena/godot/assets/generated
+          if ! git diff --cached --quiet; then
+            git commit -m "build(ai-arena): add Blender 3D source assets"
+            git push origin "HEAD:\${GITHUB_REF_NAME}"
+          fi
+
+      - name: Package Godot project
+        if: success()
+        run: |
+          cd 11-ai-arena/godot
+          zip -qr /tmp/ai-investment-arena-godot.zip . -x ".godot/*"
+
+      - name: Upload Godot project
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-investment-arena-godot
+          path: /tmp/ai-investment-arena-godot.zip
+          if-no-files-found: warn
