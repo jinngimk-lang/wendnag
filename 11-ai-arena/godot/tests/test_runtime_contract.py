@@ -17,6 +17,9 @@ class RuntimeContractTests(unittest.TestCase):
             self.assertIn(token, source)
         self.assertIn("res://assets/generated/agents/", source)
         self.assertIn("res://assets/generated/rooms/", source)
+        self.assertIn("SharedMarketScreen", source)
+        self.assertNotIn("CentralVault", source)
+        self.assertIn("target_agent_id", source)
 
     def test_hud_has_responsive_controls_and_replay(self):
         source = (ROOT / "scripts" / "arena_hud.gd").read_text(encoding="utf-8")
