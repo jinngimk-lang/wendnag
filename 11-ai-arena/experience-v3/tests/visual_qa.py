@@ -19,16 +19,22 @@ def run():
         page = browser.new_page(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
         page.on("pageerror", lambda error: errors.append(f"pageerror: {error}"))
         page.on("console", lambda message: errors.append(f"console: {message.text}") if message.type == "error" else None)
-        page.set_content(HTML, wait_until="load")
+        page.goto((ROOT / "index.html").as_uri(), wait_until="load")
+        page.wait_for_function("Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).length === 6 && Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).every(img => img.complete && img.naturalWidth > 0)")
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
         assert page.locator("#setupModal").is_visible()
         assert page.locator("#arenaGrid .agent-card").count() == 6
+        assert page.locator("#arenaGrid .agent-scene").count() == 6
+        assert page.locator("#arenaGrid .agent-card img").evaluate_all("imgs => imgs.every(img => img.complete && img.naturalWidth > 0)")
         page.screenshot(path=str(SHOTS / "setup-modal.png"), full_page=False)
         page.locator("#researchBtn").click()
         assert page.locator("#setupModal").is_hidden()
         assert page.locator("#arenaGrid .agent-card").count() == 6
         assert page.locator("#agentDetail").is_visible()
         assert page.locator("#agentDetail .detail-kpi").count() == 6
+        assert page.locator("#agentDetail .detail-room").count() == 1
+        assert page.locator("#agentDetail .role-chip").count() == 3
+        assert page.locator("#tradeDecision").count() == 1
         page.wait_for_timeout(120)
         page.screenshot(path=str(SHOTS / "desktop-workstation.png"), full_page=False)
 
@@ -72,6 +78,9 @@ def run():
             "agents": 6,
             "independentPortfolios": 6,
             "avatarSlots": page.locator("#arenaGrid .agent-card img[data-image-src]").count(),
+            "portraitAssetsLoaded": page.locator("#arenaGrid .agent-card img").evaluate_all("imgs => imgs.every(img => img.complete && img.naturalWidth > 0)"),
+            "researchRoomScenes": page.locator("#arenaGrid .agent-scene").count(),
+            "roleChips": page.locator("#agentDetail .role-chip").count(),
             "selectedAgent": page.locator("#detailName").inner_text(),
             "pageErrors": errors,
             "result": "PASS" if not errors and not any(v["horizontalOverflow"] for v in viewport_results) else "FAIL",
