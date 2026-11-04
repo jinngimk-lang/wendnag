@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Blender when the source builder is present
-        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true)
+        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[rebuild-ai-arena-assets]'))
         run: |
           sudo apt-get update
           sudo apt-get install -y blender python3-numpy
