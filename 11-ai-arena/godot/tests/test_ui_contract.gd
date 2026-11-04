@@ -2,6 +2,8 @@ extends SceneTree
 
 const MainScene = preload("res://scenes/main.tscn")
 
+var _failed := false
+
 func _initialize() -> void:
 	call_deferred("_run")
 
@@ -23,8 +25,11 @@ func _run() -> void:
 	app.return_to_arena()
 	_check(app.current_view == "arena", "the back action must restore the arena view")
 	app.queue_free()
-	print("AI ARENA UI CONTRACT: PASS")
-	quit(0)
+	if _failed:
+		_failed = true
+	else:
+		print("AI ARENA UI CONTRACT: PASS")
+		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:

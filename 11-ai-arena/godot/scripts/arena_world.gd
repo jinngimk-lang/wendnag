@@ -6,7 +6,10 @@ const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
 const AGENT_IDS := ["value", "growth", "trend", "quant", "sentiment", "macro"]
 
 var current_view := "arena"
+var current_mode := "arena"
 var selected_agent := "value"
+var current_agent := "value"
+var agent_anchors: Dictionary = {}
 var _arena_stage: Node3D
 var _room_views: Dictionary = {}
 var _station_positions: Dictionary = {}
@@ -96,6 +99,7 @@ func _build_arena_stage() -> void:
 		var station := _build_station(agent_id, station_position)
 		stations.add_child(station)
 		_station_nodes[agent_id] = station
+	agent_anchors = _station_positions.duplicate(true)
 
 func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	var faction := AgentCatalog.get_faction(agent_id)
@@ -234,10 +238,11 @@ func get_camera() -> Camera3D:
 func get_station_positions() -> Dictionary:
 	return _station_positions.duplicate(true)
 
-func select_agent(agent_id: String) -> void:
+func select_agent(agent_id: String) -> bool:
 	if not _station_nodes.has(agent_id):
-		return
+		return false
 	selected_agent = agent_id
+	current_agent = agent_id
 	for id in _station_nodes:
 		var station: Node3D = _station_nodes[id]
 		var target_scale := Vector3.ONE * (1.06 if id == agent_id else 1.0)
@@ -250,12 +255,15 @@ func select_agent(agent_id: String) -> void:
 			var mat := _material(accent if id == agent_id else accent.darkened(0.38), 0.62, 0.3)
 			podium.material_override = mat
 		station.scale = target_scale
+	return true
 
 func enter_room(agent_id: String) -> void:
 	if not _room_views.has(agent_id):
 		return
 	selected_agent = agent_id
+	current_agent = agent_id
 	current_view = "room"
+	current_mode = "room"
 	_arena_stage.visible = false
 	for id in _room_views:
 		(_room_views[id] as Node3D).visible = id == agent_id
@@ -267,6 +275,8 @@ func enter_room(agent_id: String) -> void:
 
 func return_to_arena() -> void:
 	current_view = "arena"
+	current_mode = "arena"
+	current_agent = selected_agent
 	_arena_stage.visible = true
 	for id in _room_views:
 		(_room_views[id] as Node3D).visible = false
@@ -275,6 +285,9 @@ func return_to_arena() -> void:
 		_camera.fov = 50.0
 		_camera.look_at(Vector3(0, 1.0, 0), Vector3.UP)
 	select_agent(selected_agent)
+
+static func cashflow_direction_for(signed_delta: float) -> String:
+	return ArenaSimulation.cashflow_direction(signed_delta)
 
 func animate_cashflow(agent_id: String, signed_delta: float) -> String:
 	var direction := ArenaSimulation.cashflow_direction(signed_delta)

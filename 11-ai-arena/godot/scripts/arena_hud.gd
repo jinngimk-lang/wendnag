@@ -40,7 +40,7 @@ var _tab_buttons: Dictionary = {}
 
 func _ready() -> void:
 	_build_ui()
-	apply_responsive_layout(get_viewport_rect().size.x)
+	apply_responsive_layout(get_viewport().get_visible_rect().size.x)
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 
 static func layout_mode_for(width: float) -> String:
@@ -103,7 +103,7 @@ func apply_responsive_layout(width: float) -> String:
 	return mode
 
 func _on_viewport_size_changed() -> void:
-	apply_responsive_layout(get_viewport_rect().size.x)
+	apply_responsive_layout(get_viewport().get_visible_rect().size.x)
 
 func _build_ui() -> void:
 	_root = Control.new()
@@ -412,7 +412,7 @@ func _detail_text(faction: Dictionary, snapshot: Dictionary) -> String:
 			else:
 				for index in range(start, visible_count):
 					var entry: Dictionary = ledger[index]
-					lines.append("DAY %03d   %-4s   $%s   %+.2f%%" % [
+					lines.append("DAY %03d   %s   $%s   %+.2f%%" % [
 						int(entry.day),
 						str(entry.action),
 						_format_money(float(entry.notional)),
@@ -464,7 +464,7 @@ func _on_slider_changed(value: float) -> void:
 		day_scrubbed.emit(int(value))
 
 func _format_money(value: float) -> String:
-	return String.num(value, 2).reverse().insert(0, "").reverse() if false else _money_grouped(value)
+	return _money_grouped(value)
 
 func _money_grouped(value: float) -> String:
 	var raw := String.num(absf(value), 2)

@@ -2,6 +2,8 @@ extends SceneTree
 
 const ArenaWorld = preload("res://scripts/arena_world.gd")
 
+var _failed := false
+
 func _initialize() -> void:
 	call_deferred("_run")
 
@@ -23,8 +25,11 @@ func _run() -> void:
 	_check(ArenaWorld.cashflow_direction_for(-200.0) == "to_vault", "negative P&L must route notes toward the vault")
 	_check(ArenaWorld.cashflow_direction_for(0.0) == "none", "zero P&L must not spawn cash notes")
 	world.queue_free()
-	print("AI ARENA WORLD CONTRACT: PASS")
-	quit(0)
+	if _failed:
+		_failed = true
+	else:
+		print("AI ARENA WORLD CONTRACT: PASS")
+		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:

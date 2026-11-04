@@ -3,6 +3,8 @@ extends SceneTree
 const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
 const AgentCatalog = preload("res://scripts/agent_catalog.gd")
 
+var _failed := false
+
 func _initialize() -> void:
 	var sim = ArenaSimulation.new()
 	sim.configure(100000.0, 90, 20261104)
@@ -39,8 +41,11 @@ func _initialize() -> void:
 	var twin = ArenaSimulation.new()
 	twin.configure(100000.0, 90, 20261104)
 	_check(is_equal_approx(sim.market_prices[1], twin.market_prices[1]), "same seed must reproduce the same market path")
-	print("AI ARENA SIMULATION CONTRACT: PASS")
-	quit(0)
+	if _failed:
+		_failed = true
+	else:
+		print("AI ARENA SIMULATION CONTRACT: PASS")
+		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:

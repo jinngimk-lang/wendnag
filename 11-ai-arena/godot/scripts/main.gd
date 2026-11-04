@@ -1,14 +1,15 @@
 extends Node3D
 
-const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
+const ArenaSimulation = preload("res://scripts/arenasimulation.gd")
 const ArenaWorld = preload("res://scripts/arena_world.gd")
 const ArenaHUD = preload("res://scripts/arena_hud.gd")
 
-var _simulation = ArenaSimulation.new()
+var simulation = ArenaSimulation.new()
 var _world: ArenaWorld
 var _hud: ArenaHUD
 var _playback_timer: Timer
-var _selected_agent := "value"
+var selected_agent := "value"
+var current_view := "arena"
 var _status := "SYNTHETIC PAPER MODE  ·  NO BROKER CONNECTION"
 
 func _ready() -> void:
@@ -62,6 +63,7 @@ func _on_playback_action(action: String) -> void:
 			_playback_timer.stop()
 			_simulation.configure(_simulation.starting_capital, _simulation.trading_days, _simulation.seed_value)
 			_world.return_to_arena()
+			current_view = "arena"
 			_hud.set_room_mode(false)
 			_set_status("RUN RESET  ·  SAME SEED / SAME MARKET PATH")
 
@@ -86,17 +88,19 @@ func _on_day_scrubbed(day: int) -> void:
 	_set_status("HISTORY REPLAY  ·  DAY %03d" % _simulation.replay_day)
 
 func _on_agent_selected(agent_id: String) -> void:
-	_selected_agent = agent_id
+	selected_agent = agent_id
 	_world.select_agent(agent_id)
 	_refresh()
 
 func _on_room_requested(agent_id: String) -> void:
-	_selected_agent = agent_id
+	selected_agent = agent_id
 	_world.enter_room(agent_id)
+	current_view = "room"
 	_set_status("RESEARCH ROOM  ·  %s" % agent_id.to_upper())
 
 func _on_room_exit_requested() -> void:
 	_world.return_to_arena()
+	current_view = "arena"
 	_set_status("ARENA OVERVIEW  ·  SIX AGENTS")
 
 func _on_export_requested() -> void:
@@ -123,6 +127,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE and _world.current_view == "room":
 			_world.return_to_arena()
+			current_view = "arena"
 			_hud.set_room_mode(false)
 			_set_status("ARENA OVERVIEW")
 		elif event.keycode == KEY_TAB:
@@ -146,3 +151,17 @@ func _pick_agent(screen_position: Vector2) -> void:
 	var collider: Object = hit.get("collider")
 	if collider != null and collider.has_meta("agent_id"):
 		_on_agent_selected(str(collider.get_meta("agent_id")))
+
+func apply_responsive_layout(width: float) -> String:
+	if _hud == null:
+		return ArenaHUD.layout_mode_for(width)
+	return _hud.apply_responsive_layout(width)
+
+func advance_one_day() -> void:
+	_advance_one_day()
+
+func enter_research_room(agent_id: String) -> void:
+	_on_room_requested(agent_id)
+
+func return_to_arena() -> void:
+	_on_room_exit_requested()
