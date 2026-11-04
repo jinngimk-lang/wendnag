@@ -1,0 +1,71 @@
+name: AI Arena validation
+
+on:
+  pull_request:
+    paths:
+      - "11-ai-arena/**"
+      - ".github/workflows/ai-arena-validation.yml"
+  push:
+    branches:
+      - "feat/ai-arena-concept-research"
+      - "feat/ai-arena-independent-agent-workspace-v04"
+    paths:
+      - "11-ai-arena/**"
+      - ".github/workflows/ai-arena-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  backend-contract:
+    name: Backend evidence contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run standard-library contract tests
+        env:
+          PYTHONPATH: 11-ai-arena
+        run: python -m unittest discover -s 11-ai-arena/backend/tests -v
+
+  browser-regression:
+    name: Finance Lab browser regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Create isolated Python environment
+        run: python -m venv .venv
+      - name: Install Playwright and Chromium
+        run: |
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r 11-ai-arena/experience-v3/requirements-test.txt
+          .venv/bin/python -m playwright install --with-deps chromium
+      - name: Run browser regression suite
+        run: .venv/bin/python 11-ai-arena/experience-v3/tests/test_ui.py
+      - name: Capture responsive visual QA
+        run: .venv/bin/python 11-ai-arena/experience-v3/tests/visual_qa.py
+      - name: Package runnable HTML experience
+        run: |
+          mkdir -p package/ai-investment-arena-v050
+          cp 11-ai-arena/experience-v3/index.html package/ai-investment-arena-v050/
+          cp 11-ai-arena/experience-v3/README.md package/ai-investment-arena-v050/
+          cp -R 11-ai-arena/experience-v3/assets package/ai-investment-arena-v050/
+          (cd package/ai-investment-arena-v050 && zip -qr ../ai-investment-arena-v050.zip .)
+      - name: Upload runnable HTML package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-investment-arena-v050-package
+          path: package/ai-investment-arena-v050.zip
+          if-no-files-found: error
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finance-lab-visual-qa
+          path: 11-ai-arena/experience-v3/shots/
+          if-no-files-found: warn

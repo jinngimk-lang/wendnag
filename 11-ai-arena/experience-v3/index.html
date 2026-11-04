@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d13">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2715%27 fill=%27%23080d13%27/%3E%3Cpath d=%27M32 7 57 32 32 57 7 32Z%27 fill=%27none%27 stroke=%27%23e9c78d%27 stroke-width=%274%27/%3E%3Cpath d=%27M32 20 44 32 32 44 20 32Z%27 fill=%27%23e9c78d%27/%3E%3C/svg%3E">
+<title>AI ARENA / FINANCE RESEARCH LAB · V0.5.0</title>
+<meta name="description" content="六个独立 Agent 账户、共同市场环境、投研与模拟交易一体化工作站。">
+<style>
+html,body{background:#080d13;color:#f2f4f2}
+:root{--bg:#080d13;--panel:#111a23;--panel2:#15212b;--line:#2b3945;--muted:#91a0aa;--text:#f3f2ec;--gold:#e9c78d;--gold2:#a77a45;--green:#5fe0a8;--red:#ff887e;--blue:#8db9ee;--purple:#c6a1f2;--cyan:#7dd6df;--orange:#f1a66e;--sans:Inter,"Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1a2732 0,#080d13 52%);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}button:disabled{opacity:.42;cursor:not-allowed}a{color:inherit;text-decoration:none}.shell{min-height:100vh;display:grid;grid-template-columns:66px minmax(0,1fr)}.rail{height:100vh;position:sticky;top:0;background:#0c141c;border-right:1px solid #24313b;display:flex;align-items:center;flex-direction:column;padding:18px 0;gap:26px;z-index:5}.mark{width:36px;height:36px;border:1px solid #98744a;border-radius:10px;transform:rotate(45deg);display:grid;place-items:center;background:linear-gradient(135deg,#493824,#171d22);color:var(--gold);font-size:17px}.mark span{transform:rotate(-45deg)}.railnav{display:grid;gap:12px}.railnav a{width:38px;height:38px;display:grid;place-items:center;border:1px solid transparent;border-radius:10px;color:#758692}.railnav a.active,.railnav a:hover{color:var(--gold);border-color:#665236;background:#30291f}.rail-foot{margin-top:auto;writing-mode:vertical-rl;color:#61717d;font:9px var(--mono);letter-spacing:.2em}.app{min-width:0}.top{height:62px;border-bottom:1px solid #23303a;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,58px);background:#0b1219cc;backdrop-filter:blur(14px);position:sticky;top:0;z-index:4}.wordmark{font:700 13px var(--mono);letter-spacing:.16em}.wordmark b{color:var(--gold)}.topmeta{display:flex;align-items:center;gap:14px;color:var(--muted);font:10px var(--mono);letter-spacing:.08em}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--green);box-shadow:0 0 12px #5fe0a855;margin-right:6px}.demo-pill,.tag{border:1px solid #394854;border-radius:5px;padding:5px 8px;color:#aab7bf;font:9px var(--mono);letter-spacing:.08em}.wrap{width:min(1480px,100%);margin:0 auto;padding:30px clamp(16px,3.8vw,58px) 64px}.hero{display:flex;justify-content:space-between;gap:30px;align-items:end;margin:16px 0 28px}.eyebrow,.kicker{font:10px var(--mono);letter-spacing:.18em;color:var(--gold2);text-transform:uppercase}.hero h1{font-size:clamp(28px,3.2vw,46px);line-height:1.16;letter-spacing:-.04em;margin:12px 0}.hero h1 em{font-style:normal;color:var(--gold)}.hero p{max-width:740px;color:#9eacb5;line-height:1.75;font-size:13px;margin:0}.hero-side{text-align:right;color:#8d9aa3;font:10px/1.8 var(--mono);white-space:nowrap}.hero-side strong{color:var(--gold);font-weight:500}.panel{background:linear-gradient(145deg,#141e28,#0e161e);border:1px solid #2b3945;border-radius:14px;box-shadow:0 14px 40px #0003}.setup{padding:20px 22px;display:grid;grid-template-columns:minmax(240px,1.6fr) minmax(130px,.7fr) minmax(145px,.8fr) minmax(150px,.85fr) auto;gap:15px;align-items:end}.field label{display:block;color:#a7b4bc;font:10px var(--mono);letter-spacing:.09em;margin-bottom:9px}.input-wrap{display:flex;align-items:center;background:#0a1118;border:1px solid #394957;border-radius:8px;padding:0 12px;height:42px}.input-wrap span{color:var(--gold);margin-right:9px}.input-wrap input{width:100%;background:none;border:0;outline:0;color:var(--text);min-width:0;font-size:13px}.input-wrap input:focus{outline:0}.field select,.field input[type=number]{height:42px;width:100%;background:#0a1118;border:1px solid #394957;border-radius:8px;color:var(--text);padding:0 10px;font-size:12px}.range-row{display:flex;align-items:center;gap:8px;height:42px}.range-row input{width:100%;accent-color:var(--gold)}.range-row output{min-width:50px;text-align:right;color:var(--gold);font:700 14px var(--mono)}.hint{font-size:10px;color:#71818b;margin-top:7px;line-height:1.4}.btn{height:42px;border:1px solid #465562;border-radius:8px;background:#17232d;color:#dce3e6;padding:0 15px;font-size:12px;white-space:nowrap}.btn:hover{border-color:var(--gold);color:var(--gold)}.btn.primary{background:linear-gradient(120deg,#f4d7a2,#d8a95e);color:#1a1c1d;border-color:#f0ce92;font-weight:750;box-shadow:0 5px 20px #d3a55b22}.btn.primary:hover{filter:brightness(1.06);color:#111}.btn.small{height:32px;padding:0 10px;font-size:11px}.btn.ghost{background:transparent}.trust{margin:12px 2px 0;color:#75848e;font-size:10px;line-height:1.6}.trust strong{color:#d3b681;font-weight:600}.section{margin-top:24px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:0 2px 13px}.section-head h2{font-size:18px;margin:5px 0 0;letter-spacing:-.02em}.section-head p{margin:0;color:#81909a;font-size:11px}.research-status{display:flex;align-items:center;gap:8px;color:#a7b4bc;font:10px var(--mono)}.research-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.faction{padding:16px;position:relative;overflow:hidden;min-height:235px;border-top:2px solid var(--accent)}.faction:after{content:"";position:absolute;right:-40px;top:-50px;width:130px;height:130px;border-radius:50%;background:var(--accent);opacity:.055;filter:blur(15px);pointer-events:none}.faction-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.faction-name{display:flex;align-items:center;gap:9px}.faction-icon{width:31px;height:31px;border-radius:9px;background:color-mix(in srgb,var(--accent) 15%,#101820);border:1px solid color-mix(in srgb,var(--accent) 35%,#283541);display:grid;place-items:center;color:var(--accent);font:700 12px var(--mono)}.faction-name strong{display:block;font-size:14px}.faction-name small{display:block;color:#82919b;font:9px var(--mono);margin-top:3px}.stance{font:10px var(--mono);border:1px solid #3c4a55;border-radius:5px;padding:4px 7px;color:#bdc8cd}.faction h3{font-size:13px;line-height:1.5;margin:14px 0 7px}.faction .thesis{color:#aab6bd;font-size:11px;line-height:1.65;min-height:36px;margin:0}.signals{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0}.signal{background:#0c141c;border:1px solid #283743;border-radius:5px;padding:4px 6px;color:#91a1ab;font:9px var(--mono)}.team{border-top:1px solid #283541;margin-top:12px;padding-top:10px;display:grid;gap:6px}.team-row{display:grid;grid-template-columns:65px 1fr;gap:8px;font-size:10px;line-height:1.45}.team-row b{color:var(--accent);font-weight:600}.team-row span{color:#95a3ad}.faction details{margin-top:10px}.faction summary{color:var(--gold);font-size:10px;cursor:pointer;list-style:none}.faction summary::-webkit-details-marker{display:none}.faction summary:after{content:"＋";float:right}.faction details[open] summary:after{content:"−"}.detail-body{padding-top:9px;color:#9eabb3;font-size:10px;line-height:1.65}.detail-body b{color:#d9e0e3}.debate{padding:17px 19px;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px}.debate-col{border-right:1px solid #2b3945;padding-right:16px}.debate-col:last-child{border:0;padding:0}.debate-col small{color:var(--gold2);font:9px var(--mono);letter-spacing:.1em}.debate-col h3{font-size:12px;margin:8px 0}.debate-col p{font-size:11px;color:#a0adb5;line-height:1.6;margin:0}.config{padding:18px 20px;display:grid;grid-template-columns:1fr 1fr 1.3fr auto;align-items:center;gap:18px}.config-stat{border-right:1px solid #2c3944}.config-stat:last-of-type{border:0}.config-stat small{display:block;color:#85939c;font:9px var(--mono);letter-spacing:.12em}.config-stat strong{display:block;font:700 17px var(--mono);margin-top:7px}.config-stat span{display:block;color:#75848e;font-size:10px;margin-top:4px}.run-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.run-controls{display:flex;gap:7px;flex-wrap:wrap}.arena{padding:17px;overflow:hidden}.arena-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 4px 13px;border-bottom:1px solid #2b3945;color:#aab6bd;font:10px var(--mono)}.arena-top strong{color:var(--green)}.arena-top .right{color:#778792}.arena-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;grid-template-areas:"a . b" "c vault d" "e . f";gap:12px;align-items:stretch;padding:18px 2px}.pod{border:1px solid #33424e;border-left:2px solid var(--accent);border-radius:9px;padding:12px;background:linear-gradient(145deg,#17232d,#101820);min-width:0}.pod[data-id=value]{grid-area:a}.pod[data-id=growth]{grid-area:b}.pod[data-id=trend]{grid-area:c}.pod[data-id=quant]{grid-area:d}.pod[data-id=sentiment]{grid-area:e}.pod[data-id=macro]{grid-area:f}.pod-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.pod-head b{font-size:12px}.pod-head small{color:#80909b;font:9px var(--mono)}.pod-equity{font:700 19px var(--mono);margin:10px 0 4px}.pod-change{font:10px var(--mono)}.pod-meta{color:#81909a;font-size:9px;margin-top:8px}.vault{grid-area:vault;align-self:center;justify-self:center;width:min(100%,210px);aspect-ratio:1;border-radius:50%;border:1px solid #80633d;background:radial-gradient(circle at 45% 35%,#34413e,#1c292a 58%,#0e171b);box-shadow:0 0 0 9px #d4ac5a0b,0 0 45px #d4ac5a18,inset 0 0 25px #d9b26d22;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px}.vault small{font:9px var(--mono);color:#b59a70;letter-spacing:.12em}.vault strong{font:800 clamp(20px,2vw,30px) var(--mono);color:var(--green);margin:9px 0}.vault span{color:#a0afb5;font-size:10px}.arena-grid{position:relative}.cashflow-layer{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:visible}.cashflow-bill{position:absolute;width:58px;height:29px;display:flex;align-items:center;justify-content:space-between;padding:0 6px;border:1px solid #6c9d76;border-radius:4px;background:linear-gradient(135deg,#e0f0d2 0%,#a8d5ad 54%,#70a981 100%);box-shadow:0 5px 14px #0009,inset 0 0 0 2px #f2f8e8a8;color:#1d5c3d;font:800 10px var(--mono);animation:bill-flight 1.15s cubic-bezier(.18,.7,.25,1) forwards}.cashflow-bill:before{content:"";position:absolute;inset:4px;border:1px solid #397c57;border-radius:50%;opacity:.55}.cashflow-bill .bill-side{font-size:8px;opacity:.8}.cashflow-bill .bill-center{font-size:13px}.cashflow-amount{position:absolute;padding:4px 7px;border-radius:5px;background:#09121adf;border:1px solid #43545b;font:700 10px var(--mono);white-space:nowrap;animation:amount-pop 1.15s ease-out forwards}.cashflow-amount.profit{color:var(--green);border-color:#4d8d70}.cashflow-amount.loss{color:var(--red);border-color:#9a5f5c}.cashflow-note{margin:0 4px 12px;color:#71828c;font-size:9px;line-height:1.5}.arena-foot{border-top:1px solid #2b3945;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:13px 4px 0}.arena-foot small{display:block;color:#81909a;font:9px var(--mono);letter-spacing:.1em}.arena-foot b{display:block;font:700 13px var(--mono);margin-top:6px}.metrics{display:grid;grid-template-columns:1.35fr .9fr;gap:13px}.chart-panel,.factor-panel,.events-panel,.ledger-panel{padding:17px}.chart-wrap{width:100%;overflow:hidden}.chart-wrap svg{width:100%;height:auto;display:block}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:9px;color:#9baab2;font-size:9px}.legend i{display:inline-block;width:12px;height:3px;vertical-align:middle;margin-right:4px}.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.factor{padding:11px;background:#0d151d;border:1px solid #2a3944;border-radius:8px}.factor-top{display:flex;justify-content:space-between;gap:8px;color:#a0adb5;font-size:10px}.factor strong{display:block;font:700 18px var(--mono);margin-top:8px}.meter{height:4px;background:#263540;border-radius:9px;margin-top:8px;overflow:hidden}.meter span{display:block;height:100%;background:var(--factor-color,var(--gold));width:50%;border-radius:9px}.factor-note{font-size:9px;color:#73838d;margin-top:6px}.events-list{display:grid;gap:8px;margin-top:12px}.event{display:grid;grid-template-columns:55px 1fr;gap:9px;padding:9px 0;border-bottom:1px solid #27343e}.event:last-child{border:0}.event-day{font:9px var(--mono);color:var(--gold)}.event b{display:block;font-size:10px}.event p{margin:4px 0 0;color:#8d9ca5;font-size:9px;line-height:1.5}.ledger-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}.ledger-toolbar select{height:32px;background:#0b131a;border:1px solid #354550;color:#d7dfe2;border-radius:6px;padding:0 8px;font-size:10px}.ledger-scroll{overflow:auto;max-height:480px;border:1px solid #2b3945;border-radius:8px}table{width:100%;border-collapse:collapse;min-width:760px;font-size:10px}th{position:sticky;top:0;background:#17232d;color:#a0adb5;text-align:left;font:9px var(--mono);letter-spacing:.06em;padding:10px 9px}td{padding:9px;border-top:1px solid #26343e;color:#aebbc2;white-space:nowrap}td b{color:#e6e9e8;font-weight:600}.ledger-context{margin-top:5px;color:#7f929d;font:9px/1.5 var(--mono);white-space:normal;min-width:260px}.buy{color:var(--green)!important}.sell{color:var(--red)!important}.hold{color:#a9b7c0!important}.badge{display:inline-block;border:1px solid #3a4a55;border-radius:4px;padding:3px 5px;font:9px var(--mono)}.empty{padding:30px;text-align:center;color:#82909a;font-size:11px}.hidden{display:none!important}.foot{border-top:1px solid #27343e;margin-top:28px;padding-top:14px;display:flex;justify-content:space-between;gap:12px;color:#63737e;font:9px var(--mono)}.modal{position:fixed;inset:0;background:#000a;z-index:10;display:grid;place-items:center;padding:20px}.modal-card{max-width:580px;width:100%;padding:20px;background:#15212b;border:1px solid #56636a;border-radius:12px}.modal-card h3{margin:0 0 8px}.modal-card p{color:#9eabb3;font-size:11px;line-height:1.65}.modal-card button{float:right}.toast{position:fixed;bottom:20px;right:20px;background:#1a2a31;border:1px solid #4c6d63;color:#bce8d2;padding:10px 14px;border-radius:8px;font-size:11px;z-index:12;box-shadow:0 10px 30px #0006}
+@keyframes bill-flight{0%{opacity:0;transform:translate(-50%,-50%) translate(0,0) rotate(-14deg) scale(.65)}12%{opacity:1}76%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.92)}}@keyframes amount-pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.78)}18%{opacity:1;transform:translate(-50%,-65%) scale(1)}78%{opacity:1}100%{opacity:0;transform:translate(-50%,-115%) scale(.96)}}
+@media(max-width:1050px){.setup{grid-template-columns:1.3fr .8fr .8fr .9fr}.setup .btn{grid-column:1/-1}.research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics{grid-template-columns:1fr}.config{grid-template-columns:1fr 1fr}.config-stat:nth-child(2){border:0}.debate{grid-template-columns:1fr 1fr}.debate-col:nth-child(2){border:0}.debate-col:last-child{grid-column:1/-1;border-top:1px solid #2b3945;padding-top:12px}}
+@media(max-width:700px){.shell{display:block;padding-bottom:58px}.rail{position:fixed;top:auto;bottom:0;width:100%;height:58px;border-right:0;border-top:1px solid #293743;flex-direction:row;justify-content:space-around;padding:7px 12px}.mark,.rail-foot{display:none}.railnav{display:flex;gap:10px}.railnav a{width:42px;height:42px}.top{height:54px;padding:0 15px}.topmeta{gap:7px;font-size:8px}.wrap{padding:21px 13px 42px}.hero{display:block;margin:8px 0 20px}.hero h1{font-size:29px}.hero-side{text-align:left;margin-top:10px}.setup{grid-template-columns:1fr 1fr;padding:15px;gap:12px}.setup .field:first-child{grid-column:1/-1}.setup .btn{grid-column:1/-1;width:100%}.research-grid{grid-template-columns:1fr}.faction{min-height:0}.debate{grid-template-columns:1fr;padding:14px}.debate-col,.debate-col:nth-child(2){border:0;border-bottom:1px solid #2b3945;padding:0 0 12px}.debate-col:last-child{grid-column:auto;border:0;padding:0}.config{grid-template-columns:1fr 1fr;padding:14px}.config-stat{border:0;padding:6px 0}.run-head{display:block}.run-controls{margin-top:10px}.arena{padding:12px}.arena-grid{grid-template-columns:1fr 1fr;grid-template-areas:"vault vault" "a b" "c d" "e f";gap:8px;padding:13px 0}.vault{width:160px}.pod{padding:10px}.pod-equity{font-size:15px}.arena-foot{grid-template-columns:1fr 1fr}.factor-grid{grid-template-columns:1fr 1fr}.foot{display:block;line-height:1.8}.section-head{align-items:start;flex-direction:column}.ledger-toolbar{align-items:start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* MotionSites-inspired V0.3.3 design system */
+/* MotionSites-inspired Finance Research Lab redesign · V0.3.3 */
+:root{
+  --bg:#080d13;--panel:#111b25;--panel2:#15232e;--line:rgba(164,184,195,.16);
+  --muted:#91a1ab;--text:#f2f4f2;--gold:#e9c78d;--gold2:#b28a55;
+  --green:#70dfad;--red:#ff887e;--blue:#8db9ee;--purple:#c6a1f2;
+  --cyan:#7dd6df;--orange:#f1a66e;--radius-lg:18px;
+  --ease-out:cubic-bezier(.16,1,.3,1);--ease-standard:cubic-bezier(.4,0,.2,1)
+}
+*{box-sizing:border-box}
+html{background:#080d13;color:var(--text);scroll-behavior:smooth;scroll-padding-top:88px}
+body{position:relative;isolation:isolate;min-height:100vh;margin:0;background:linear-gradient(180deg,#0a121a 0%,#080d13 46%,#070c12 100%);color:var(--text);font-family:Inter,"Noto Sans SC","PingFang SC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.2;background-image:linear-gradient(rgba(184,202,211,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(184,202,211,.055) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(180deg,rgba(0,0,0,.55),transparent 78%)}
+button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}a{color:inherit;text-decoration:none}
+.shell{min-height:100vh;display:grid;grid-template-columns:76px minmax(0,1fr)}
+.rail{height:100vh;height:100dvh;position:sticky;top:0;background:rgba(8,14,20,.88);border-right:1px solid rgba(164,184,195,.13);backdrop-filter:blur(18px);display:flex;align-items:center;flex-direction:column;padding:22px 0;gap:30px;z-index:30}
+.mark{width:38px;height:38px;border:1px solid rgba(233,199,141,.58);border-radius:12px;transform:rotate(45deg);display:grid;place-items:center;background:linear-gradient(145deg,rgba(233,199,141,.17),rgba(17,26,34,.88));color:var(--gold);font-size:17px;box-shadow:0 0 28px rgba(233,199,141,.08),inset 0 1px rgba(255,255,255,.12)}
+.railnav{display:grid;gap:13px}.railnav a{width:44px;height:44px;display:grid;place-items:center;border:1px solid transparent;border-radius:13px;color:#82929d;font-size:16px;transition:background .22s,border-color .22s,color .22s,transform .22s}.railnav a.active,.railnav a:hover{color:var(--gold);border-color:rgba(233,199,141,.3);background:linear-gradient(145deg,rgba(233,199,141,.13),rgba(233,199,141,.035));transform:translateY(-1px)}
+.rail-foot{margin-top:auto;writing-mode:vertical-rl;color:#637581;font:9px var(--mono);letter-spacing:.22em}
+.app{min-width:0}.top{height:68px;border-bottom:1px solid rgba(164,184,195,.13);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,4.2vw,68px);background:rgba(8,14,20,.78);backdrop-filter:blur(18px);position:sticky;top:0;z-index:25}
+.wordmark{font:700 12px var(--mono);letter-spacing:.17em;color:#dbe2e3}.wordmark b{color:var(--gold)}.topmeta{display:flex;align-items:center;gap:14px;color:#95a5ae;font:9px var(--mono);letter-spacing:.1em}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--green);box-shadow:0 0 10px rgba(112,223,173,.45);margin-right:7px}.demo-pill,.tag{border:1px solid rgba(164,184,195,.19);border-radius:999px;padding:6px 10px;color:#aab7bf;font:9px var(--mono);letter-spacing:.09em;background:rgba(255,255,255,.025)}
+.wrap{width:min(1600px,100%);margin:0 auto;padding:38px clamp(22px,4.2vw,68px) 76px}
+.hero{position:relative;display:flex;justify-content:space-between;gap:34px;align-items:end;margin:0 0 28px;padding:8px 0 27px;border-bottom:1px solid rgba(164,184,195,.14);animation:arena-rise .82s var(--ease-out) .06s both}
+.eyebrow,.kicker{font:500 10px var(--mono);letter-spacing:.19em;color:#b38d59;text-transform:uppercase}
+.hero h1{font-size:clamp(34px,3.8vw,58px);font-weight:500;line-height:1.08;letter-spacing:-.045em;margin:14px 0 13px;max-width:900px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold);font-weight:500}
+.hero p{max-width:700px;color:#a6b2b8;line-height:1.78;font-size:13px;margin:0}
+.hero-side{position:relative;flex:0 0 228px;text-align:left;color:#82939d;font:9px/1.9 var(--mono);white-space:normal;border-left:1px solid rgba(233,199,141,.32);padding:9px 0 9px 17px;margin-bottom:2px}
+.hero-side strong{display:block;color:var(--gold);font-weight:500;margin-top:4px}
+.panel{background:linear-gradient(145deg,rgba(19,30,40,.96),rgba(11,19,27,.97));border:1px solid rgba(164,184,195,.16);border-radius:var(--radius-lg);box-shadow:0 16px 42px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.035)}
+.setup{position:relative;overflow:hidden;padding:23px 24px;display:grid;grid-template-columns:minmax(240px,1.55fr) minmax(135px,.78fr) minmax(150px,.88fr) minmax(160px,.95fr) auto;gap:17px;align-items:end;animation:arena-rise .82s var(--ease-out) .16s both}
+.setup:before{content:"";position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(233,199,141,.48),transparent)}
+.field label{display:block;color:#aebac0;font:500 9px var(--mono);letter-spacing:.1em;margin-bottom:10px}
+.input-wrap{display:flex;align-items:center;background:rgba(5,11,17,.72);border:1px solid rgba(164,184,195,.22);border-radius:10px;padding:0 13px;height:46px;transition:border-color .2s,box-shadow .2s,background .2s}
+.input-wrap:focus-within{border-color:rgba(233,199,141,.68);box-shadow:0 0 0 3px rgba(233,199,141,.08);background:#0a141d}
+.input-wrap span{color:var(--gold);margin-right:10px}.input-wrap input{width:100%;background:none;border:0;outline:0;color:var(--text);min-width:0;font-size:13px}.input-wrap input:focus{outline:0}
+.field select,.field input[type=number]{height:46px;width:100%;background:rgba(5,11,17,.72);border:1px solid rgba(164,184,195,.22);border-radius:10px;color:var(--text);padding:0 11px;font-size:12px;transition:border-color .2s,box-shadow .2s}
+.field select:focus,.field input[type=number]:focus{border-color:rgba(233,199,141,.68);box-shadow:0 0 0 3px rgba(233,199,141,.08);outline:0}
+.range-row{display:flex;align-items:center;gap:10px;height:46px}.range-row input{width:100%;accent-color:var(--gold);cursor:pointer}.range-row output{min-width:50px;text-align:right;color:var(--gold);font:700 14px var(--mono)}
+.hint{font-size:10px;color:#7e909a;margin-top:8px;line-height:1.5}
+.btn{min-height:44px;border:1px solid rgba(164,184,195,.23);border-radius:999px;background:rgba(255,255,255,.035);color:#dce4e5;padding:0 17px;font-size:12px;font-weight:500;white-space:nowrap;transition:transform .22s var(--ease-out),border-color .22s,background .22s,color .22s,box-shadow .22s}
+.btn:hover{border-color:rgba(233,199,141,.56);color:var(--gold);transform:translateY(-1px);background:rgba(233,199,141,.06)}.btn:active{transform:scale(.98)}
+.btn.primary{background:linear-gradient(180deg,#f0d5a4 0%,#dfb977 100%);color:#171b1d;border:1px solid #f1d9ae;font-weight:700;box-shadow:inset 0 1px rgba(255,255,255,.65),0 6px 18px rgba(209,164,91,.14)}
+.btn.primary:hover{background:linear-gradient(180deg,#ffe3b6,#e7c184);color:#101517;box-shadow:inset 0 1px rgba(255,255,255,.75),0 8px 24px rgba(209,164,91,.22)}
+.btn.small{min-height:38px;padding:0 13px;font-size:10px}.btn.ghost{background:rgba(255,255,255,.018)}
+.trust{margin:14px 2px 0;padding:9px 13px;border-left:2px solid rgba(233,199,141,.55);border-radius:0 9px 9px 0;background:linear-gradient(90deg,rgba(233,199,141,.06),rgba(233,199,141,0));color:#83939b;font-size:10px;line-height:1.65}.trust strong{color:#e1c28f;font-weight:600}
+.section{margin-top:38px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 2px 15px}.section-head h2{font-size:20px;font-weight:550;margin:6px 0 0;letter-spacing:-.035em}.section-head p{margin:5px 0 0;color:#84949d;font-size:11px;line-height:1.6}.research-status{display:flex;align-items:center;gap:8px;color:#a7b4bc;font:9px var(--mono)}
+.research-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.faction{padding:19px;position:relative;overflow:hidden;min-height:250px;border:1px solid rgba(164,184,195,.17);border-top:2px solid var(--accent);border-radius:14px;background:linear-gradient(145deg,rgba(22,34,45,.96),rgba(11,19,27,.98));box-shadow:inset 0 1px rgba(255,255,255,.025);transition:transform .24s var(--ease-out),border-color .24s,box-shadow .24s}
+.faction:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 52%,rgba(164,184,195,.2));box-shadow:0 14px 30px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.04)}
+.faction:after{content:"";position:absolute;right:-54px;top:-64px;width:170px;height:170px;border-radius:50%;background:var(--accent);opacity:.045;filter:blur(18px);pointer-events:none}
+.faction-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.faction-name{display:flex;align-items:center;gap:11px}.faction-icon{width:36px;height:36px;border-radius:11px;background:color-mix(in srgb,var(--accent) 13%,#101820);border:1px solid color-mix(in srgb,var(--accent) 38%,#283541);display:grid;place-items:center;color:var(--accent);font:700 12px var(--mono)}
+.faction-name strong{display:block;font-size:14px;font-weight:650}.faction-name small{display:block;color:#84949e;font:9px var(--mono);margin-top:4px;letter-spacing:.08em}.stance{font:9px var(--mono);border:1px solid rgba(164,184,195,.22);border-radius:999px;padding:5px 8px;color:#bdc8cd;background:rgba(255,255,255,.025)}
+.faction h3{font-size:13px;line-height:1.55;font-weight:600;margin:15px 0 7px}.faction .thesis{color:#aebac0;font-size:11px;line-height:1.75;min-height:38px;margin:0}.signals{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.signal{background:rgba(4,10,16,.58);border:1px solid rgba(164,184,195,.16);border-radius:6px;padding:5px 7px;color:#98a8b0;font:9px var(--mono)}
+.team{border-top:1px solid rgba(164,184,195,.15);margin-top:13px;padding-top:12px;display:grid;gap:7px}.team-row{display:grid;grid-template-columns:72px 1fr;gap:9px;font-size:10px;line-height:1.55}.team-row b{color:var(--accent);font-weight:650}.team-row span{color:#9baab1}.faction details{margin-top:12px;padding-top:10px;border-top:1px solid rgba(164,184,195,.11)}.faction summary{color:var(--gold);font-size:10px;cursor:pointer;list-style:none;min-height:24px}.faction summary::-webkit-details-marker{display:none}.faction summary:after{content:"＋";float:right;transition:transform .2s}.faction details[open] summary:after{content:"−"}.detail-body{padding-top:9px;color:#a5b2b8;font-size:10px;line-height:1.75}.detail-body b{color:#e1e7e6}
+.debate{padding:20px 22px;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:20px;border-radius:15px}.debate-col{border-right:1px solid rgba(164,184,195,.15);padding-right:19px}.debate-col:last-child{border:0;padding:0}.debate-col small{color:var(--gold2);font:9px var(--mono);letter-spacing:.12em}.debate-col h3{font-size:13px;font-weight:600;margin:9px 0}.debate-col p{font-size:11px;color:#a4b0b6;line-height:1.7;margin:0}
+.config{padding:20px 22px;display:grid;grid-template-columns:1fr 1fr 1.3fr auto;align-items:center;gap:18px;border-radius:15px}.config-stat{border-right:1px solid rgba(164,184,195,.15);min-width:0}.config-stat:last-of-type{border:0}.config-stat small{display:block;color:#8b9aa3;font:9px var(--mono);letter-spacing:.13em}.config-stat strong{display:block;font:700 17px var(--mono);margin-top:8px;overflow-wrap:anywhere}.config-stat span{display:block;color:#7e9099;font-size:10px;margin-top:5px;line-height:1.5}
+.run-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:15px}.run-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.run-controls .btn{min-height:39px}
+.arena{position:relative;padding:21px 22px 18px;overflow:hidden;border-radius:20px;background:radial-gradient(ellipse at 50% 42%,rgba(45,61,65,.3),transparent 45%),linear-gradient(145deg,#121d26,#0a1219);border-color:rgba(190,184,160,.2);box-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.04)}
+.arena-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 4px 14px;border-bottom:1px solid rgba(164,184,195,.15);color:#b0bdc1;font:9px var(--mono);letter-spacing:.08em}.arena-top strong{color:var(--green)}.arena-top .right{color:#82939d}
+.arena-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,235px) minmax(0,1fr);grid-template-rows:minmax(112px,auto) minmax(150px,auto) minmax(112px,auto);grid-template-areas:"a . b" "c vault d" "e . f";gap:14px 17px;align-items:stretch;padding:25px 8px;min-height:430px;border-radius:15px;background-image:radial-gradient(circle at 50% 50%,rgba(233,199,141,.075),transparent 36%),linear-gradient(rgba(184,202,211,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(184,202,211,.025) 1px,transparent 1px);background-size:auto,38px 38px,38px 38px}
+.arena-grid:before{content:"";position:absolute;inset:10% 27%;border:1px solid rgba(233,199,141,.08);border-radius:50%;pointer-events:none;z-index:0}
+.pod{position:relative;z-index:1;border:1px solid rgba(164,184,195,.19);border-left:2px solid var(--accent);border-radius:12px;padding:15px;background:linear-gradient(145deg,rgba(23,36,47,.96),rgba(12,20,28,.98));box-shadow:inset 0 1px rgba(255,255,255,.035);min-width:0;transition:border-color .2s,transform .2s}
+.pod[data-id=value]{grid-area:a}.pod[data-id=growth]{grid-area:b}.pod[data-id=trend]{grid-area:c}.pod[data-id=quant]{grid-area:d}.pod[data-id=sentiment]{grid-area:e}.pod[data-id=macro]{grid-area:f}
+.pod-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.pod-head b{font-size:12px;font-weight:650}.pod-head small{color:#8798a1;font:9px var(--mono)}.pod-equity{font:700 21px var(--mono);letter-spacing:-.035em;margin:12px 0 4px}.pod-change{font:10px var(--mono)}.pod-meta{color:#8b9ba3;font-size:9px;margin-top:9px;line-height:1.5}
+.vault{position:relative;z-index:2;grid-area:vault;align-self:center;justify-self:center;width:clamp(180px,15vw,230px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(233,199,141,.58);background:radial-gradient(circle at 48% 34%,rgba(67,81,69,.96),rgba(28,42,39,.98) 57%,#0b1518 100%);box-shadow:0 0 0 8px rgba(233,199,141,.035),0 0 0 18px rgba(233,199,141,.018),0 0 52px rgba(233,199,141,.12),inset 0 0 30px rgba(233,199,141,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:13px;isolation:isolate}
+.vault:before{content:"";position:absolute;inset:-13px;border:1px dashed rgba(233,199,141,.24);border-radius:50%;pointer-events:none;animation:arena-orbit 42s linear infinite}.vault:after{content:"";position:absolute;inset:-24px;border:1px solid rgba(233,199,141,.08);border-radius:50%;pointer-events:none}
+.vault small{font:9px var(--mono);color:#c3aa7d;letter-spacing:.14em}.vault strong{font:700 clamp(23px,2.3vw,32px) var(--mono);letter-spacing:-.04em;color:var(--green);margin:10px 0}.vault span{color:#b3c0be;font-size:10px}
+.cashflow-layer{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:visible}.cashflow-note{margin:1px 4px 13px;color:#84949a;font-size:9px;line-height:1.55}.arena-foot{border-top:1px solid rgba(164,184,195,.15);display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:14px 0 0}.arena-foot>div{padding:10px 12px;border:1px solid rgba(164,184,195,.12);border-radius:9px;background:rgba(255,255,255,.018)}.arena-foot small{display:block;color:#8798a1;font:9px var(--mono);letter-spacing:.1em}.arena-foot b{display:block;font:650 13px var(--mono);margin-top:7px;overflow-wrap:anywhere}
+#simulation>.panel:not(.arena){padding:15px 18px!important;margin-top:14px!important;border-radius:14px;background:rgba(15,24,33,.88);border-color:rgba(164,184,195,.15)}
+#scrub{height:5px;cursor:pointer}#scrub::-webkit-slider-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #111a21;box-shadow:0 0 0 4px rgba(233,199,141,.12)}
+.metrics{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.9fr);gap:15px}.chart-panel,.factor-panel,.events-panel,.ledger-panel{padding:20px;border-radius:16px}.chart-wrap{width:100%;overflow:hidden}.chart-wrap svg{width:100%;height:auto;display:block;overflow:visible}.legend{display:flex;gap:13px;flex-wrap:wrap;margin-top:12px;color:#a0adb3;font-size:9px}.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:3px}.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.factor{padding:13px;background:rgba(5,12,18,.5);border:1px solid rgba(164,184,195,.15);border-radius:10px}.factor-top{display:flex;justify-content:space-between;gap:8px;color:#aab7bd;font-size:10px}.factor strong{display:block;font:700 19px var(--mono);margin-top:9px}.meter{height:4px;background:#263540;border-radius:9px;margin-top:9px;overflow:hidden}.meter span{display:block;height:100%;background:var(--factor-color,var(--gold));width:50%;border-radius:9px}.factor-note{font-size:9px;color:#82939b;margin-top:7px;line-height:1.45}
+.events-list{display:grid;gap:0;margin-top:12px}.event{display:grid;grid-template-columns:58px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(164,184,195,.12)}.event:last-child{border:0}.event-day{font:9px var(--mono);color:var(--gold)}.event b{display:block;font-size:11px;font-weight:600}.event p{margin:5px 0 0;color:#91a1a8;font-size:10px;line-height:1.6}
+#standings>div:not(.hint){padding:13px 3px!important;border-bottom-color:rgba(164,184,195,.13)!important}#standings .hint{margin-top:12px;line-height:1.65}
+.ledger-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0}.ledger-toolbar select{min-height:38px;background:rgba(5,11,17,.75);border:1px solid rgba(164,184,195,.2);color:#d7dfe2;border-radius:9px;padding:0 10px;font-size:10px}.ledger-scroll{overflow:auto;max-height:500px;border:1px solid rgba(164,184,195,.15);border-radius:11px}table{width:100%;border-collapse:collapse;min-width:860px;font-size:10px}th{position:sticky;top:0;background:#17232d;color:#aab7bd;text-align:left;font:500 9px var(--mono);letter-spacing:.08em;padding:13px 11px}td{padding:11px;border-top:1px solid rgba(164,184,195,.11);color:#b1bdc2;white-space:nowrap}td b{color:#eef1ef;font-weight:600}.ledger-context{margin-top:5px;color:#8799a1;font:9px/1.55 var(--mono);white-space:normal;min-width:260px}.buy{color:var(--green)!important}.sell{color:var(--red)!important}.hold{color:#a9b7c0!important}.badge{display:inline-block;border:1px solid rgba(164,184,195,.22);border-radius:999px;padding:4px 7px;font:9px var(--mono);background:rgba(255,255,255,.025)}
+.empty{padding:32px;text-align:center;color:#8798a0;font-size:11px}.hidden{display:none!important}.foot{border-top:1px solid rgba(164,184,195,.14);margin-top:34px;padding-top:17px;display:flex;justify-content:space-between;gap:14px;color:#70818b;font:9px var(--mono);letter-spacing:.06em}
+.modal{position:fixed;inset:0;background:rgba(1,5,9,.78);backdrop-filter:blur(10px);z-index:60;display:grid;place-items:center;padding:20px}.modal-card{max-width:600px;width:100%;padding:25px;background:linear-gradient(145deg,#192833,#0d161e);border:1px solid rgba(233,199,141,.28);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.42)}.modal-card h3{margin:0 0 10px;font-size:19px}.modal-card p{color:#a4b1b7;font-size:12px;line-height:1.75}.modal-card button{float:right}.toast{position:fixed;bottom:22px;right:22px;background:#15272a;border:1px solid rgba(112,223,173,.4);color:#c7f0dc;padding:12px 16px;border-radius:10px;font-size:11px;z-index:70;box-shadow:0 12px 32px rgba(0,0,0,.35)}
+@keyframes arena-rise{from{opacity:0;transform:translateY(18px);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes arena-orbit{to{transform:rotate(360deg)}}
+.hero{animation-delay:.08s}.setup{animation-delay:.2s}.section:not(.hidden){animation:arena-rise .72s var(--ease-out) both}.section:not(.hidden)>.section-head{animation:arena-rise .65s var(--ease-out) .05s both}
+@media(max-width:1180px){.wrap{padding:32px 30px 64px}.setup{grid-template-columns:minmax(220px,1.35fr) minmax(125px,.8fr) minmax(145px,.9fr) minmax(150px,.9fr)}.setup>.btn{grid-column:1/-1;justify-self:end;min-width:210px}.research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics{grid-template-columns:1.1fr .9fr}.arena-grid{grid-template-columns:minmax(0,1fr) 205px minmax(0,1fr);gap:12px}.vault{width:190px}}
+@media(max-width:850px){.shell{grid-template-columns:60px minmax(0,1fr)}.rail{padding:18px 0;gap:24px}.top{height:62px;padding:0 22px}.wrap{padding:28px 22px 58px}.hero{gap:22px}.hero-side{flex-basis:185px;font-size:8px}.hero h1{font-size:clamp(32px,4.6vw,44px)}.setup{grid-template-columns:1fr 1fr;padding:19px}.setup>.btn{grid-column:1/-1;justify-self:stretch}.research-grid{gap:12px}.faction{padding:16px;min-height:240px}.arena-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;grid-template-areas:"vault vault" "a b" "c d" "e f";gap:10px;padding:20px 4px}.vault{width:190px;margin:4px auto 8px}.arena-grid:before{inset:12% 18% 68%;border-radius:50%}.arena-foot{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.shell{display:block;padding-bottom:66px}.rail{position:fixed;top:auto;bottom:0;left:0;right:0;width:100%;height:62px;border-right:0;border-top:1px solid rgba(164,184,195,.16);flex-direction:row;justify-content:space-around;padding:7px 14px max(7px,env(safe-area-inset-bottom));gap:0;background:rgba(7,13,19,.92);backdrop-filter:blur(20px)}.mark,.rail-foot{display:none}.railnav{display:flex;gap:12px}.railnav a{width:44px;height:44px}.top{height:58px;padding:0 15px}.wordmark{font-size:10px;letter-spacing:.13em}.topmeta{gap:7px;font-size:8px}.topmeta>span:first-child{display:none}.demo-pill{padding:5px 7px;font-size:8px}.top .btn.small{min-height:34px;padding:0 10px}.wrap{padding:24px 15px 44px}.hero{display:block;margin:4px 0 21px;padding-bottom:21px}.hero h1{font-size:clamp(31px,8vw,38px);line-height:1.12;margin:12px 0}.hero p{font-size:12px;line-height:1.75}.hero-side{width:auto;margin-top:15px;padding:8px 0 8px 13px;border-left:1px solid rgba(233,199,141,.3);font-size:8px}.setup{grid-template-columns:1fr 1fr;padding:16px;gap:13px}.setup .field:first-child{grid-column:1/-1}.setup>.btn{grid-column:1/-1;width:100%;min-height:46px}.field label{font-size:9px}.input-wrap,.field select,.field input[type=number],.range-row{height:44px}.trust{font-size:9px;margin-top:11px;padding:9px 11px}.section{margin-top:31px}.section-head{align-items:start;flex-direction:column;gap:9px;margin-bottom:13px}.section-head h2{font-size:18px}.section-head p{font-size:10px}.research-status{flex-wrap:wrap}.research-grid{grid-template-columns:1fr;gap:11px}.faction{min-height:0;padding:17px}.faction .thesis{min-height:0}.debate{grid-template-columns:1fr;padding:16px;gap:13px}.debate-col,.debate-col:nth-child(2){border:0;border-bottom:1px solid rgba(164,184,195,.15);padding:0 0 13px}.debate-col:last-child{grid-column:auto;border:0;padding:0}.config{grid-template-columns:1fr 1fr;padding:16px;gap:12px}.config-stat{border:0;padding:4px 0}.config-stat strong{font-size:15px}.config-stat span{font-size:9px}.config .btn{grid-column:1/-1;width:100%}.run-head{display:block}.run-head>.section-head{margin:0}.run-controls{margin-top:13px;justify-content:flex-start;gap:7px}.run-controls .btn{min-height:42px;padding:0 12px}.arena{padding:14px 12px 13px;border-radius:16px}.arena-top{font-size:8px;align-items:flex-start}.arena-grid{grid-template-columns:1fr 1fr;grid-template-areas:"vault vault" "a b" "c d" "e f";gap:8px;padding:17px 0;min-height:0}.vault{width:clamp(156px,48vw,185px)}.vault small{font-size:8px}.vault strong{font-size:22px}.pod{padding:11px 10px;border-radius:10px}.pod-head b{font-size:10px}.pod-head small{font-size:8px}.pod-equity{font-size:15px;margin:9px 0 3px}.pod-change{font-size:9px}.pod-meta{font-size:8px;line-height:1.45}.cashflow-note{font-size:8px}.arena-foot{grid-template-columns:1fr 1fr;gap:7px}.arena-foot>div{padding:9px}.arena-foot small{font-size:8px}.arena-foot b{font-size:11px}.metrics{grid-template-columns:1fr;gap:11px}.chart-panel,.factor-panel,.events-panel,.ledger-panel{padding:15px}.factor-grid{grid-template-columns:1fr 1fr;gap:8px}.factor{padding:10px}.ledger-toolbar{align-items:stretch;flex-direction:column}.ledger-toolbar>div:last-child{display:grid!important;grid-template-columns:1fr 1fr;gap:7px!important}.ledger-toolbar select{min-height:42px;width:100%}.ledger-scroll{max-height:430px}.foot{display:block;line-height:1.9;font-size:8px}.foot span{display:block}.modal-card{padding:20px}.toast{left:14px;right:14px;bottom:76px;text-align:center}}
+@media(max-width:380px){.topmeta .demo-pill{display:none}.wrap{padding-left:12px;padding-right:12px}.hero h1{font-size:30px}.setup{grid-template-columns:1fr}.setup .field:first-child,.setup>.btn{grid-column:1/-1}.range-row output{min-width:44px}.arena-grid{gap:7px}.pod{padding:10px 8px}.pod-equity{font-size:14px}.factor-grid{grid-template-columns:1fr}.ledger-toolbar>div:last-child{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.vault:before{animation:none!important}}
+
+/* V0.5.0 — unified independent-agent research & paper portfolio workstation */
+.wrap{width:min(1680px,100%);padding:26px clamp(14px,2.8vw,42px) 56px}
+.hero{align-items:center;margin:10px 0 20px}.hero h1{font-size:clamp(26px,2.8vw,38px);margin:8px 0}.hero p{max-width:800px}.hero-side{display:grid;gap:7px;text-align:right}.hero-side strong{color:var(--gold)}
+.top{padding:0 clamp(14px,2.8vw,42px)}.top-actions{display:flex;align-items:center;gap:8px}
+.market-overview{padding:20px 22px;margin-top:16px}.market-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.market-head h2{font-size:23px;letter-spacing:-.03em;margin:7px 0 5px}.market-head p{margin:0;color:#91a1ab;font-size:11px;line-height:1.6}.market-status{display:flex;gap:8px;align-items:center;color:#9aa9b2;font:10px var(--mono);white-space:nowrap}.market-status .tag{color:var(--green);border-color:#3d725d}
+.market-summary{display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid var(--line);margin-top:16px;padding-top:15px}.aggregate-pnl small{display:block;color:#8797a1;font:9px var(--mono);letter-spacing:.12em}.aggregate-pnl strong{display:block;font:800 27px var(--mono);margin:6px 0 3px;color:var(--green)}.aggregate-pnl span{color:#8797a1;font-size:10px}
+.run-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.market-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:16px}.market-stat{min-width:0;padding:11px 12px;background:rgba(8,15,22,.72);border:1px solid rgba(164,184,195,.13);border-radius:9px}.market-stat small{display:block;color:#83939d;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}.market-stat b{display:block;margin-top:7px;font:700 14px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.market-stat span{display:block;margin-top:4px;color:#71818b;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.market-replay{display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.market-replay span{color:#8797a1;font:9px var(--mono);white-space:nowrap}.market-replay input{width:100%;accent-color:var(--gold)}
+.section{margin-top:21px}.section-head{margin-bottom:11px}.section-head h2{font-size:17px}.section-head p{line-height:1.55}
+.agent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.agent-card{display:grid;grid-template-columns:100px minmax(0,1fr);gap:13px;align-items:stretch;min-width:0;padding:12px;border:1px solid rgba(164,184,195,.17);border-top:2px solid var(--accent);border-radius:12px;background:linear-gradient(145deg,rgba(23,35,46,.98),rgba(12,20,28,.98));cursor:pointer;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;position:relative;overflow:hidden}.agent-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 65%,#52616c);box-shadow:0 10px 28px #0004}.agent-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),0 12px 30px #0005;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 10%,#17232d),#0d151d)}.agent-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.avatar-frame{position:relative;width:100px;height:122px;overflow:hidden;border-radius:9px;border:1px solid color-mix(in srgb,var(--accent) 38%,#2b3945);background:radial-gradient(circle at 50% 24%,color-mix(in srgb,var(--accent) 35%,#25313a),#101922 66%);display:grid;place-items:center;isolation:isolate}.avatar-frame:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,10,15,.56));z-index:1;pointer-events:none}.avatar-fallback{font:800 42px var(--mono);color:color-mix(in srgb,var(--accent) 78%,#fff);text-shadow:0 5px 20px #0008}.agent-avatar{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;z-index:2}
+.agent-copy{min-width:0;display:flex;flex-direction:column}.agent-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:7px}.agent-card-top strong{display:block;font-size:13px;line-height:1.3}.agent-card-top small{display:block;color:#84949e;font:8px var(--mono);margin-top:4px;letter-spacing:.04em}.agent-card-top .stance{flex:none;font-size:9px;padding:4px 6px}.agent-card-equity{font:800 19px var(--mono);letter-spacing:-.04em;margin-top:13px}.agent-card-change{font:10px var(--mono);margin-top:3px}.agent-card-meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:10px;color:#8a9aa4;font-size:9px}.agent-card-meta b{color:#cbd4d8;font-weight:600}.agent-card-footer{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:auto;padding-top:10px;border-top:1px solid rgba(164,184,195,.12);color:#80909a;font-size:9px}.agent-card-footer span:last-child{color:var(--accent);font-weight:650}
+.agent-workspace-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:12px;align-items:stretch}.agent-detail{padding:18px;min-width:0}.detail-identity{display:grid;grid-template-columns:124px minmax(0,1fr);gap:16px;align-items:start}.detail-avatar{width:124px;height:154px}.detail-name{font-size:20px;letter-spacing:-.03em;margin:4px 0}.detail-en{color:#83939d;font:9px var(--mono);letter-spacing:.08em}.detail-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.detail-thesis{font-size:12px;line-height:1.7;color:#d6dfe2;margin:14px 0 8px}.detail-method{font-size:10px;line-height:1.65;color:#92a1aa}.detail-signals{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}.detail-signals .signal{font-size:9px}.detail-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:15px}.detail-kpi{padding:9px;background:#0c151d;border:1px solid rgba(164,184,195,.12);border-radius:8px;min-width:0}.detail-kpi small{display:block;color:#7f909a;font:8px var(--mono);letter-spacing:.06em}.detail-kpi b{display:block;margin-top:6px;font:700 13px var(--mono);overflow:hidden;text-overflow:ellipsis}.detail-notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.detail-note{padding:10px;background:rgba(8,15,22,.68);border:1px solid rgba(164,184,195,.12);border-radius:8px}.detail-note small{display:block;color:var(--gold2);font:8px var(--mono);letter-spacing:.08em;margin-bottom:5px}.detail-note p{margin:0;color:#a3b0b7;font-size:9px;line-height:1.6}.detail-note.risk small{color:var(--red)}
+.chart-panel,.factor-panel,.events-panel,.ledger-panel{padding:16px}.metrics{gap:12px}#standings{display:grid;gap:0}.ledger-toolbar{margin:9px 0}.ledger-scroll{max-height:430px}
+.setup-card{max-width:650px;padding:24px}.setup-card h2{font-size:23px;margin:8px 0}.setup-card .setup-intro{color:#97a6af;font-size:11px;line-height:1.65;margin:0 0 18px}.setup-fields{display:grid;grid-template-columns:1.3fr .8fr .9fr;gap:12px}.setup-fields .field:first-child{grid-column:1/-1}.setup-fields .field label{margin-bottom:7px}.setup-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:19px;padding-top:15px;border-top:1px solid var(--line)}.setup-note{margin-top:13px;color:#73838d;font-size:9px;line-height:1.55}.empty-state{padding:22px;text-align:center;color:#80909a;font-size:11px}.agent-grid .empty-state{grid-column:1/-1}
+@media(max-width:1180px){.market-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agent-workspace-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.hero{display:block}.hero-side{text-align:left;margin-top:10px}.market-overview{padding:15px}.market-head{display:block}.market-status{margin-top:12px}.market-summary{display:block}.run-controls{justify-content:flex-start;margin-top:13px}.market-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.market-stat:last-child{grid-column:1/-1}.market-replay{gap:8px}.agent-grid{grid-template-columns:1fr}.agent-card{grid-template-columns:92px minmax(0,1fr)}.avatar-frame{width:92px;height:112px}.detail-identity{grid-template-columns:96px minmax(0,1fr);gap:12px}.detail-avatar{width:96px;height:120px}.detail-name{font-size:17px}.detail-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-notes{grid-template-columns:1fr}.setup-fields{grid-template-columns:1fr 1fr}.setup-fields .field:first-child{grid-column:1/-1}.setup-card{padding:18px}.setup-actions{flex-direction:column-reverse}.setup-actions button{width:100%}}
+@media(max-width:380px){.agent-card{grid-template-columns:80px minmax(0,1fr);gap:10px;padding:9px}.avatar-frame{width:80px;height:100px}.agent-card-equity{font-size:16px}.agent-card-top strong{font-size:12px}.detail-kpis{grid-template-columns:1fr 1fr}}
+
+
+/* Reset legacy arena grid-area assignments: Agent cards are now normal independent grid items. */
+.agent-grid .agent-card[data-id]{grid-area:auto!important;position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;width:auto!important;max-width:none!important;min-height:166px;transform:none}
+.agent-grid .agent-card[data-id]:hover{transform:translateY(-2px)}
+
+
+/* Portraits remain clean while generated assets are awaiting approval; initials are only a temporary slot fallback. */
+.agent-avatar:not([src]){display:none}
+
+
+/* V0.5.0 — faction-first visual system, portrait sprites and dedicated research rooms */
+:root{--bg:#070d13;--panel:#101923;--panel2:#15222d;--line:rgba(150,178,194,.17);--text:#f2f4f2;--muted:#93a2ac}
+body{background:radial-gradient(ellipse at 75% -8%,rgba(43,70,82,.32),transparent 36%),radial-gradient(ellipse at 0% 30%,rgba(28,46,62,.22),transparent 30%),#070d13}
+.top{backdrop-filter:blur(18px);background:rgba(7,13,19,.82);border-bottom:1px solid rgba(155,180,192,.13)}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:230px;padding:clamp(24px,4vw,44px);border:1px solid rgba(192,209,215,.17);border-radius:22px;background:linear-gradient(100deg,rgba(6,13,20,.98) 0%,rgba(8,16,23,.9) 46%,rgba(8,15,21,.5) 100%),url('assets/rooms-sprite.webp') center 44%/cover}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,transparent 0%,rgba(9,15,20,.08) 48%,rgba(7,13,19,.56) 100%);pointer-events:none}
+.hero h1{max-width:800px;font-size:clamp(30px,4.5vw,54px);line-height:1.08;letter-spacing:-.045em}
+.hero p{max-width:760px;color:#bac5ca;line-height:1.8}
+.hero-side{min-width:230px;max-width:290px;padding:18px;border:1px solid rgba(233,199,141,.24);border-radius:15px;background:rgba(8,15,22,.72);box-shadow:0 16px 45px rgba(0,0,0,.18);backdrop-filter:blur(12px)}
+.hero-side strong{display:block;margin:11px 0;color:#f1e4cd;font-size:17px;line-height:1.4}
+.workflow-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0 22px;padding:10px;border:1px solid rgba(145,169,184,.14);border-radius:15px;background:linear-gradient(120deg,rgba(18,29,39,.9),rgba(12,21,29,.82))}
+.flow-step{position:relative;min-width:0;padding:9px 12px;border-right:1px solid rgba(145,169,184,.13)}
+.flow-step:last-child{border-right:0}
+.flow-step small{display:block;margin-bottom:7px;color:#8fa2ad;font:9px var(--mono);letter-spacing:.12em}
+.flow-step b{display:block;color:#e7eceb;font-size:12px;font-weight:600}
+.market-overview{border-radius:19px;border-color:rgba(155,180,192,.18);background:linear-gradient(140deg,rgba(19,31,42,.98),rgba(11,19,27,.98))}
+.section-head h2{letter-spacing:-.025em}
+.agent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.agent-card{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:13px;align-items:center;min-width:0;min-height:164px;padding:12px;border:1px solid rgba(145,169,184,.16);border-radius:16px;background:linear-gradient(145deg,rgba(21,33,44,.98),rgba(11,19,27,.98));overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
+.agent-card:before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--accent);opacity:.85}
+.agent-card:hover,.agent-card.selected{border-color:color-mix(in srgb,var(--accent) 52%,transparent);box-shadow:0 16px 36px rgba(0,0,0,.2);transform:translateY(-2px)}
+.agent-visual{position:relative;width:104px;height:138px;align-self:stretch;overflow:hidden;border-radius:12px;background:#101923}
+.agent-scene{position:absolute;inset:0;background-image:url('assets/rooms-sprite.webp');background-size:300% 200%;background-position:var(--room-pos-x,0%) var(--room-pos-y,0%);filter:saturate(.82) brightness(.72);transform:scale(1.03)}
+.agent-scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,10,15,.04),rgba(5,10,15,.24) 52%,rgba(5,10,15,.7))}
+.agent-card .avatar-frame{position:absolute;left:8px;bottom:0;width:88px;height:112px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 50%,rgba(255,255,255,.2));border-radius:10px;background:rgba(8,14,20,.55);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.agent-avatar{position:absolute!important;left:0!important;top:0!important;width:300%!important;height:200%!important;max-width:none!important;object-fit:fill!important;transform:translate(var(--sprite-shift-x,0%),var(--sprite-shift-y,0%))!important;display:block!important}
+.agent-card .avatar-fallback,.detail-avatar .avatar-fallback{position:absolute;z-index:0;inset:0;display:grid;place-items:center;font-size:27px;color:var(--accent)}
+.agent-copy{position:relative;z-index:1;min-width:0}
+.agent-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.agent-card-top strong{display:block;font-size:16px;line-height:1.35}
+.agent-card-top small{display:block;margin-top:3px;color:#93a4ae;font:9px var(--mono);letter-spacing:.08em}
+.agent-card .stance{flex:0 0 auto;max-width:96px;white-space:normal;text-align:center;font-size:9px}
+.agent-card-equity{margin-top:10px;font-size:20px;font-weight:700;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.agent-card-change{margin-top:2px;font-size:10px}
+.agent-card-meta{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:10px;color:#93a4ae;font-size:10px}
+.agent-card-meta b{color:#e7eceb;font-variant-numeric:tabular-nums}
+.agent-card-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:9px;padding-top:8px;border-top:1px solid rgba(145,169,184,.12);color:#a6b2b9;font-size:9px}
+.agent-card-footer span:last-child{color:var(--accent);font-family:var(--mono);letter-spacing:.05em}
+.agent-workspace-grid{align-items:start}
+.agent-detail{overflow:hidden;padding:18px;border-radius:18px}
+.detail-room{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:112px;margin:-18px -18px 18px;padding:17px 19px;overflow:hidden;border-bottom:1px solid color-mix(in srgb,var(--accent) 32%,transparent);background-image:linear-gradient(90deg,rgba(5,11,17,.84),rgba(5,11,17,.32)),url('assets/rooms-sprite.webp');background-size:cover,300% 200%;background-position:center,var(--room-pos-x,0%) var(--room-pos-y,0%)}
+.detail-room:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,10,15,.52),transparent 80%);pointer-events:none}
+.detail-room span,.detail-room b{position:relative;z-index:1}
+.detail-room span{color:#c1cbd0;font:9px var(--mono);letter-spacing:.14em}
+.detail-room b{color:#f5f3ed;font-size:17px;font-weight:650}
+.detail-identity{grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:start}
+.detail-avatar{position:relative;width:104px;height:132px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 55%,rgba(255,255,255,.18));border-radius:12px;background:#111c25}
+.detail-name{letter-spacing:-.035em}
+.detail-signals{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.role-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:13px 0}
+.role-chip{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 10px;border:1px solid rgba(145,169,184,.15);border-radius:10px;background:rgba(16,27,37,.72);color:#d5dfe2;font-size:11px}
+.role-chip small{color:var(--accent);font:9px var(--mono)}
+.detail-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+.decision-panel{margin-top:15px;padding:15px;border:1px solid rgba(145,169,184,.18);border-radius:15px;background:linear-gradient(145deg,rgba(21,32,42,.98),rgba(10,18,26,.98))}
+.decision-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.decision-head h4{margin:5px 0 0;font-size:15px}
+.decision-badge{padding:7px 10px;border:1px solid rgba(145,169,184,.24);border-radius:999px;color:#c9d4d9;font:10px var(--mono);letter-spacing:.06em}
+.decision-panel[data-action="BUY"] .decision-badge{border-color:rgba(95,224,168,.4);color:#7ee6b6;background:rgba(40,125,90,.12)}
+.decision-panel[data-action="SELL"] .decision-badge{border-color:rgba(255,136,126,.4);color:#ff9c92;background:rgba(145,55,52,.12)}
+.decision-panel[data-action="HOLD"] .decision-badge{color:#c7d0d5}
+.decision-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.decision-metrics>div{min-width:0;padding:10px;border-radius:10px;background:rgba(5,12,18,.46)}
+.decision-metrics small{display:block;color:#8fa0aa;font-size:10px}
+.decision-metrics b{display:block;margin-top:6px;color:#edf0ed;font-size:15px;font-variant-numeric:tabular-nums}
+.decision-reason{margin:0;color:#c1cbd0;font-size:12px;line-height:1.75}
+.decision-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid rgba(145,169,184,.13);color:#82939e;font-size:9px}
+@media(max-width:1120px){.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:18px}.hero-side{max-width:none}.workflow-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.flow-step:nth-child(3){border-right:0}.flow-step:nth-child(n+4){border-top:1px solid rgba(145,169,184,.12)}.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.hero{padding:22px 17px}.workflow-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.flow-step:nth-child(2n){border-right:0}.flow-step:nth-child(n+3){border-top:1px solid rgba(145,169,184,.12)}.agent-grid{grid-template-columns:1fr}.agent-card{grid-template-columns:88px minmax(0,1fr);min-height:146px;padding:10px;gap:11px}.agent-visual{width:88px;height:124px}.agent-card .avatar-frame{left:6px;width:76px;height:100px}.agent-card-equity{font-size:18px}.detail-identity{grid-template-columns:80px minmax(0,1fr);gap:11px}.detail-avatar{width:80px;height:102px}.role-strip{grid-template-columns:1fr}.detail-notes{grid-template-columns:1fr}.decision-metrics{gap:6px}.decision-metrics>div{padding:8px}.decision-metrics b{font-size:13px}}
+@media(max-width:360px){.agent-card{grid-template-columns:72px minmax(0,1fr);gap:9px}.agent-visual{width:72px;height:110px}.agent-card .avatar-frame{left:5px;width:62px;height:84px}.agent-card-top{flex-wrap:wrap}.agent-card-top .stance{max-width:100%}.hero h1{font-size:29px}.decision-head{align-items:flex-start;flex-direction:column}}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="rail"><div class="mark"><span>◇</span></div><nav class="railnav"><a class="active" href="#market" title="共同市场">⌁</a><a href="#agents" title="独立 Agent">◈</a><a href="#agentWorkspace" title="Agent 工作区">◎</a><a href="#ledger" title="操作账本">≡</a></nav><div class="rail-foot">INDEPENDENT AGENT PORTFOLIOS · 05</div></aside>
+<main class="app">
+<header class="top"><a class="wordmark" href="#market">AI <b>ARENA</b> / FINANCE LAB</a><div class="topmeta"><span><i class="dot"></i>SHARED MARKET · SEPARATE CAPITAL POOLS</span><span class="demo-pill">V 0.5.0 · PAPER MODE</span><div class="top-actions"><button class="btn small ghost" id="rulesOpen">模拟规则</button><button class="btn small primary" id="newRunBtn">＋ 新建实验</button></div></div></header>
+<div class="wrap">
+<section class="hero"><div><div class="eyebrow">MULTI-AGENT INVESTMENT RESEARCH / 05</div><h1>六大投资派系。<em>六个独立投资世界。</em></h1><p>从专属研究空间进入各自的投研流程：独立形成观点、互相挑战、执行交易，并只在自己的资本账户里承担结果。六个派系共享同一市场路径，公平比较每一次决策。</p></div><div class="hero-side"><span>SIX FACTIONS · SIX RESEARCH ROOMS · SIX ACCOUNTS</span><strong>同一市场环境 · 六套独立研究与账户</strong><span>所有模拟数据均明确标注为合成演示</span></div></section>
+<div class="workflow-strip" aria-label="Investment workflow">
+ <div class="flow-step"><small>01 / INPUT</small><b>公司与市场假设</b></div>
+ <div class="flow-step"><small>02 / RESEARCH</small><b>六派系独立研究</b></div>
+ <div class="flow-step"><small>03 / CHALLENGE</small><b>反方与风险审查</b></div>
+ <div class="flow-step"><small>04 / EXECUTE</small><b>独立账户模拟交易</b></div>
+ <div class="flow-step"><small>05 / AUDIT</small><b>复盘、回放与对比</b></div>
+</div>
+<section id="simulation" class="section">
+<article id="market" class="panel market-overview">
+ <div class="market-head"><div><div class="kicker">01 / SHARED MARKET ENVIRONMENT</div><h2 id="runSubject">等待创建实验</h2><p>共同市场行情与事件只作为六个账户的外部环境；不会把任何 Agent 的资金或持仓混入其他账户。</p></div><div class="market-status"><span class="tag" id="runState">WAITING</span><span id="runDay">DAY 000 / 090</span></div></div>
+ <div class="market-summary"><div class="aggregate-pnl"><small>COMBINED P&L · SIX SEPARATE POOLS</small><strong id="totalPnl">—</strong><span id="totalReturn">六个独立账户的盈亏汇总，不构成共享资金池</span></div><div class="run-controls"><button class="btn small" id="playBtn">▶ 自动运行</button><button class="btn small" id="pauseBtn" disabled>暂停</button><button class="btn small" id="nextBtn">下一日 →</button><button class="btn small" id="next5Btn">推进 5 日</button><button class="btn small" id="finishBtn">直达结算</button><button class="btn small ghost" id="resetBtn">重置</button></div></div>
+ <div class="market-strip">
+  <div class="market-stat"><small>Simulated Share Price</small><b id="priceNow">$100.00</b><span>共同价格路径</span></div>
+  <div class="market-stat"><small>Market Sentiment</small><b id="sentimentNow">50 / 100</b><span>市场情绪温度</span></div>
+  <div class="market-stat"><small>Macro Liquidity</small><b id="macroNow">0.00</b><span>宏观流动性因子</span></div>
+  <div class="market-stat"><small>Sector Momentum</small><b id="sectorNow">0.00</b><span>行业动量因子</span></div>
+  <div class="market-stat"><small>Volatility</small><b id="volNow">1.00x</b><span>共同波动状态</span></div>
+  <div class="market-stat"><small>Active Event</small><b id="activeEvent">等待市场事件</b><span id="regimeNow">等待开盘</span></div>
+  <div class="market-stat"><small>Decisions Recorded</small><b id="decisionCount">0</b><span>六个 Agent 的独立决策</span></div>
+ </div>
+ <div class="market-replay"><span>REPLAY / DAY AUDIT</span><input id="scrub" type="range" min="0" max="90" value="0"><b id="scrubLabel">0 / 90</b></div>
+</article>
+<section id="agents" class="section"><div class="section-head"><div><div class="kicker">02 / SIX INDEPENDENT AGENTS</div><h2>六大投资派系 · 专属研究室</h2><p>每个研究室对应一位投资经理、一套研究框架和一个独立账户。选择派系，进入它的研究与交易工作区。</p></div><div class="research-status"><span class="dot"></span><span id="researchStatus">等待启动实验</span><span class="tag">6 AGENTS · 6 PORTFOLIOS</span></div></div><div class="agent-grid" id="arenaGrid"><div class="empty-state">先创建一个实验，六个 Agent 将分别建立自己的账户。</div></div></section>
+<section id="agentWorkspace" class="section"><div class="section-head"><div><div class="kicker">03 / SELECTED AGENT WORKSPACE</div><h2>单个 Agent 的完整工作区</h2><p>研究观点、账户资产、风险指标和历史操作都绑定到当前选中的 Agent。</p></div><span class="tag">ONE AGENT · ONE LEDGER</span></div><div class="agent-workspace-grid"><article class="panel agent-detail" id="agentDetail"><div class="empty-state">选择一个 Agent 查看独立账户。</div></article><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">PORTFOLIO PERFORMANCE</div><h2>六个账户净值轨迹</h2><p>相同市场路径下，独立组合的净值变化。</p></div><span class="tag">6 SEPARATE ACCOUNTS</span></div><div class="chart-wrap" id="chartWrap"><svg id="equityChart" viewBox="0 0 760 270" role="img" aria-label="六个独立 Agent 模拟账户净值曲线"></svg></div><div class="legend" id="chartLegend"></div></article></div></section>
+<div class="metrics section"><article class="panel factor-panel"><div class="section-head"><div><div class="kicker">MARKET STATE / SHARED FACTORS</div><h2>共同市场因子</h2></div><span class="tag">SAME INPUT FOR ALL</span></div><div class="factor-grid" id="factorGrid"></div></article><article class="panel events-panel"><div class="section-head"><div><div class="kicker">WORLD EVENTS</div><h2>市场事件时间线</h2></div><span class="tag" id="eventTotal">0 EVENTS SEEN</span></div><div class="events-list" id="eventsList"><div class="empty">创建实验后显示市场事件。</div></div></article></div>
+<div class="metrics section"><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">RISK / PERFORMANCE</div><h2>独立账户排名</h2></div><span class="tag">RETURN · DRAWDOWN · VOL</span></div><div id="standings"><div class="empty">创建实验后显示排名。</div></div></article><article class="panel chart-panel"><div class="section-head"><div><div class="kicker">FAIRNESS / ACCOUNTING</div><h2>账户隔离原则</h2></div><span class="tag">NO SHARED WALLET</span></div><div class="detail-notes"><div class="detail-note"><small>CAPITAL</small><p>六个 Agent 在同一实验中获得相同的独立初始本金，各自持有现金和股票。</p></div><div class="detail-note"><small>MARKET</small><p>价格、宏观、情绪、行业和事件对所有账户一致，保证比较条件公平。</p></div><div class="detail-note"><small>EXECUTION</small><p>订单、费用、滑点和成交由模拟器逐账户计算，策略不能直接改写净值。</p></div><div class="detail-note risk"><small>TRUTH BOUNDARY</small><p>当前是合成情景演示，不是实时行情、真实回测、投资建议或券商交易。</p></div></div></article></div>
+<section id="ledger" class="section"><div class="section-head"><div><div class="kicker">04 / AUDITABLE RUN LEDGER</div><h2>逐 Agent 操作账本</h2><p>每条记录都归属于一个 Agent；按账户、决策和交易周期筛选。</p></div><button class="btn small" id="exportBtn">导出完整实验 JSON ↓</button></div><article class="panel ledger-panel"><div class="ledger-toolbar"><div style="color:#8797a1;font-size:10px" id="ledgerSummary">等待模拟结果</div><div style="display:flex;gap:7px;flex-wrap:wrap"><select id="agentFilter"><option value="all">全部 Agent</option></select><select id="actionFilter"><option value="all">全部决策</option><option value="BUY">买入</option><option value="SELL">卖出</option><option value="HOLD">观望</option></select><select id="dayFilter"><option value="all">全部周期</option><option value="early">前 1/3</option><option value="middle">中间 1/3</option><option value="late">后 1/3</option></select></div></div><div class="ledger-scroll"><table><thead><tr><th>交易日</th><th>Agent / 独立账户</th><th>决策</th><th>市场价 / 成交价</th><th>目标仓位</th><th>成交数量</th><th>成交金额</th><th>持仓 / 现金</th><th>费用 + 滑点</th><th>触发原因 / 市场背景</th></tr></thead><tbody id="ledgerBody"><tr><td colspan="10" class="empty">创建实验后，这里会生成每个 Agent 各自的逐日操作记录。</td></tr></tbody></table></div><div class="hint">账户资产按 Agent 独立计算。合计盈亏仅为六个独立账户的汇总视图，不存在资金池之间的划转。</div></article></section>
+<div class="foot"><span>AI ARENA / FINANCE RESEARCH LAB · V0.5.0 · LOCAL SYNTHETIC DATA</span><span>NO LIVE MARKET DATA · NO BROKER · NO REAL TRADES</span></div>
+</section>
+</div>
+</main>
+</div>
+<div id="toast" class="toast hidden" role="status"></div>
+<div id="setupModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle"><div class="modal-card setup-card"><button class="btn small ghost" id="closeSetup" style="float:right">稍后再说</button><div class="kicker">NEW RESEARCH EXPERIMENT / 00</div><h2 id="setupTitle">创建一场 Agent 投资实验</h2><p class="setup-intro">设定研究对象和共同模拟条件。启动后，六个 Agent 将分别获得独立资金池，并在同一市场环境下独立运行。</p><div class="setup-fields"><div class="field"><label for="company">研究对象（公司或股票代码）</label><div class="input-wrap"><span>⌕</span><input id="company" maxlength="72" value="NVIDIA / NVDA" placeholder="例如：NVIDIA / NVDA"></div><div class="hint">仅作为本地合成演示场景标签，不会读取真实公司数据。</div></div><div class="field"><label for="days">模拟周期（交易日）</label><div class="range-row"><input id="days" type="range" min="20" max="252" step="1" value="90"><output id="daysOut">90 天</output></div><div class="hint">20–252 个模拟交易日</div></div><div class="field"><label for="capital">每个 Agent 的独立初始资金</label><select id="capital"><option value="50000">$50,000</option><option value="100000" selected>$100,000</option><option value="250000">$250,000</option><option value="500000">$500,000</option></select><div class="hint">六个账户分别获得同额本金</div></div><div class="field"><label for="riskMode">统一风险上限</label><select id="riskMode"><option value="conservative">稳健 · 单股上限 35%</option><option value="balanced" selected>均衡 · 单股上限 60%</option><option value="aggressive">积极 · 单股上限 85%</option></select><div class="hint">相同规则，独立执行</div></div></div><div class="setup-actions"><button class="btn ghost" id="cancelSetup">取消</button><button class="btn primary" id="researchBtn">启动六个独立 Agent →</button></div><div class="setup-note"><b>数据边界：</b>当前为本地交互原型。研究观点、情景因子、行情、事件、成交与收益均由可复现合成数据生成；未连接真实财报、公告、行情、新闻、外部 LLM Agent 或券商。</div></div></div>
+<div id="rulesModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="modal-card"><button class="btn small" id="closeRules" style="float:right">关闭</button><div class="kicker">SIMULATION CONTRACT</div><h3 id="rulesTitle">公平模拟与独立账户边界</h3><p>六个 Agent 共享同一条合成价格路径、相同初始资金、交易费用、滑点与仓位上限，但每个 Agent 拥有独立现金余额、股票持仓、净值轨迹和操作账本。不存在中央资金池，也不存在 Agent 之间的资金转账。</p><p>当前没有接入真实公司财报、公告、新闻、市场行情、外部 LLM Agent 或券商。公司文本只作为演示任务标签和可复现随机种子的一部分。所有观点、事件、情绪、成交与收益均为合成数据。</p><p>未来真实数据版本必须保存来源、发布时间、抓取时间、授权信息、时点快照与引用；严禁未来数据泄漏。模拟成交与真实交易必须严格分离。</p></div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const factionDefs=[
+{id:'value',avatar:'assets/agents-sprite.webp',spriteX:0,spriteY:0,roomX:0,roomY:0,name:'价值派',en:'VALUE & QUALITY',icon:'V',color:'#e9c78d',roles:['基本面主研','空头挑战','资本风控'],method:'现金流质量、估值安全边际、资产负债表与资本回报',thesis:'等待价格相对内在价值出现足够安全边际，优先保护本金。',risk:'价值陷阱、盈利质量恶化、长期低估值与流动性折价。',trigger:'合成估值分位 ≤ 35、质量因子 ≥ 60，且宏观流动性没有持续转负。',invalidation:'质量因子跌破 45、现金流质量假设失效，或流动性持续收缩。'},
+{id:'growth',avatar:'assets/agents-sprite.webp',spriteX:1,spriteY:0,roomX:1,roomY:0,name:'成长派',en:'GROWTH',icon:'G',color:'#65d8a5',roles:['成长分析师','预期差挑战','集中度风控'],method:'收入增长、利润率扩张、市场空间与盈利预期变化',thesis:'寻找增长持续性与预期上修的交集，愿意为确定性成长支付溢价。',risk:'增长兑现不及预期、估值压缩、融资与竞争压力。',trigger:'合成成长因子 ≥ 65、行业动量转正，且预期修正维持上行。',invalidation:'成长因子明显回落、行业动量转负，或波动超过共同风险预算。'},
+{id:'trend',avatar:'assets/agents-sprite.webp',spriteX:2,spriteY:0,roomX:2,roomY:0,name:'趋势派',en:'TECHNICAL / MOMENTUM',icon:'T',color:'#8db9ee',roles:['趋势研究员','反转挑战','止损风控'],method:'价格结构、均线斜率、相对强弱、成交量与趋势延续',thesis:'不预测拐点，等待价格确认后跟随趋势，失效时快速退出。',risk:'震荡市反复止损、跳空、趋势反转与信号滞后。',trigger:'短周期动量转正，价格连续确认并维持在模拟趋势参考线上方。',invalidation:'动量转负、价格跌破趋势失效阈值，或波动突然放大。'},
+{id:'quant',avatar:'assets/agents-sprite.webp',spriteX:0,spriteY:1,roomX:0,roomY:1,name:'量化派',en:'QUANT',icon:'Q',color:'#c6a1f2',roles:['因子研究员','模型审查','波动风控'],method:'多因子打分、信号稳定性、波动率目标与组合约束',thesis:'将可重复的信号转成规则化仓位，控制单一因子和回撤暴露。',risk:'过拟合、因子失效、交易成本侵蚀与样本漂移。',trigger:'多因子综合分数超过阈值，因子方向相对一致且波动低于预算。',invalidation:'因子方向分歧扩大、信号衰减，或交易成本吞噬预期优势。'},
+{id:'sentiment',avatar:'assets/agents-sprite.webp',spriteX:1,spriteY:1,roomX:1,roomY:1,name:'情绪派',en:'SENTIMENT',icon:'S',color:'#f1a66e',roles:['舆情研究员','反身性挑战','拥挤度风控'],method:'新闻情绪、市场注意力、资金拥挤、预期差与情绪反转',thesis:'识别情绪扩散与拥挤程度，在确认和过热之间动态调整暴露。',risk:'噪声新闻、情绪反转、拥挤交易与叙事失真。',trigger:'合成情绪改善但拥挤程度仍低于警戒线，且价格未出现明显背离。',invalidation:'注意力激增而价格走弱、情绪快速反转，或拥挤度突破警戒线。'},
+{id:'macro',avatar:'assets/agents-sprite.webp',spriteX:2,spriteY:1,roomX:2,roomY:1,name:'宏观派',en:'MACRO / REGIME',icon:'M',color:'#7dd6df',roles:['宏观策略师','情景挑战','尾部风控'],method:'利率、流动性、美元/信用环境、行业周期与风险偏好',thesis:'先判断市场环境，再决定风险预算；宏观逆风时优先降低仓位。',risk:'政策路径误判、宏观数据滞后、相关性突变与尾部冲击。',trigger:'合成流动性改善、风险偏好修复，且宏观冲击与波动率收敛。',invalidation:'流动性持续收缩、信用风险扩散、政策路径反转或相关性突变。'}
+];
+const eventTemplates=[
+{title:'流动性边际改善',kind:'macro',macro:.28,sentiment:.12,sector:.05,shock:.009,desc:'风险偏好回升，长久期资产获得支撑。'},
+{title:'行业需求预期上修',kind:'sector',macro:.05,sentiment:.2,sector:.34,shock:.014,desc:'行业景气预期改善，但需要后续订单验证。'},
+{title:'盈利预期分化',kind:'earnings',macro:0,sentiment:-.18,sector:-.12,shock:-.012,desc:'市场开始重新评估增长兑现节奏。'},
+{title:'突发负面舆情',kind:'sentiment',macro:-.08,sentiment:-.42,sector:-.08,shock:-.021,desc:'短期注意力与风险厌恶同时上升。'},
+{title:'监管与政策不确定性',kind:'policy',macro:-.18,sentiment:-.22,sector:-.24,shock:-.017,desc:'风险溢价上升，仓位约束开始发挥作用。'},
+{title:'资金拥挤与波动放大',kind:'volatility',macro:-.1,sentiment:.18,sector:.08,shock:-.026,desc:'交易拥挤度上升，价格波动与滑点同步扩大。'},
+{title:'竞争格局出现变化',kind:'company',macro:0,sentiment:-.08,sector:-.2,shock:-.014,desc:'市场开始讨论长期利润率和份额变化。'},
+{title:'风险偏好快速修复',kind:'macro',macro:.22,sentiment:.32,sector:.12,shock:.018,desc:'资金回流高弹性板块，趋势策略更积极。'},
+{title:'需求数据低于预期',kind:'earnings',macro:-.05,sentiment:-.25,sector:-.26,shock:-.019,desc:'市场下调短期增长假设，估值容忍度下降。'}
+];
+let state={research:null,simulation:null,day:0,timer:null,running:false,logs:[],events:[],lastSeed:0,selectedAgentId:'value'};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fmt=(n,d=0)=>Math.round(n).toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d});
+const money=n=>(n<0?'−':'')+'$'+fmt(Math.abs(n),0);
+const signedPct=n=>(n>=0?'+':'−')+Math.abs(n).toFixed(2)+'%';
+const pct=n=>n.toFixed(1)+'%';
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function rng(seed){let x=seed>>>0;return()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function normal(random){return (random()+random()+random()+random()+random()+random()-3)*.816;}
+function researchCompany(name){
+ const seed=hash(name.trim().toLowerCase()||'unnamed-company'),r=rng(seed);
+ const f={quality:r(),growth:r(),valuation:r(),momentum:r()*2-1,sentiment:r()*2-1,macro:r()*2-1,volatility:.55+r()*1.2};
+ const scores={
+  value:.52*(f.quality-.5)+.72*(.55-f.valuation)-.12*f.volatility,
+  growth:.72*(f.growth-.45)+.25*(f.quality-.5)-.12*f.valuation,
+  trend:.8*f.momentum+.18*f.sentiment,
+  quant:.32*(f.quality-.5)+.32*(f.growth-.5)+.38*f.momentum-.22*(f.volatility-.9),
+  sentiment:.78*f.sentiment+.18*f.momentum-.12*(f.volatility-1),
+  macro:.68*f.macro+.2*(f.quality-.5)-.18*(f.volatility-1)
+ };
+ const signals={
+  value:[`质量因子 ${Math.round(f.quality*100)}/100`,`估值分位 ${Math.round(f.valuation*100)}/100`,`波动等级 ${f.volatility.toFixed(2)}x`],
+  growth:[`成长因子 ${Math.round(f.growth*100)}/100`,`质量因子 ${Math.round(f.quality*100)}/100`,`预期修正 ${Math.round((f.growth-.5)*40)} pts`],
+  trend:[`趋势强度 ${signedPct(f.momentum*12)}`,`动量状态 ${f.momentum>.25?'向上':f.momentum<-.25?'向下':'震荡'}`,`波动等级 ${f.volatility.toFixed(2)}x`],
+  quant:[`质量因子 ${Math.round(f.quality*100)}/100`,`成长因子 ${Math.round(f.growth*100)}/100`,`风险预算 ${Math.round(100/f.volatility)}%`],
+  sentiment:[`情绪温度 ${Math.round(50+f.sentiment*45)}/100`,`拥挤程度 ${Math.round((.5+Math.abs(f.sentiment)*.4)*100)}/100`,`注意力变化 ${signedPct(f.sentiment*8)}`],
+  macro:[`流动性脉冲 ${signedPct(f.macro*8)}`,`风险偏好 ${f.macro>.2?'改善':f.macro<-.2?'收缩':'中性'}`,`波动等级 ${f.volatility.toFixed(2)}x`]
+ };
+ const titles={value:'先看估值折价，再看现金流是否能兑现',growth:'增长质量决定估值溢价能否持续',trend:'等待价格确认，不在无趋势区间过度交易',quant:'以多因子与波动预算构建可复现组合',sentiment:'情绪扩散和拥挤度决定交易节奏',macro:'宏观环境决定风险预算，而非单点预测'};
+ const reports=factionDefs.map(def=>{
+  const score=scores[def.id],stance=score>.22?'偏多':score<-.22?'谨慎':'中性',confidence=Math.round(57+Math.abs(score)*34+r() * 8);
+  const thesis=score>.22?`${titles[def.id]}。当前合成情景对该派系相对有利，倾向分阶段建立风险敞口。`:score<-.22?`${titles[def.id]}。当前合成情景存在不利信号，优先等待确认并控制仓位。`:`${titles[def.id]}。当前信号相互抵消，暂不做强方向押注，等待更清晰的触发条件。`;
+  const bear=def.id==='value'?'若盈利质量和现金流同步恶化，低估值可能只是价值陷阱。':def.id==='growth'?'若增长预期无法兑现，估值压缩可能快于基本面改善。':def.id==='trend'?'若价格跌回关键趋势区间，趋势信号将快速失效。':def.id==='quant'?'若信号相关性突然上升，历史因子组合可能失去分散效果。':def.id==='sentiment'?'若舆情热度来自噪声或短期事件，情绪指标可能反向误导。':'若政策路径与市场定价背离，宏观状态判断可能滞后。';
+  return {...def,score,stance,confidence,thesis,bear,signals:signals[def.id],exposure:Math.round(clamp(.18+score*.36,.05,.82)*100),seed:seed};
+ });
+ return {subject:name.trim()||'未命名公司',seed,factors:f,reports};
+}
+function renderResearch(){
+ if(!state.research)return;
+ $('researchStatus').textContent='RESEARCH COMPLETE · SYNTHETIC';
+ renderAgentCards();
+ renderAgentDetail();
+}
+function targetWeight(id,base,env,price,history,capWeight,previousSentiment){
+ const mom=history.length>5?(price/history[Math.max(0,history.length-6)]-1)*8:0;
+ const vol=env.vol,macro=env.macro,sentiment=env.sentiment,sector=env.sector;
+ let w=0;
+ if(id==='value')w=.34+(base.quality-.5)*.28+(0.52-base.valuation)*.5+macro*.035-vol*.025;
+ if(id==='growth')w=.30+base.growth*.42+mom*.09-base.valuation*.10+sector*.075+macro*.04;
+ if(id==='trend')w=.26+mom*.42+(mom>0?.12:-.08)+sector*.09;
+ if(id==='quant')w=.36+(base.quality-.5)*.16+(base.growth-.5)*.14+mom*.16+sector*.07+sentiment*.035-(vol-.9)*.18;
+ if(id==='sentiment')w=.27+sentiment*.23+(sentiment-previousSentiment)*.18+mom*.12;
+ if(id==='macro')w=.42+macro*.28+sector*.055-(vol-1)*.16;
+ return clamp(w,0,capWeight);
+}
+function runSimulation(){
+ stopPlayback();
+ const days=+$('days').value,capital=+$('capital').value,risk=$('riskMode').value,subject=state.research.subject;
+ const capWeight=risk==='conservative'?.35:risk==='aggressive'?.85:.60;
+ const seed=hash(subject.toLowerCase()+`|${days}|${capital}|${risk}`),random=rng(seed);
+ const fac={...state.research.factors},factions=factionDefs.map(x=>({...x}));
+ let price=100,macro=fac.macro,sentiment=fac.sentiment,sector=fac.momentum,vol=fac.volatility,previousSentiment=sentiment;
+ const market=[{day:0,price,macro,sentiment,sector,vol,return:0,event:null,regime:'等待开盘'}];
+ const portfolios=factions.map(a=>({id:a.id,name:a.name,color:a.color,cash:capital,shares:0,equity:capital,peak:capital,maxDD:0,returns:[],equityPath:[capital],cashPath:[capital],sharesPath:[0],weightPath:[0],targetWeightPath:[0],drawdownPath:[0],maxDDPath:[0],trades:0,turnover:0,fees:0,previousWeight:0}));
+ const logs=[],events=[],priceHistory=[price],benchmarkFee=capital*.0015,benchmarkShares=(capital-benchmarkFee)/price,benchmarkPath=[capital-benchmarkFee];
+ const initialCash=capital-benchmarkFee;
+ const feeRate=.0015,slippage=.001;
+ const eventDays=new Set();for(let d=7;d<days;d+=Math.max(9,Math.round(days/7)))eventDays.add(d);
+ for(let day=1;day<=days;day++){
+  macro=clamp(macro*.90+normal(random)*.12,-1,1);sentiment=clamp(sentiment*.78+normal(random)*.24,-1,1);sector=clamp(sector*.88+normal(random)*.17,-1,1);vol=clamp(vol*.86+random()*.26-.10,.45,2.1);
+  let event=null;
+  if(eventDays.has(day)||random()<.035){
+   const template=eventTemplates[Math.floor(random()*eventTemplates.length)];
+   macro=clamp(macro+template.macro*.48,-1,1);sentiment=clamp(sentiment+template.sentiment*.52,-1,1);sector=clamp(sector+template.sector*.46,-1,1);vol=clamp(vol+(template.kind==='volatility'?.35:.08),.45,2.2);
+   event={day,title:template.title,kind:template.kind,desc:template.desc,shock:template.shock};events.push(event);
+  }
+  const idio=normal(random)*.0085*vol;
+  const daily=clamp(.00022+macro*.0010+sector*.0009+sentiment*.00065+idio+(event?event.shock:0),-.095,.095);
+  const prevPrice=price,priorSentiment=previousSentiment;price=Math.max(8,price*(1+daily));priceHistory.push(price);
+  const daySnap={day,price,macro,sentiment,sector,vol,return:daily,event,regime:macro>.22?'风险偏好改善':macro<-.22?'风险收缩':'混合震荡'};
+  market.push(daySnap);
+  const sentimentScore=Math.round(50+sentiment*44);
+  for(const p of portfolios){
+   const prevEquity=p.cash+p.shares*prevPrice;
+   const weight=targetWeight(p.id,fac,daySnap,price,priceHistory,capWeight,priorSentiment);
+   const targetValue=prevEquity*weight;
+   const targetShares=targetValue/price;
+   const delta=targetShares-p.shares;
+   const notionalAtMarket=Math.abs(delta*price),slippageRate=slippage*(.65+vol*.22);
+   let action='HOLD',fillPrice=price,notional=0,commission=0,slippageCost=0,quantity=0;
+   if(notionalAtMarket>prevEquity*.004){
+    action=delta>0?'BUY':'SELL';quantity=Math.abs(delta);fillPrice=price*(1+(delta>0?slippageRate:-slippageRate));notional=Math.abs(delta*fillPrice);
+    commission=notional*feeRate;slippageCost=Math.abs(delta*(fillPrice-price));
+    p.cash-=delta*fillPrice+commission;p.shares=targetShares;p.trades++;p.turnover+=notional;p.fees+=commission+slippageCost;
+   }
+   p.equity=p.cash+p.shares*price;p.cashPath.push(p.cash);p.sharesPath.push(p.shares);p.weightPath.push(p.equity>0?(p.shares*price/p.equity):0);p.targetWeightPath.push(weight);
+   p.peak=Math.max(p.peak,p.equity);const currentDD=(1-p.equity/p.peak)*100;p.maxDD=Math.max(p.maxDD,currentDD);p.drawdownPath.push(currentDD);p.maxDDPath.push(p.maxDD);
+   const dayReturn=p.equityPath.length?p.equity/p.equityPath.at(-1)-1:0;
+   p.returns.push(dayReturn);p.equityPath.push(p.equity);p.previousWeight=weight;
+   const reasons={value:`估值安全边际与质量因子；目标仓位 ${Math.round(weight*100)}%`,growth:`成长质量与趋势预期；目标仓位 ${Math.round(weight*100)}%`,trend:`价格动量与趋势确认；目标仓位 ${Math.round(weight*100)}%`,quant:`多因子信号与波动预算；目标仓位 ${Math.round(weight*100)}%`,sentiment:`情绪温度 ${sentimentScore}/100 与拥挤度；目标仓位 ${Math.round(weight*100)}%`,macro:`宏观风险状态与波动约束；目标仓位 ${Math.round(weight*100)}%`};
+   logs.push({day,agentId:p.id,agent:p.name,action,price,marketReturnPct:daily*100,fillPrice,quantity,weight,notional,commission,slippageCost,fee:commission+slippageCost,cashBalance:p.cash,sharesHeld:p.shares,reason:reasons[p.id],event:event?.title||'常规市场波动',eventKind:event?.kind||'normal',eventDescription:event?.desc||'',eventShockPct:event?event.shock*100:0,macro,sentimentRaw:sentiment,sector,volatility:vol,regime:daySnap.regime,equity:p.equity,sentiment:sentimentScore});
+  }
+  benchmarkPath.push(benchmarkShares*price);
+  previousSentiment=sentiment;
+ }
+ const results=portfolios.map(p=>{
+  const totalReturn=(p.equity/capital-1)*100,meanReturn=p.returns.reduce((sum,x)=>sum+x,0)/Math.max(1,p.returns.length),volDaily=Math.sqrt(p.returns.reduce((sum,x)=>sum+(x-meanReturn)*(x-meanReturn),0)/Math.max(1,p.returns.length))*100;
+  const score=totalReturn-.48*p.maxDD-.20*volDaily;
+  return {...p,totalReturn,volDaily,score,finalWeight:p.shares*price/p.equity,winDays:p.returns.filter(x=>x>0).length};
+ }).sort((a,b)=>b.score-a.score);
+ const benchmarkReturn=(benchmarkPath.at(-1)/capital-1)*100;
+ state.simulation={subject,days,capital,risk,capWeight,seed,market,portfolios,results,benchmarkPath,benchmarkReturn,benchmarkShares,benchmarkFee,events,logs,feeRate,slippage};
+ state.selectedAgentId=state.selectedAgentId||'value';
+ state.day=0;state.logs=logs;state.events=events;
+ $('runSubject').textContent=subject;
+ $('scrub').max=days;$('scrub').value=0;$('scrubLabel').textContent=`0 / ${days}`;$('runState').textContent='READY';$('eventTotal').textContent='0 EVENTS SEEN';
+ $('agentFilter').innerHTML='<option value="all">全部派系</option>'+factionDefs.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
+ renderDay(0);renderChart();renderEvents();renderStandings();renderLedger();
+}
+function stopPlayback(){if(state.timer){clearInterval(state.timer);state.timer=null;}state.running=false;if($('pauseBtn'))$('pauseBtn').disabled=true;}
+function riskMetricsAt(p,day,capital){
+ const equity=p.equityPath[day]??capital,ret=(equity/capital-1)*100,dd=p.maxDDPath[day]||0,series=p.returns.slice(0,day);
+ const mean=series.reduce((sum,x)=>sum+x,0)/Math.max(1,series.length);
+ const volDaily=Math.sqrt(series.reduce((sum,x)=>sum+(x-mean)*(x-mean),0)/Math.max(1,series.length))*100;
+ return {equity,ret,dd,volDaily,score:ret-.48*dd-.20*volDaily};
+}
+function renderAgentCards(){
+ const research=state.research,s=state.simulation,day=state.day;
+ const ranks=s?[...s.portfolios].map(p=>({id:p.id,score:riskMetricsAt(p,day,s.capital).score})).sort((a,b)=>b.score-a.score):[];
+ $('arenaGrid').innerHTML=factionDefs.map(a=>{
+  const report=research&&research.reports.find(x=>x.id===a.id),p=s&&s.portfolios.find(x=>x.id===a.id);
+  const equity=p?(p.equityPath[day]??s.capital):null,ret=p?(equity/s.capital-1)*100:null;
+  const cash=p?(p.cashPath[day]??s.capital):null,weight=p?(p.weightPath[day]??0):(report?report.exposure/100:0);
+  const trades=p?s.logs.filter(x=>x.agentId===a.id&&x.day<=day&&x.action!=='HOLD').length:0;
+  const last=p?[...s.logs].reverse().find(x=>x.agentId===a.id&&x.day<=day):null;
+  const rank=p?ranks.findIndex(x=>x.id===a.id)+1:null;
+  const selected=state.selectedAgentId===a.id?'selected':'';
+  const stance=report?report.stance+' · '+report.confidence+'%':'待启动';
+  const equityText=equity===null?'等待启动':money(equity);
+  const changeText=ret===null?'独立资金池尚未建立':signedPct(ret)+' · '+money(equity-s.capital);
+  const decision=last?'最近决策：'+(last.action==='BUY'?'买入':last.action==='SELL'?'卖出':'观望'):'等待首次决策';
+  return '<article class="agent-card '+selected+'" data-id="'+a.id+'" style="--accent:'+a.color+'" role="button" tabindex="0" aria-label="查看'+a.name+'独立账户">'+
+   '<div class="agent-visual"><div class="agent-scene" style="--room-pos-x:'+(a.roomX*50)+'%;--room-pos-y:'+(a.roomY*100)+'%"></div><div class="avatar-frame"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" src="'+a.avatar+'" style="--sprite-shift-x:'+(-a.spriteX*33.333333)+'%;--sprite-shift-y:'+(-a.spriteY*50)+'%" alt="'+a.name+' 人物形象" loading="lazy"></div></div>'+
+   '<div class="agent-copy"><div class="agent-card-top"><div><strong>'+a.name+'</strong><small>'+a.en+'</small></div><span class="stance">'+stance+'</span></div>'+
+   '<div class="agent-card-equity">'+equityText+'</div><div class="agent-card-change" style="color:'+(ret===null?'#8797a1':ret>=0?'var(--green)':'var(--red)')+'">'+changeText+'</div>'+
+   '<div class="agent-card-meta"><span>现金 <b>'+(cash===null?'—':money(cash))+'</b></span><span>仓位 <b>'+Math.round(weight*100)+'%</b></span><span>成交 <b>'+trades+'</b></span></div>'+
+   '<div class="agent-card-footer"><span>'+decision+'</span><span>'+(rank?'RANK #'+rank:'查看 Agent →')+'</span></div></div></article>';
+ }).join('');
+}
+function selectAgent(id){
+ if(!factionDefs.some(a=>a.id===id))return;
+ state.selectedAgentId=id;
+ renderAgentCards();
+ renderAgentDetail();
+}
+function renderAgentDetail(){
+ const id=state.selectedAgentId||'value',a=factionDefs.find(x=>x.id===id)||factionDefs[0];
+ const report=state.research&&state.research.reports.find(x=>x.id===id),s=state.simulation,p=s&&s.portfolios.find(x=>x.id===id),day=state.day;
+ const equity=p?(p.equityPath[day]??s.capital):null,cash=p?(p.cashPath[day]??s.capital):null,shares=p?(p.sharesPath[day]??0):null,weight=p?(p.weightPath[day]??0):(report?report.exposure/100:0);
+ const metrics=p?riskMetricsAt(p,day,s.capital):null,logs=p?s.logs.filter(x=>x.agentId===id&&x.day<=day):[],trades=logs.filter(x=>x.action!=='HOLD').length,last=logs.at(-1);
+ const daily=p&&day>0?equity-p.equityPath[day-1]:0;
+ const signals=report?report.signals.map(x=>'<span class="signal">'+x+'</span>').join(''):'<span class="signal">等待研究数据</span>';
+ const thesis=report?report.thesis:'创建实验后，这个 Agent 会根据自己的研究框架生成独立观点。';
+ const method=a.method;
+ const risk=report?report.risk:a.risk,trigger=report?report.trigger:a.trigger,invalidation=report?report.invalidation:a.invalidation;
+ const lastAction=last?last.action+' · '+last.reason+' · 当日净值变化 '+money(daily):'尚无交易日记录；独立账户等待模拟推进。';
+ const decisionLabel=last?(last.action==='BUY'?'买入 / BUY':last.action==='SELL'?'卖出 / SELL':'观望 / HOLD'):'等待首笔决策';
+ const decisionPrice=last&&last.fillPrice?money(last.fillPrice):'—';
+ const decisionQty=last?fmt(last.quantity||0,4):'—';
+ const decisionWeight=last?Math.round((last.weight??weight)*100)+'%':Math.round(weight*100)+'%';
+ const decisionDay=last?'DAY '+String(last.day).padStart(3,'0'):'NOT YET';
+ const decisionReason=last?last.reason:'研究观点已建立。等待共同市场环境满足该派系的入场条件后，才会向这个 Agent 自己的账户写入模拟订单。';
+ $('agentDetail').innerHTML='<div class="detail-room" style="--room-pos-x:'+(a.roomX*50)+'%;--room-pos-y:'+(a.roomY*100)+'%;--accent:'+a.color+'"><span>RESEARCH ROOM / '+a.id.toUpperCase()+'</span><b>'+a.name+' · 独立研究室</b></div><div class="detail-identity">'+
+  '<div class="avatar-frame detail-avatar"><span class="avatar-fallback">'+a.icon+'</span><img class="agent-avatar" data-image-src="'+a.avatar+'" src="'+a.avatar+'" style="--sprite-shift-x:'+(-a.spriteX*33.333333)+'%;--sprite-shift-y:'+(-a.spriteY*50)+'%" alt="'+a.name+' 人物形象" loading="lazy"></div>'+
+  '<div><div class="kicker">SELECTED / '+a.id.toUpperCase()+' AGENT</div><h3 class="detail-name" id="detailName">'+a.name+'</h3><div class="detail-en">'+a.en+'</div>'+
+  '<div class="detail-tags"><span class="stance">'+(report?report.stance:'等待研究')+'</span><span class="tag">'+(report?'CONFIDENCE '+report.confidence+'%':'NO RESEARCH YET')+'</span><span class="tag">'+(p?'SEPARATE PORTFOLIO':'PORTFOLIO NOT STARTED')+'</span></div>'+
+  '<p class="detail-thesis" id="detailThesis">'+thesis+'</p><p class="detail-method" id="detailMethod">'+method+'</p></div></div>'+
+  '<div class="detail-signals" id="detailSignals">'+signals+'</div>'+
+  '<div class="role-strip">'+a.roles.map((role,i)=>'<span class="role-chip"><small>0'+(i+1)+'</small>'+role+'</span>').join('')+'</div>'+
+  '<div class="detail-kpis">'+
+   '<div class="detail-kpi"><small>ACCOUNT EQUITY</small><b id="detailEquity">'+(equity===null?'—':money(equity))+'</b></div>'+
+   '<div class="detail-kpi"><small>AVAILABLE CASH</small><b id="detailCash">'+(cash===null?'—':money(cash))+'</b></div>'+
+   '<div class="detail-kpi"><small>SHARES HELD</small><b id="detailShares">'+(shares===null?'—':fmt(shares,4))+'</b></div>'+
+   '<div class="detail-kpi"><small>POSITION WEIGHT</small><b id="detailWeight">'+Math.round(weight*100)+'%</b></div>'+
+   '<div class="detail-kpi"><small>EXECUTED TRADES</small><b id="detailTrades">'+trades+'</b></div>'+
+   '<div class="detail-kpi"><small>MAX DRAWDOWN</small><b id="detailDrawdown">'+(metrics?metrics.dd.toFixed(2)+'%':'—')+'</b></div>'+
+  '</div>'+
+  '<div class="detail-notes">'+
+   '<div class="detail-note"><small>RISK / BEAR CASE</small><p id="detailRisk">'+risk+'</p></div>'+
+   '<div class="detail-note"><small>ENTRY TRIGGER</small><p id="detailTrigger">'+trigger+'</p></div>'+
+   '<div class="detail-note risk"><small>INVALIDATION</small><p id="detailInvalidation">'+invalidation+'</p></div>'+
+   '<div class="detail-note"><small>LAST DECISION</small><p id="detailLastAction">'+lastAction+'</p></div>'+
+  '</div>'+
+  '<section class="decision-panel" id="tradeDecision" data-action="'+(last?last.action:'WAIT')+'">'+
+   '<div class="decision-head"><div><span class="kicker">EXECUTION DESK / '+decisionDay+'</span><h4>交易决策与执行记录</h4></div><b class="decision-badge">'+decisionLabel+'</b></div>'+
+   '<div class="decision-metrics"><div><small>模拟成交价</small><b>'+decisionPrice+'</b></div><div><small>成交数量</small><b>'+decisionQty+'</b></div><div><small>实际仓位</small><b>'+decisionWeight+'</b></div></div>'+
+   '<p class="decision-reason">'+decisionReason+'</p><div class="decision-foot"><span>仅影响 '+a.name+' 的独立账户</span><span>纸面模拟 · 无真实订单</span></div></section>';
+}
+function renderDay(day){
+ if(!state.simulation)return;
+ const s=state.simulation;state.day=clamp(day,0,s.days);
+ const snap=s.market[state.day],total=s.portfolios.reduce((sum,p)=>sum+(p.equityPath[state.day]||s.capital),0)-s.capital*6;
+ $('runDay').textContent='DAY '+String(state.day).padStart(3,'0')+' / '+String(s.days).padStart(3,'0');
+ $('scrub').value=state.day;$('scrubLabel').textContent=state.day+' / '+s.days;
+ $('priceNow').textContent='$'+snap.price.toFixed(2);
+ $('sentimentNow').textContent=Math.round(50+snap.sentiment*44)+' / 100';
+ $('macroNow').textContent=(snap.macro>=0?'+':'')+snap.macro.toFixed(2);
+ $('sectorNow').textContent=(snap.sector>=0?'+':'')+snap.sector.toFixed(2);
+ $('volNow').textContent=snap.vol.toFixed(2)+'x';
+ $('activeEvent').textContent=snap.event?snap.event.title:'常规交易日';
+ $('regimeNow').textContent=snap.regime;
+ $('decisionCount').textContent=String(s.logs.filter(x=>x.day<=state.day).length);
+ $('totalPnl').textContent=(total>=0?'+':'−')+'$'+fmt(Math.abs(total));
+ $('totalReturn').textContent=signedPct(total/(s.capital*6)*100)+' · 六个独立账户等权汇总';
+ $('totalPnl').style.color=total>=0?'var(--green)':'var(--red)';
+ renderAgentCards();renderAgentDetail();
+ const factors=[['宏观流动性',snap.macro,'#7dd6df','利率与风险偏好'],['市场情绪',snap.sentiment,'#f1a66e','情绪温度 / 恐惧贪婪'],['行业动量',snap.sector,'#65d8a5','行业景气情景'],['波动水平',(snap.vol-1)/1.2,'#c6a1f2','波动率状态']];
+ $('factorGrid').innerHTML=factors.map(([name,v,color,note])=>{const score=Math.round(50+v*45),width=clamp(50+v*45,4,96);return '<div class="factor" style="--factor-color:'+color+'"><div class="factor-top"><span>'+name+'</span><span>'+score+'/100</span></div><strong style="color:'+color+'">'+(v>=0?'+':'')+v.toFixed(2)+'</strong><div class="meter"><span style="width:'+width+'%"></span></div><div class="factor-note">'+note+'</div></div>';}).join('');
+ renderChart();renderEvents();renderStandings();renderLedger();
+}
+function renderChart(){
+ const s=state.simulation;if(!s)return;const colors=factionDefs.map(a=>a.color),W=760,H=270,L=48,R=14,T=15,B=30;
+ const values=s.portfolios.flatMap(p=>p.equityPath.map(v=>v/s.capital*100)).concat(s.benchmarkPath.map(v=>v/s.capital*100));
+ let lo=Math.min(90,...values)-2,hi=Math.max(110,...values)+2;if(hi-lo<12){lo-=4;hi+=4;}
+ const x=i=>L+i/s.days*(W-L-R),y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+ let out='';for(let i=0;i<5;i++){const v=lo+(hi-lo)*i/4;out+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#2b3b47" stroke-dasharray="3 6"/><text x="2" y="${y(v)+4}" fill="#7e8e98" font-size="10">${v.toFixed(0)}</text>`;}
+ for(let i=0;i<=s.days;i+=Math.max(1,Math.round(s.days/4)))out+=`<text x="${x(i)-12}" y="${H-6}" fill="#7e8e98" font-size="10">D${String(i).padStart(3,'0')}</text>`;
+ const visibleThrough=state.day===s.days?s.days:state.day;
+ for(let i=0;i<s.portfolios.length;i++){const p=s.portfolios[i],path=p.equityPath.slice(0,visibleThrough+1).map((v,j)=>`${j?'L':'M'}${x(j).toFixed(1)},${y(v/s.capital*100).toFixed(1)}`).join(' ');out+=`<path d="${path}" fill="none" stroke="${colors[i]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>`;}
+ const bp=s.benchmarkPath.slice(0,visibleThrough+1).map((v,j)=>`${j?'L':'M'}${x(j).toFixed(1)},${y(v/s.capital*100).toFixed(1)}`).join(' ');out+=`<path d="${bp}" fill="none" stroke="#f2f0e8" stroke-width="1.5" stroke-dasharray="5 5" opacity=".75"/>`;
+ const sx=x(state.day),sy=y(s.portfolios[0].equityPath[state.day]/s.capital*100);out+=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" stroke="#e9c78d" stroke-dasharray="3 4" opacity=".7"/><circle cx="${sx}" cy="${sy}" r="4" fill="#e9c78d" stroke="#111a23" stroke-width="2"/>`;
+ $('equityChart').innerHTML=out;$('chartLegend').innerHTML=factionDefs.map(a=>`<span><i style="background:${a.color}"></i>${a.name}</span>`).join('')+'<span><i style="background:#f2f0e8"></i>基准买入持有</span>';
+}
+function renderEvents(){
+ const s=state.simulation;if(!s)return;
+ const visible=s.events.filter(e=>e.day<=state.day).slice(-8).reverse();
+ $('eventTotal').textContent=`${s.events.filter(e=>e.day<=state.day).length} EVENTS SEEN`;
+ $('eventsList').innerHTML=visible.length?visible.map(e=>`<div class="event"><div class="event-day">DAY ${String(e.day).padStart(3,'0')}</div><div><b>${e.title}</b><p>${e.desc}</p></div></div>`).join(''):'<div class="empty">当前时间点尚未触发情景事件。继续推进模拟周期。</div>';
+}
+function renderStandings(){
+ const s=state.simulation;if(!s)return;
+ const current=[...s.portfolios].map(p=>({...p,...riskMetricsAt(p,state.day,s.capital)})).sort((a,b)=>b.score-a.score);
+ const rows=current.map((p,i)=>`<div style="display:grid;grid-template-columns:24px 1fr auto;gap:9px;align-items:center;padding:11px 2px;border-bottom:1px solid #283742"><span style="color:var(--gold);font:10px var(--mono)">${String(i+1).padStart(2,'0')}</span><div><b style="font-size:11px">${p.name}</b><div style="color:#7e8e98;font-size:9px;margin-top:4px">累计 ${signedPct(p.ret)} · 最大回撤 ${p.dd.toFixed(1)}% · 日波动 ${p.volDaily.toFixed(2)}%</div></div><strong style="font:700 12px var(--mono);color:${p.ret>=0?'var(--green)':'var(--red)'}">${money(p.equity)}</strong></div>`).join('');
+ const b=s.benchmarkPath[state.day]||s.capital;
+ $('standings').innerHTML=rows+`<div style="padding:11px 2px;color:#9ba8af;font-size:10px">基准买入持有：<b style="color:#f2f0e8">${money(b)}</b> · ${signedPct((b/s.capital-1)*100)}</div><div class="hint">风险分数 = 累计收益率 − 0.48 × 最大回撤 − 0.20 × 日收益波动率（演示规则）。</div>`;
+}
+function renderLedger(){
+ const s=state.simulation;if(!s)return;
+ const agent=$('agentFilter').value,action=$('actionFilter').value,period=$('dayFilter').value;
+ let list=s.logs.filter(x=>x.day<=state.day);
+ if(agent!=='all')list=list.filter(x=>x.agentId===agent);if(action!=='all')list=list.filter(x=>x.action===action);
+ if(period!=='all'){const a=Math.ceil(s.days/3);list=list.filter(x=>period==='early'?x.day<=a:period==='middle'?x.day>a&&x.day<=a*2:x.day>a*2);}
+ $('ledgerSummary').textContent=`已记录 ${list.length.toLocaleString()} 条可见决策 / 当前 DAY ${state.day} · 共 ${s.logs.length.toLocaleString()} 条`;
+ const show=list.slice(-80).reverse();
+ $('ledgerBody').innerHTML=show.length?show.map(x=>`<tr><td>D${String(x.day).padStart(3,'0')}</td><td><b>${x.agent}</b><div style="color:#72828c;font-size:9px">${x.agentId.toUpperCase()} AGENT</div></td><td><span class="badge ${x.action.toLowerCase()}">${x.action==='BUY'?'买入':x.action==='SELL'?'卖出':'观望'}</span></td><td>$${x.price.toFixed(2)} / ${x.action==='HOLD'?'—':'$'+x.fillPrice.toFixed(2)}</td><td>${Math.round(x.weight*100)}%</td><td>${x.quantity?fmt(x.quantity,4):'—'}</td><td>${x.notional?money(x.notional):'—'}</td><td>${fmt(x.sharesHeld,4)} 股 / ${money(x.cashBalance)}</td><td>${x.fee?money(x.fee):'—'}</td><td title="${x.reason}">${x.reason} · ${x.event}<div class="ledger-context">市场 ${x.marketReturnPct>=0?'+':''}${x.marketReturnPct.toFixed(2)}% · 情绪 ${x.sentiment}/100 · 宏观 ${x.macro>=0?'+':''}${x.macro.toFixed(2)} · 行业 ${x.sector>=0?'+':''}${x.sector.toFixed(2)} · 波动 ${x.volatility.toFixed(2)}x</div></td></tr>`).join(''):'<tr><td colspan="10" class="empty">当前筛选下没有记录。</td></tr>';
+}
+function step(n=1){if(!state.simulation)return;const next=clamp(state.day+n,0,state.simulation.days);renderDay(next);if(state.day>=state.simulation.days){stopPlayback();$('runState').textContent='SETTLED';}else if(state.running)$('runState').textContent='LIVE';}
+function play(){if(!state.simulation||state.day>=state.simulation.days)return;stopPlayback();state.running=true;$('runState').textContent='LIVE';$('pauseBtn').disabled=false;state.timer=setInterval(()=>step(1),420);}
+function pause(){stopPlayback();if(state.simulation)$('runState').textContent='PAUSED';}
+function reset(){pause();state.day=0;$('runState').textContent='READY';renderDay(0);}
+function exportRun(){
+ if(!state.simulation)return;const s=state.simulation;const payload={schema:'ai-arena-run-v0.5.0',runId:`demo-${s.seed.toString(16)}-${s.days}d`,generatedAt:new Date().toISOString(),dataMode:'SYNTHETIC_DEMO_ONLY',evidencePack:{mode:'synthetic',snapshotId:`synthetic-${s.seed.toString(16)}`,sourceCount:0,companyLabelOnly:true,note:'No company filings, prices, news or external sentiment were retrieved.'},versions:{research:'local-rules-v0.5.0',simulator:'paper-sim-v0.5.0'},inputs:{subject:s.subject,days:s.days,capital:s.capital,risk:s.risk,seed:s.seed},benchmark:{name:'Synthetic buy-and-hold',initialFee:s.benchmarkFee,shares:s.benchmarkShares,finalValue:s.benchmarkPath.at(-1),totalReturnPct:s.benchmarkReturn,path:s.benchmarkPath},assumptions:{commissionRate:s.feeRate,slippageBase:s.slippage,sharedMarketPath:true,perAgentStartingCapital:s.capital,accountIsolation:'one_agent_one_portfolio'},research:state.research.reports.map(({id,name,stance,confidence,thesis,risk,signals})=>({id,name,stance,confidence,thesis,risk,signals})),market:s.market,events:s.events,results:s.results.map(p=>({id:p.id,name:p.name,totalReturn:p.totalReturn,maxDrawdown:p.maxDD,dailyVolatilityPct:p.volDaily,score:p.score,finalCash:p.cash,finalShares:p.shares,fees:p.fees,trades:p.trades,equityPath:p.equityPath,cashPath:p.cashPath,sharesPath:p.sharesPath,weightPath:p.weightPath,targetWeightPath:p.targetWeightPath})),operations:s.logs};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ai-arena-${hash(s.subject).toString(16)}-${s.days}d-demo.json`;a.click();URL.revokeObjectURL(url);toast('完整实验 JSON 已生成（合成演示数据）');
+}
+function launchExperiment(){
+ const name=$('company').value.trim();
+ if(!name){toast('请先输入公司名称或代码');$('company').focus();return;}
+ pause();
+ state.research=researchCompany(name);
+ state.selectedAgentId='value';
+ renderResearch();
+ $('setupModal').classList.add('hidden');
+ runSimulation();
+ toast('实验已启动：六个 Agent 拥有独立资金池');
+}
+let toastTimer=null;function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2200);}
+$('days').addEventListener('input',()=>{$('daysOut').textContent=$('days').value+' 天';});
+$('researchBtn').addEventListener('click',launchExperiment);
+$('company').addEventListener('keydown',e=>{if(e.key==='Enter')$('researchBtn').click();});
+$('newRunBtn').addEventListener('click',()=>$('setupModal').classList.remove('hidden'));
+$('closeSetup').addEventListener('click',()=>$('setupModal').classList.add('hidden'));
+$('cancelSetup').addEventListener('click',()=>$('setupModal').classList.add('hidden'));
+$('setupModal').addEventListener('click',e=>{if(e.target===$('setupModal')&&state.simulation)$('setupModal').classList.add('hidden');});
+$('arenaGrid').addEventListener('click',e=>{const card=e.target.closest('.agent-card');if(card)selectAgent(card.dataset.id);});
+$('arenaGrid').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const card=e.target.closest('.agent-card');if(card){e.preventDefault();selectAgent(card.dataset.id);}}});
+$('playBtn').addEventListener('click',play);$('pauseBtn').addEventListener('click',pause);$('nextBtn').addEventListener('click',()=>step(1));$('next5Btn').addEventListener('click',()=>step(5));$('finishBtn').addEventListener('click',()=>{pause();step(state.simulation.days-state.day);});
+$('resetBtn').addEventListener('click',reset);$('scrub').addEventListener('input',e=>{pause();step(+e.target.value-state.day);$('runState').textContent=state.day===state.simulation.days?'SETTLED':'REPLAY';});
+$('agentFilter').addEventListener('change',renderLedger);$('actionFilter').addEventListener('change',renderLedger);$('dayFilter').addEventListener('change',renderLedger);$('exportBtn').addEventListener('click',exportRun);
+$('closeRules').addEventListener('click',()=>$('rulesModal').classList.add('hidden'));$('rulesOpen').addEventListener('click',()=>$('rulesModal').classList.remove('hidden'));
+$('rulesModal').addEventListener('click',e=>{if(e.target===$('rulesModal'))$('rulesModal').classList.add('hidden');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('rulesModal').classList.add('hidden');if(state.simulation)$('setupModal').classList.add('hidden');}});
+$('researchBtn').addEventListener('contextmenu',e=>{e.preventDefault();$('rulesModal').classList.remove('hidden');});
+renderAgentCards();renderAgentDetail();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+# Browser QA — Finance Research Lab V0.3.2
+
+**Result: PASS** — isolated Python virtual environment + Chromium.
+
+## Environment
+
+- Python 3.13.5.
+- Isolated `.venv` created with `python3 -m venv --system-site-packages .venv`.
+- Playwright imported from the preinstalled sandbox package path; system Chromium `/usr/bin/chromium`.
+- No npm dependencies, external fonts, CDN scripts, API keys or network data required by the UI.
+
+## Coverage
+
+- Research form and user-controlled simulation duration (20–252 trading days).
+- Six independent strategy factions; six research reports; 18 visible role templates; three cross-examination columns.
+- Each report displays synthetic signals, risk, entry trigger and invalidation conditions.
+- Company label, initial capital and shared risk cap.
+- Daily paper simulation with a common market path, changing macro/sentiment/sector/volatility factors and synthetic world events.
+- BUY / SELL / HOLD for every faction on every simulated day (6 × N decisions).
+- Every decision stores its own market return, macro, sentiment, sector, volatility, regime and event context.
+- Execution price, market price, quantity, target weight, notional, commission, slippage, cash and share balances.
+- Buy-and-hold benchmark applies the entry fee to the actual invested cash before calculating shares.
+- Data-linked bill animation tested in both directions: positive equity delta flows vault → Agent; negative delta flows Agent → vault; no rounded zero-dollar chips; animation nodes clean up after completion.
+- Aggregate P&L display switches to red on a negative combined result and green on a positive result.
+- One-day / five-day advance, auto-play, pause, reset, settlement and timeline scrub.
+- Event count, event feed, factor panels and ledger respect the replay cursor; no future event count or future chart points leak into earlier states.
+- Agent/action/period filters and complete JSON export with run ID, versions, synthetic evidence declaration and benchmark assumptions.
+- Risk cap enforced for all generated target weights.
+- Deterministic rerun with identical inputs.
+- 252-day stress run: 1,512 decision records.
+- Viewport widths 1440, 1024, 768, 390 and 320 px: no horizontal overflow.
+- No JavaScript page errors or console errors.
+
+## Exact sandbox test command
+
+```bash
+PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py
+```
+
+Output:
+
+```text
+PASS: 6-faction research, triggers/invalidation, 18 role templates, configurable duration, shared market path, per-decision factor snapshots, bidirectional data-linked cash flow, visible event replay, benchmark fee accounting, 6x daily ledger, filters, export, deterministic rerun, responsive and no browser errors
+```
+
+## Limitations
+
+This validates front-end interaction and deterministic local simulation only. It does not validate company-specific research, licensed market data, actual LLM agents, historical backtest quality, exchange execution, legal suitability or investment performance. All current facts, signals, events, prices, fills and returns are synthetic.
+
+## Backend evidence contract QA — V0.1
+
+- `python -m unittest discover -s backend/tests -v`: **30 tests PASS**.
+- Exact issuer match, exchange-qualified ticker and CIK normalization; ambiguous ticker and unknown issuer outcomes.
+- UTC chronology checks, future-availability exclusion, foreign-issuer rejection, license fail-closed behavior and conflicting duplicate-ID rejection.
+- Deterministic snapshot identity independent of input record order; deep payload immutability and manifest-tamper detection.
+- Faction output evidence-reference validation and hard target-weight cap.
+- Append-only hash-chain verification, payload immutability, corruption detection and monotonic timestamps.
+
+- SEC parser: CIK/ticker/exchange candidates, ambiguous symbols, acceptance-time anchoring, exclusion of unknown accessions and mismatched forms, missing acceptance timestamp handling, CIK consistency, conflicting duplicate-accession rejection, fiscal-frame identity and default license-review gate.
+- SEC fixture parser performs no network requests; all fixtures are synthetic.
+
+- SEC client: explicit User-Agent contact requirement, HTTPS SEC host allowlist, CIK normalization, Retry-After handling, 4/sec pacing, bounded 5xx retries, cache copy isolation, response-size cap and invalid-JSON/non-retryable status rejection. All HTTP tests use a fake transport; no live SEC request was made.
+
+The backend is a contract core plus a mocked/tested SEC transport/parser, not an active live-data service. No market-data/news/macro/sentiment adapter, persistence layer, external LLM call or broker action is implemented.
+
+
+## V0.3.3 MotionSites UI/UX redesign QA
+
+- Visual direction calibrated against MotionSites examples Halo / USD Halo, Intelligence Layer and Agent Wave; original Finance Lab composition and product logic retained.
+- New MOTIONSITES_REDESIGN_SPEC.md records tokens, component geometry, motion, breakpoints and product truth boundary.
+- Local isolated .venv browser regression: PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/test_ui.py — PASS.
+- Visual snapshot suite: PYTHONPATH=/opt/pyvenv/lib/python3.13/site-packages .venv/bin/python tests/visual_qa.py; captures desktop, laptop, tablet, mobile, compact, research and arena states under shots/.
+- Screenshot review: desktop first viewport has clear headline → setup → six-faction hierarchy; mobile setup remains readable with 44px+ primary controls; central vault and six portfolio pods remain the visual signature.
+- Browser checks cover 1440 / 1024 / 768 / 390 / 320px; no page/console errors or horizontal overflow.
+- Existing 252-day stress, 1,512 daily decisions, bidirectional accounting-linked money flow, replay, filters, export and deterministic rerun remain covered by tests/test_ui.py.
+- GitHub Actions run #100 also passed in a clean isolated `.venv` with Playwright and Chromium installed from the test requirements. No external fonts, CDN, npm dependencies or image assets introduced.
+
+
+## V0.5.0 faction-first UI regression — 2026-11-04
+
+**GitHub Actions run #41797576138: PASS.** The workflow created an isolated Python virtual environment, installed Playwright and Chromium, served the experience over a local HTTP test server, and executed both browser and backend suites.
+
+- Browser regression: PASS — six unique Agent cards and six independent portfolios; six portrait assets loaded; six research-room scenes present; selected-Agent room, three challenge roles and trade-decision panel render.
+- Simulation: PASS — shared market path, separate cash/share/equity paths, one independent ledger per Agent, pause/step/replay/settle/reset behavior, JSON export and deterministic rerun.
+- Long-run stress: PASS — 252 simulated days and 1,512 ledger operations.
+- Responsive visual QA: PASS — 1440 / 1024 / 768 / 390 / 320px; zero horizontal overflow and zero browser errors.
+- Backend evidence contracts: 30 / 30 PASS — issuer resolution, point-in-time evidence snapshots, immutable evidence, typed research contracts, append-only ledger, SEC parser and SEC client safeguards.
+- Screenshot artifact: finance-lab-visual-qa, ID 13305748269.
+
+No live market-data request, external LLM request or brokerage order was made. The V0.5.0 page remains a synthetic local prototype.

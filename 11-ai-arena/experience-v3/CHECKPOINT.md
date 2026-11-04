@@ -1,0 +1,126 @@
+# Finance Research Lab checkpoint — 2026-11-03 / V0.3.2
+
+## User's clarified product intent
+
+The Capital Theater screenshot is a visual stage, not the product's complete behavior. The intended Finance Arena loop is:
+
+**company input → independent faction research → cross-examination → user-configured trading days → shared changing market environment → separate paper portfolios → full operation ledger → replay and report.**
+
+A company label alone must never be presented as company-specific research. V0.3.2 is explicitly a synthetic local interaction prototype.
+
+## Current implementation
+
+- Path: `11-ai-arena/experience-v3/index.html`.
+- Six strategy factions: Value & Quality, Growth, Technical/Momentum, Quant, Sentiment, Macro/Regime.
+- Each faction shows lead analyst, bear-case challenger and risk officer role templates.
+- Independent stance, thesis, confidence, synthetic signals, risks, entry triggers, invalidation conditions and target exposure.
+- Cross-examination dynamically compares the most positive and cautious synthetic thesis scores and their target-weight difference.
+- User chooses 20–252 simulated trading days, equal starting capital ($50k/$100k/$250k/$500k) and a shared risk cap.
+- Deterministic seeded synthetic market path; macro, sentiment, sector and volatility evolve daily; event shocks are explicit.
+- Six independent portfolios share the same market path, starting capital, transaction-cost model and risk cap.
+- Daily BUY / SELL / HOLD decision for each faction.
+- Every log row includes market return, raw macro/sentiment/sector/volatility, regime, event kind/title/description/shock, fill price, quantity, target weight, notional, cash, shares, fee and slippage.
+- Daily replay, auto-play, pause, next day, next five days, finish, reset and scrub.
+- Event count/feed are replay-aware; future event count is not exposed before its date.
+- Event feed, four-factor panel, equity curves, dynamic ranking and synthetic buy-and-hold benchmark.
+- Benchmark now deducts entry fee from invested capital before calculating shares.
+- JSON export includes run ID, strategy/simulator versions, synthetic evidence-pack declaration, assumptions, benchmark and full operation context.
+- Files: `README.md`, `ARCHITECTURE.md`, `REAL_DATA_BLUEPRINT.md`, `TEST_REPORT.md`, `CHECKPOINT.md`, `requirements-test.txt`, `tests/test_ui.py`.
+
+## Truth boundary
+
+No live company research, licensed financial data, market news, LLM workers, broker or real orders are connected. Six agents are independent deterministic rule-based strategy functions; 18 role cards are workflow templates, not real LLM calls. Company text is a display label and deterministic demo seed only. Never call this a backtest or forecast.
+
+## QA
+
+- Isolated Python venv + Playwright / Chromium.
+- Responsive widths 1440 / 1024 / 768 / 390 / 320.
+- 252-day stress test passes with 1,512 daily decisions.
+- One-day cash-flow animation tested for both positive and negative daily changes, with no zero-dollar labels and no lingering DOM elements.
+- Dynamic market factors and sentiment change; strategy weights respond to evolving environment.
+- Per-operation market context, replay filters, benchmark fee accounting, risk cap, JSON export and deterministic rerun verified.
+- No console/page errors or horizontal overflow.
+
+## Backend evidence gateway core V0.1 (2026-11-03)
+
+- Added `backend/research_gateway.py`, a provider-agnostic standard-library contract layer.
+- Exact issuer resolution returns `resolved`, `ambiguous` or `not_found`; ambiguous ticker matches are never guessed.
+- Evidence records are deeply immutable, source-attributed and SHA-256 hashed, with UTC `published_at`, `available_at` and `retrieved_at`, provider and license status.
+- Snapshot freeze filters records not yet available at the requested `as_of` cutoff, rejects foreign issuers, unapproved licenses, invalid chronology and conflicting duplicate IDs, and produces a deterministic manifest ID.
+- Typed faction research validates supporting/counter evidence references against the same snapshot and enforces `target_weight <= max_weight`.
+- Append-only in-memory ledger chains payload hashes and prior event hashes; tampering and timestamp reversal are detected.
+- Added `backend/adapters/sec_edgar.py`: a no-network parser for SEC submissions/companyfacts that anchors facts to accession `acceptanceDateTime`, excludes unmatched accessions/forms, and defaults license status to `review_required`.
+- Thirty standard-library unit tests pass. Added `backend/adapters/sec_client.py`: opt-in read-only SEC HTTP client with explicit `SEC_USER_AGENT`, SEC-host HTTPS allowlist, 4/sec default pacing, Retry-After and bounded retries, response-size cap and short in-memory cache. Tests use a fake transport; no live SEC request was issued. No other live provider, LLM worker, database or broker is connected.
+- Added root `.github/workflows/ai-arena-validation.yml` to run backend contracts and the Finance Lab Playwright regression on AI Arena changes.
+
+## Research discoveries
+
+- TradingAgents: specialist analysts + bull/bear debate + trader/risk/portfolio manager; latest 2026-10 release notes emphasize filing-date leakage and market-holiday settlement.
+- FinRobot: strongest direct architecture reference for typed role workflows, FastAPI service, deterministic computation separated from LLM narration.
+- Qlib: point-in-time quantitative data, factor research, risk modeling and portfolio optimization.
+- NautilusTrader: event-driven deterministic backtest/live runtime; defer due engineering footprint and LGPL-3.0 review.
+- Backtrader is GPL-3.0; do not vendor into a proprietary product without deliberate compliance review.
+- Alpaca read-only MCP data access is available in the ChatGPT session, but not callable directly from the static web app. A backend adapter still needs application-owned credentials and provider contract review.
+
+## Next concrete work
+
+1. Implement issuer resolution and a real, licensed point-in-time evidence gateway (SEC filings/facts, price bars, news, sentiment and macro releases).
+2. Freeze one shared evidence pack and run six independent faction workflows with typed outputs and evidence references.
+3. Use event-triggered Agent policy updates; keep the deterministic simulator authoritative and avoid 18 LLM calls every trading day.
+4. Add append-only backend event ledger, state hashes, data/model/prompt versioning and replay.
+5. Validate on held-out periods against buy-and-hold / index / simple factor baselines before presenting comparative performance.
+6. Keep live brokerage execution out of MVP.
+
+## Recovery
+
+Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `experience-v3/README.md`, `experience-v3/ARCHITECTURE.md` and `experience-v3/REAL_DATA_BLUEPRINT.md` before continuing. Keep V0.1 and V0.2 unchanged for comparison.
+
+## 2026-11-03 — V0.3.3 MotionSites UI/UX redesign
+
+- User requested a complete front-end UI/UX redesign using Motionsites-AI/claude-skill, with a deliverable HTML in this repository.
+- Target remains 11-ai-arena/experience-v3/index.html on feat/ai-arena-concept-research; Draft PR #26 remains open and unmerged.
+- Studied MotionSites halo-usd-landing, intelligence-layer and agent-wave, plus the spec, craft, surface, motion and review guidance. Chose a dense product dashboard direction rather than a marketing/video hero.
+- Added MOTIONSITES_REDESIGN_SPEC.md and embedded a standalone V0.3.3 design system into the HTML. No simulation JS or accounting rules were changed.
+- Local .venv Playwright regression passed after redesign; all six factions, 18 role templates, money-flow direction, ledger, replay, export, deterministic rerun and 252-day / 1,512-decision stress remain covered.
+- Desktop and mobile screenshots reviewed. A separate tests/visual_qa.py captures five responsive widths plus research and arena states and checks page/console errors and horizontal overflow. VISUAL_QA_REPORT.md records a 8.3/10 MotionSites review score (no category below 7).
+- GitHub Actions runs #96, #98 and #100 passed; #100 is the final documentation-closure run. The uploaded visual artifact (ID 13201981641) was downloaded and inspected. Backend evidence contracts and browser regression are green.
+- PR #26 remains Draft and unmerged. Continue from this branch/head; no production or live-finance claims are made.
+
+
+## Final CI evidence — 2026-11-03
+
+- GitHub Actions run #98: PASS — backend evidence contracts, isolated Python venv + Playwright browser regression, five responsive viewport snapshots, screenshot artifact upload.
+- Artifact: finance-lab-visual-qa (ID 13201641803, ~2.8 MB); downloaded and visually reviewed. The research screenshot shows the six faction cards without sticky-header capture artifacts; the mobile arena screenshot is aligned to the simulation section top.
+- Visual report JSON: 1440 / 1024 / 768 / 390 / 320px; all horizontalOverflow=false, factions=6, roleTemplates=18, pageErrors=[]; result=PASS.
+
+- The local README now documents the portable clean-venv install/test commands; it no longer exposes this runtime's preinstalled package path.
+
+
+## 2026-11-03 — V0.4.0 independent-Agent workstation redesign
+
+- User clarified the core accounting and product model: one Agent = one independent capital pool / paper portfolio. A central shared vault or inter-Agent money-flow visualization is conceptually wrong and has been removed.
+- Rebuilt the main page as one integrated workstation: shared market environment, six independent Agent account cards, selected-Agent research/account workspace, six-account equity comparison, shared factor/event panels, ranking and per-Agent audit ledger.
+- Moved company label, duration, per-Agent starting capital and common risk-cap configuration into a dedicated new-experiment modal.
+- The simulator now records per-Agent cashPath, sharesPath, actual-position weightPath and targetWeightPath alongside equityPath. These are replay-safe day-indexed account states; the common market remains shared and strategy functions still do not write authoritative accounting values.
+- Added keyboard-accessible Agent card selection and a selected-Agent detail workspace with thesis, signals, risks, triggers, invalidation, cash, shares, weight, trade count and drawdown.
+- Updated README and architecture contract; added AGENT_VISUAL_SYSTEM.md with six distinct personas, a shared 4:5 cinematic portrait art direction, prompt briefs and stable asset paths.
+- Browser regression and visual QA scripts were rewritten for the new layout. GitHub Actions now includes this work branch in its push validation trigger and runs the suite in an isolated Python virtual environment.
+- Six previously generated individual portraits and six faction research-room images are now integrated through optimized WebP sprite atlases. The UI crops one cell per faction; the composite atlases are not shown as contact sheets.
+- GitHub Actions run #128 passed: backend contracts, browser regression, 252-day stress test and responsive visual QA; actual position weight is reconciled from shares × shared price ÷ equity, with target weight stored separately. Screenshots were downloaded and visually inspected. No horizontal overflow or browser errors (artifact 13220476296).
+- No live company research, real market data, LLM workers, broker or real trades have been connected. V0.4.0 remains a synthetic local prototype.
+
+
+## 2026-11-04 — V0.5.0 AI Investment Arena faction-first reframe
+
+- Continued on feat/ai-arena-independent-agent-workspace-v04; retained the V0.4 deterministic simulator and accounting model as the stable execution core.
+- Reframed the UI around six distinct investment schools and their own research worlds, rather than generic Agent cards.
+- Integrated the six previously generated individual Agent portraits and six faction research-room scenes into compact WebP sprite atlases. Each card and selected-Agent workspace crops the correct cell by faction ID; no group portrait is shown as an Agent.
+- Added a five-stage investment workflow strip: company input → independent research → adversarial challenge → isolated paper execution → audit/replay.
+- Added dedicated selected-Agent research-room banner, three challenge roles, and a trade-decision/execution panel with action, day, fill price, quantity, actual exposure and reason.
+- Rebuilt the faction card hierarchy, dark institutional research-room surfaces, portrait framing, accent-color mapping, and responsive behavior for 1440 / 1024 / 768 / 390 / 320px.
+- Kept shared market conditions and independent-account accounting intact. No central vault, Agent-to-Agent transfer, real market-data or brokerage claims were introduced.
+- Upgraded export schema and research/simulator identifiers to V0.5.0.
+- Updated Playwright and visual-QA scripts to serve the page over a local HTTP test server, verifying actual sprite fetches. Isolated-venv GitHub Actions run #41797576138 passed: 30 backend tests, six loaded portraits, six room scenes, 252-day simulation / 1,512 ledger operations, five viewport widths, zero horizontal overflow and zero browser errors (artifact 13305748269).
+
+
+- Draft PR #26 (feat(ai-arena): six-faction investment arena V0.5.0) was fast-forwarded to the completed V0.5.0 work after verifying the old PR head is an ancestor. It remains open and unmerged for review.
