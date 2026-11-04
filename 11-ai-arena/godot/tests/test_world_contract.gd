@@ -27,8 +27,8 @@ func _run(world_script: Script) -> void:
 	world.return_to_arena()
 	_check(world.current_mode == "arena", "return action must restore the shared arena")
 	_check(world.animate_cashflow("growth", 200.0) == "to_agent", "positive P&L must route notes toward the Agent")
-	_check(ArenaWorld.cashflow_direction_for(-200.0) == "to_vault", "negative P&L must route notes toward the vault")
-	_check(ArenaWorld.cashflow_direction_for(0.0) == "none", "zero P&L must not spawn cash notes")
+	_check(world.animate_cashflow("growth", -200.0) == "to_vault", "negative P&L must route notes toward the vault")
+	_check(world.animate_cashflow("growth", 0.0) == "none", "zero P&L must not spawn cash notes")
 	world.queue_free()
 	if _failed:
 		quit(1)
