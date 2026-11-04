@@ -151,3 +151,6 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 - Rebuilt the visible experience around six investment factions, individual Agent portraits, dedicated research-room scenes, three-role adversarial research teams, and per-Agent paper-trade decision panels.
 - Added compact WebP portrait/room atlases and mapped each faction to its own visual cell.
 - Updated export identifiers and responsive browser-QA assertions. Isolated-venv GitHub Actions run #41797576138 passed: backend contracts 30/30, full browser regression, 252-day / 1,512-operation simulation, portrait/room loading, and 1440 / 1024 / 768 / 390 / 320px visual QA with no horizontal overflow or browser errors. Screenshot artifact 13305748269.
+
+
+- Draft PR #26 now carries the V0.5.0 faction-first implementation and CI evidence; it remains open and unmerged. Work branch: feat/ai-arena-independent-agent-workspace-v04.

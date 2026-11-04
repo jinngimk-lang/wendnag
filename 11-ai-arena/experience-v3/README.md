@@ -38,6 +38,8 @@ python -m http.server 8000
 # open http://127.0.0.1:8000
 ~~~
 
+Windows PowerShell uses the same server command. To run the browser suite locally, activate the virtual environment with .venv\\Scripts\\Activate.ps1 and use .venv\\Scripts\\python.exe for the pip, Playwright and test commands.
+
 ## Browser QA in an isolated virtual environment
 
 ~~~bash

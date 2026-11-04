@@ -121,3 +121,6 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Kept shared market conditions and independent-account accounting intact. No central vault, Agent-to-Agent transfer, real market-data or brokerage claims were introduced.
 - Upgraded export schema and research/simulator identifiers to V0.5.0.
 - Updated Playwright and visual-QA scripts to serve the page over a local HTTP test server, verifying actual sprite fetches. Isolated-venv GitHub Actions run #41797576138 passed: 30 backend tests, six loaded portraits, six room scenes, 252-day simulation / 1,512 ledger operations, five viewport widths, zero horizontal overflow and zero browser errors (artifact 13305748269).
+
+
+- Draft PR #26 (feat(ai-arena): six-faction investment arena V0.5.0) was fast-forwarded to the completed V0.5.0 work after verifying the old PR head is an ancestor. It remains open and unmerged for review.
