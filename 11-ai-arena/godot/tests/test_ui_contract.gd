@@ -26,12 +26,12 @@ func _run() -> void:
 	_check(app.current_view == "arena", "the back action must restore the arena view")
 	app.queue_free()
 	if _failed:
-		_failed = true
+		quit(1)
 	else:
 		print("AI ARENA UI CONTRACT: PASS")
 		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:
+		_failed = true
 		push_error("UI CONTRACT FAILED: " + message)
-		quit(1)

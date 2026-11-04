@@ -42,12 +42,12 @@ func _initialize() -> void:
 	twin.configure(100000.0, 90, 20261104)
 	_check(is_equal_approx(sim.market_prices[1], twin.market_prices[1]), "same seed must reproduce the same market path")
 	if _failed:
-		_failed = true
+		quit(1)
 	else:
 		print("AI ARENA SIMULATION CONTRACT: PASS")
 		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:
+		_failed = true
 		push_error("CONTRACT FAILED: " + message)
-		quit(1)

@@ -26,12 +26,12 @@ func _run() -> void:
 	_check(ArenaWorld.cashflow_direction_for(0.0) == "none", "zero P&L must not spawn cash notes")
 	world.queue_free()
 	if _failed:
-		_failed = true
+		quit(1)
 	else:
 		print("AI ARENA WORLD CONTRACT: PASS")
 		quit(0)
 
 func _check(condition: bool, message: String) -> void:
 	if not condition:
+		_failed = true
 		push_error("WORLD CONTRACT FAILED: " + message)
-		quit(1)
