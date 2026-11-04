@@ -16,12 +16,12 @@ from mathutils import Vector
 PROJECT_ROOT = os.getcwd()
 DEFAULT_OUTPUT = "assets"
 FACTIONS = [
-    {"id": "value", "accent": (0.91, 0.70, 0.39, 1), "hair": (0.52, 0.51, 0.48, 1), "skin": (0.72, 0.53, 0.40, 1), "suit": (0.10, 0.12, 0.14, 1), "shirt": (0.83, 0.81, 0.74, 1), "style": "library"},
-    {"id": "growth", "accent": (0.26, 0.77, 0.53, 1), "hair": (0.12, 0.08, 0.07, 1), "skin": (0.86, 0.66, 0.53, 1), "suit": (0.78, 0.75, 0.67, 1), "shirt": (0.16, 0.37, 0.28, 1), "style": "glass"},
-    {"id": "trend", "accent": (0.36, 0.60, 0.86, 1), "hair": (0.06, 0.07, 0.08, 1), "skin": (0.66, 0.46, 0.35, 1), "suit": (0.06, 0.10, 0.15, 1), "shirt": (0.10, 0.19, 0.29, 1), "style": "trading"},
-    {"id": "quant", "accent": (0.69, 0.50, 0.88, 1), "hair": (0.10, 0.08, 0.12, 1), "skin": (0.84, 0.64, 0.53, 1), "suit": (0.14, 0.14, 0.19, 1), "shirt": (0.27, 0.20, 0.38, 1), "style": "compute"},
-    {"id": "sentiment", "accent": (0.91, 0.53, 0.31, 1), "hair": (0.08, 0.05, 0.04, 1), "skin": (0.88, 0.66, 0.53, 1), "suit": (0.12, 0.11, 0.12, 1), "shirt": (0.25, 0.14, 0.11, 1), "style": "media"},
-    {"id": "macro", "accent": (0.40, 0.79, 0.82, 1), "hair": (0.61, 0.62, 0.63, 1), "skin": (0.78, 0.57, 0.45, 1), "suit": (0.18, 0.25, 0.31, 1), "shirt": (0.11, 0.22, 0.28, 1), "style": "global"},
+    {"id": "value", "spriteX": 0, "spriteY": 0, "roomX": 0, "roomY": 0, "accent": (0.91, 0.70, 0.39, 1), "hair": (0.52, 0.51, 0.48, 1), "skin": (0.72, 0.53, 0.40, 1), "suit": (0.10, 0.12, 0.14, 1), "shirt": (0.83, 0.81, 0.74, 1), "style": "library"},
+    {"id": "growth", "spriteX": 1, "spriteY": 0, "roomX": 1, "roomY": 0, "accent": (0.26, 0.77, 0.53, 1), "hair": (0.12, 0.08, 0.07, 1), "skin": (0.86, 0.66, 0.53, 1), "suit": (0.78, 0.75, 0.67, 1), "shirt": (0.16, 0.37, 0.28, 1), "style": "glass"},
+    {"id": "trend", "spriteX": 2, "spriteY": 0, "roomX": 2, "roomY": 0, "accent": (0.36, 0.60, 0.86, 1), "hair": (0.06, 0.07, 0.08, 1), "skin": (0.66, 0.46, 0.35, 1), "suit": (0.06, 0.10, 0.15, 1), "shirt": (0.10, 0.19, 0.29, 1), "style": "trading"},
+    {"id": "quant", "spriteX": 0, "spriteY": 1, "roomX": 0, "roomY": 1, "accent": (0.69, 0.50, 0.88, 1), "hair": (0.10, 0.08, 0.12, 1), "skin": (0.84, 0.64, 0.53, 1), "suit": (0.14, 0.14, 0.19, 1), "shirt": (0.27, 0.20, 0.38, 1), "style": "compute"},
+    {"id": "sentiment", "spriteX": 1, "spriteY": 1, "roomX": 1, "roomY": 1, "accent": (0.91, 0.53, 0.31, 1), "hair": (0.08, 0.05, 0.04, 1), "skin": (0.88, 0.66, 0.53, 1), "suit": (0.12, 0.11, 0.12, 1), "shirt": (0.25, 0.14, 0.11, 1), "style": "media"},
+    {"id": "macro", "spriteX": 2, "spriteY": 1, "roomX": 2, "roomY": 1, "accent": (0.40, 0.79, 0.82, 1), "hair": (0.61, 0.62, 0.63, 1), "skin": (0.78, 0.57, 0.45, 1), "suit": (0.18, 0.25, 0.31, 1), "shirt": (0.11, 0.22, 0.28, 1), "style": "global"},
 ]
 
 MATERIALS = {}
@@ -145,6 +145,19 @@ def plane(name, loc, width, height, mat, col, rotation=(math.pi / 2, 0, 0)):
     obj.rotation_euler = rotation
     assign(obj, mat)
     return obj
+
+def apply_atlas_uv(obj, column, row):
+    uv_layer = obj.data.uv_layers.active
+    if uv_layer is None:
+        return
+    u0, u1 = column / 3.0, (column + 1) / 3.0
+    if row == 0:
+        v0, v1 = 0.5, 1.0
+    else:
+        v0, v1 = 0.0, 0.5
+    for loop in uv_layer.data:
+        loop.uv.x = u0 + loop.uv.x * (u1 - u0)
+        loop.uv.y = v0 + loop.uv.y * (v1 - v0)
 
 def add_monitor(col, x, y, z, accent, width=1.35, height=0.82, tilt=0.0):
     frame = material("Monitor frame", (0.018, 0.026, 0.034, 1), 0.45, 0.28)
@@ -286,9 +299,10 @@ def build_room(faction, output_dir):
     cube("Room left wall", (-5.9, 0, 2.7), (0.20, 8, 5.4), wall, col, 0.03)
     cube("Room right wall", (5.9, 0, 2.7), (0.20, 8, 5.4), wall, col, 0.03)
 
-    image_path = os.path.join(PROJECT_ROOT, "assets", "backgrounds", "rooms", agent_id + ".webp")
+    image_path = os.path.join(PROJECT_ROOT, "assets", "rooms-sprite.webp")
     backplate = image_material("Reference environment " + agent_id, image_path)
-    plane("Room cinematic backplate", (0, 3.78, 2.85), 11.2, 5.1, backplate, col)
+    backplate_plane = plane("Room cinematic backplate", (0, 3.78, 2.85), 11.2, 5.1, backplate, col)
+    apply_atlas_uv(backplate_plane, int(faction["roomX"]), int(faction["roomY"]))
 
     # Main desk and the human-scale workstation.
     cube("Executive desk top", (0, -0.65, 1.06), (4.8, 1.55, 0.16), wood, col, 0.075)
