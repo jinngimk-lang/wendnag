@@ -14,11 +14,13 @@ var _playback_timer: Timer
 var selected_agent := "value"
 var current_view := "arena"
 var _status := "SYNTHETIC PAPER MODE  ·  NO BROKER CONNECTION"
+var use_imported_models := true
 
 func _ready() -> void:
 	_simulation.configure(100000.0, 90, 20261104)
 	_world = ArenaWorld.new()
 	_world.name = "ArenaWorld"
+	_world.use_imported_models = use_imported_models
 	add_child(_world)
 
 	_hud = ArenaHUD.new()

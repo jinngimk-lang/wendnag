@@ -9,6 +9,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var world = ArenaWorld.new()
+	world.use_imported_models = false
 	root.add_child(world)
 	_check(world.agent_anchors.size() == 6, "the 3D arena must expose six Agent podium anchors")
 	_check(world.current_mode == "arena", "the initial 3D mode must be the arena")

@@ -10,6 +10,7 @@ var current_mode := "arena"
 var selected_agent := "value"
 var current_agent := "value"
 var agent_anchors: Dictionary = {}
+var use_imported_models := true
 var _arena_stage: Node3D
 var _room_views: Dictionary = {}
 var _station_positions: Dictionary = {}
@@ -117,7 +118,9 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	_box(station, "PortraitFrame", Vector3(-1.30, 1.88, -0.68), Vector3(0.94, 1.26, 0.12), accent, 0.55, 0.28)
 	_add_textured_quad(station, "Portrait", Vector3(-1.30, 1.88, -0.59), Vector2(0.78, 1.10), AgentCatalog.portrait_texture(agent_id))
 
-	var agent_model := _load_glb("res://assets/generated/agents/%s.glb" % agent_id, station, 0.52)
+	var agent_model: Node3D = null
+	if use_imported_models:
+		agent_model = _load_glb("res://assets/generated/agents/%s.glb" % agent_id, station, 0.52)
 	if agent_model == null:
 		_build_fallback_agent(station, agent_id)
 	else:
@@ -183,7 +186,9 @@ func _ensure_room_loaded(agent_id: String) -> void:
 		return
 	var faction := AgentCatalog.get_faction(agent_id)
 	var accent := AgentCatalog.color_for(agent_id)
-	var room_model := _load_glb("res://assets/generated/rooms/%s.glb" % agent_id, room, 0.92)
+	var room_model: Node3D = null
+	if use_imported_models:
+		room_model = _load_glb("res://assets/generated/rooms/%s.glb" % agent_id, room, 0.92)
 	var backdrop_z := -4.72
 	if room_model == null:
 		_build_fallback_room(room, agent_id, accent)
@@ -192,7 +197,9 @@ func _ensure_room_loaded(agent_id: String) -> void:
 		room_model.position = Vector3.ZERO
 		backdrop_z = -3.70
 	_add_textured_quad(room, "AIEnvironmentBackdrop", Vector3(0, 3.25, backdrop_z), Vector2(10.6, 5.4), AgentCatalog.room_texture(agent_id))
-	var agent_model := _load_glb("res://assets/generated/agents/%s.glb" % agent_id, room, 0.96)
+	var agent_model: Node3D = null
+	if use_imported_models:
+		agent_model = _load_glb("res://assets/generated/agents/%s.glb" % agent_id, room, 0.96)
 	if agent_model == null:
 		_build_fallback_agent(room, agent_id)
 	else:

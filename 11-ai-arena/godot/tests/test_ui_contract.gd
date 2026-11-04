@@ -9,6 +9,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var app = MainScene.instantiate()
+	app.use_imported_models = false
 	root.add_child(app)
 	_check(app.apply_responsive_layout(1600.0) == "desktop", "wide desktop layout must be selected")
 	_check(app.apply_responsive_layout(1024.0) == "tablet", "tablet layout must be selected")
