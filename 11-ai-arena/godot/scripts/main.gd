@@ -1,10 +1,13 @@
 extends Node3D
 
-const ArenaSimulation = preload("res://scripts/arenasimulation.gd")
+const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
 const ArenaWorld = preload("res://scripts/arena_world.gd")
 const ArenaHUD = preload("res://scripts/arena_hud.gd")
 
-var simulation = ArenaSimulation.new()
+var _simulation = ArenaSimulation.new()
+var simulation:
+	get:
+		return _simulation
 var _world: ArenaWorld
 var _hud: ArenaHUD
 var _playback_timer: Timer
