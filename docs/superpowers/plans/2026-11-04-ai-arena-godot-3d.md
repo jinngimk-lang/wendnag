@@ -16,7 +16,8 @@
 - Every faction starts with the same capital and shares the same synthetic market path and fee/slippage assumptions.
 - Account cash, shares, equity and ledgers remain independent.
 - No live trading, broker API, live data or real LLM workers.
-- Money animation is a one-way visual representation of signed P&L; it never changes account state.
+- Money animation is a local visual representation of signed P&L, bounded to the same Agent account marker and podium; it never changes account state.
+- No central capital vault, shared cash pool or inter-Agent cash transfer.
 - Replay exposes only days already simulated.
 - Godot 4.7.1 is the minimum supported runtime; Blender 4.x is the asset authoring runtime.
 - Do not claim new GPT images were generated in this milestone; use supplied reference crops and keep prompts ready.
@@ -42,9 +43,9 @@
 **Interfaces:**
 - Produces the Godot project entry point and the initial red test for \`ArenaSimulation\`.
 
-- [ ] Write the GDScript simulation test first. Assert six independent accounts, one decision per faction per day, replay clamping and signed cashflow direction.
+- [x] Write the GDScript simulation test first. Assert six independent accounts, one decision per faction per day, replay clamping and signed cashflow direction.
 - [ ] Run Godot headless and verify the test fails because \`arena_simulation.gd\` does not yet exist.
-- [ ] Add project configuration and a minimal main scene.
+- [x] Add project configuration and a minimal main scene.
 - [ ] Commit the red test and CI harness.
 
 ### Task 2: Deterministic six-account simulator
@@ -63,9 +64,9 @@
 - \`ArenaSimulation.get_visible_events(day: int = -1) -> Array[Dictionary]\`
 - \`ArenaSimulation.export_payload() -> Dictionary\`
 
-- [ ] Implement the smallest GDScript module that makes Task 1 pass.
-- [ ] Verify all six accounts receive exactly one ledger record per simulated day.
-- [ ] Verify replay can inspect only the current simulated range.
+- [x] Implement the smallest GDScript module that makes Task 1 pass.
+- [x] Verify all six accounts receive exactly one ledger record per simulated day.
+- [x] Verify replay can inspect only the current simulated range.
 - [ ] Commit the simulator and green tests.
 
 ### Task 3: Blender source models and scene assets
@@ -83,8 +84,8 @@
 - Blender script is runnable with \`blender --background --factory-startup --python blender/build_ai_arena_assets.py\`.
 - Output GLBs are imported by \`ArenaWorld\`; if absent, the world uses procedural fallbacks.
 
-- [ ] Add asset-manifest and Blender-script syntax tests.
-- [ ] Implement six recognizable busts, six differentiated research rooms and a banknote prop.
+- [x] Add asset-manifest and Blender-script syntax tests.
+- [x] Implement six recognizable busts, six differentiated research rooms and a banknote prop.
 - [ ] Run Blender in CI, verify every GLB magic header and file size, and save the editable .blend source.
 - [ ] Commit generated assets from the CI job only after Godot import and tests pass.
 
@@ -101,10 +102,10 @@
 - \`ArenaWorld.select_agent(agent_id: String)\`
 - \`ArenaWorld.animate_cashflow(agent_id: String, signed_delta: float)\`
 
-- [ ] Write the world contract test for six station anchors, room switching and opposite signed cashflow routes.
+- [x] Write the world contract test for six station anchors, room switching and opposite signed local-account cashflow routes.
 - [ ] Verify RED.
-- [ ] Implement the central vault, six podiums, Agent GLB loading, six room environments and fallback geometry.
-- [ ] Animate notes from vault to Agent on positive equity delta and Agent to vault on negative equity delta.
+- [x] Implement the shared-market information display, six independent account podiums, Agent GLB loading, six room environments and fallback geometry. No central vault or cross-Agent cashflow route is used.
+- [x] Animate positive notes upward from the same Agent’s account marker and negative notes back to that same marker.
 - [ ] Verify GREEN and commit.
 
 ### Task 5: Responsive Godot UI and interaction loop
@@ -120,9 +121,9 @@
 - \`ArenaApp.return_to_arena()\`
 - \`ArenaApp.advance_one_day()\`
 
-- [ ] Write the UI contract test for desktop/tablet/mobile layout modes and room entry/exit.
+- [x] Write the UI contract test for desktop/tablet/mobile layout modes and room entry/exit.
 - [ ] Verify RED.
-- [ ] Implement top bar, navigation, six portrait cards, selected-Agent inspector, research/account/ledger tabs, timeline and controls.
+- [x] Implement top bar, navigation, six portrait cards, selected-Agent inspector, research/account/ledger tabs, timeline and controls.
 - [ ] Verify GREEN at 1600 / 1024 / 768 / 390 / 320 logical widths.
 
 ### Task 6: Package, docs and whole-project verification
@@ -132,7 +133,23 @@
 - Create: \`tools/verify_generated_assets.py\`
 - Modify: \`README.md\`, \`../STATUS.md\`, \`.github/workflows/ai-arena-godot.yml\`
 
-- [ ] Add Blender + Godot CI build, import, smoke and package artifact steps.
-- [ ] Run the full Godot tests and Python asset checks.
+- [x] Add Blender + Godot CI build, import, smoke and package artifact steps.
+- [x] Run the full Godot tests and Python asset checks. GitHub Actions run 41810429080 passed all Godot and asset steps; local isolated .venv passed 8/8 Python tests and the generated-asset verifier.
 - [ ] Perform a fresh self-review of the full branch and fix all Critical/Important findings with RED→GREEN tests.
-- [ ] Record the exact CI run, commit SHA and local Godot launch steps.
+- [x] Record the exact CI run, commit SHA and local Godot launch steps in `11-ai-arena/godot/GODOT_STATUS.md`.
+
+
+## Current checkpoint — 2026-11-04
+
+- Passing Godot CI: run `41810429080`, commit `d7d83ec09131baf2328cae42099c2eb2b343668a`.
+- Passed: Godot 4.7.1 import, simulation, 3D world, responsive UI, main-scene smoke, generated-asset integrity, package and upload.
+- Local `.venv`: 8/8 Python contract tests passed; generated Blender asset verifier passed.
+- Existing GLB and editable `.blend` assets are committed. The latest normal CI skipped regeneration because all assets were already present; a one-off rebuild gate is being run to prove the Blender builder is reproducible.
+- No new GPT scene-background generation is claimed; supplied portrait/room reference atlases are used, with room briefs and an arena brief ready for a future non-paid generation route.
+
+## Follow-on product work (not part of this verified baseline)
+
+1. Add a dedicated run-setup modal for scenario/company label, duration, starting capital and risk cap; keep the label explicitly synthetic/demo-only.
+2. Add the user's seventh-investor interaction: follow an Agent or challenge its strategy, without changing the six independent-account accounting rules.
+3. Perform visual QA in the user's local Godot editor for camera framing, portrait/room visibility, mobile layout and note choreography; CI evidence is headless and is not a substitute for visual review.
+4. If a non-paid image-generation route becomes available, replace room backplates using the included prompts without changing the scene or account contracts.
