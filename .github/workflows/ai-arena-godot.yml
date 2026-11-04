@@ -13,6 +13,13 @@ on:
     paths:
       - "11-ai-arena/godot/**"
       - ".github/workflows/ai-arena-godot.yml"
+  workflow_dispatch:
+    inputs:
+      rebuild_blender_assets:
+        description: "Rebuild the editable Blender source and all GLB assets"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -33,13 +40,14 @@ jobs:
           fetch-depth: 0
 
       - name: Install Blender when the source builder is present
-        if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true)
         run: |
           sudo apt-get update
           sudo apt-get install -y blender python3-numpy
 
       - name: Build Blender source and GLB assets
-        if: hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        id: build_assets
+        if: hashFiles('11-ai-arena/godot/assets/generated/agents/value.glb') == '' || (github.event_name == 'workflow_dispatch' && inputs.rebuild_blender_assets == true)
         working-directory: 11-ai-arena/godot
         run: |
           PYTHONPATH=/usr/lib/python3/dist-packages blender --background --factory-startup --python-exit-code 1 --python blender/build_ai_arena_assets.py -- --output assets
@@ -66,19 +74,19 @@ jobs:
 
       - name: Run simulation contract
         working-directory: 11-ai-arena/godot
-        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_arena.gd
+        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_arena.gd
 
       - name: Run 3D world contract
         working-directory: 11-ai-arena/godot
-        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_world_contract.gd
+        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_world_contract.gd
 
       - name: Run responsive UI contract
         working-directory: 11-ai-arena/godot
-        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_ui_contract.gd
+        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_ui_contract.gd
 
       - name: Run main scene smoke test
         working-directory: 11-ai-arena/godot
-        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --quit-after 4
+        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --quit-after 4
 
       - name: Verify generated Blender assets
         if: hashFiles('11-ai-arena/godot/tools/verify_generated_assets.py') != ''
@@ -86,7 +94,7 @@ jobs:
         run: python3 tools/verify_generated_assets.py --require-generated
 
       - name: Commit generated Blender assets to the feature branch
-        if: github.event_name == 'push' && hashFiles('11-ai-arena/godot/blender/build_ai_arena_assets.py') != ''
+        if: steps.build_assets.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
