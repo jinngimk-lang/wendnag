@@ -5,7 +5,7 @@ const MainScene = preload("res://scenes/main.tscn")
 var _failed := false
 
 func _initialize() -> void:
-	_run()
+	call_deferred("_run")
 
 func _run() -> void:
 	var app = MainScene.instantiate()
