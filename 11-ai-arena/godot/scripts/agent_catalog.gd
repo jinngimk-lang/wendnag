@@ -87,10 +87,7 @@ static func portrait_texture(agent_id: String) -> Texture2D:
 	if faction.is_empty():
 		return null
 	if _portrait_atlas == null:
-		var image := Image.load_from_file("res://assets/agents-sprite.webp")
-		if image == null or image.is_empty():
-			return null
-		_portrait_atlas = ImageTexture.create_from_image(image)
+		_portrait_atlas = load("res://assets/agents-sprite.webp") as Texture2D
 	if _portrait_atlas == null:
 		return null
 	var cell_size := Vector2(_portrait_atlas.get_width() / 3.0, _portrait_atlas.get_height() / 2.0)
@@ -104,10 +101,7 @@ static func room_texture(agent_id: String) -> Texture2D:
 	if faction.is_empty():
 		return null
 	if _room_atlas == null:
-		var image := Image.load_from_file("res://assets/rooms-sprite.webp")
-		if image == null or image.is_empty():
-			return null
-		_room_atlas = ImageTexture.create_from_image(image)
+		_room_atlas = load("res://assets/rooms-sprite.webp") as Texture2D
 	if _room_atlas == null:
 		return null
 	var cell_size := Vector2(_room_atlas.get_width() / 3.0, _room_atlas.get_height() / 2.0)
