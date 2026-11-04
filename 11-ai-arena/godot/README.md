@@ -34,7 +34,7 @@ GitHub Actions builds the Blender assets, imports the Godot project, runs headle
 - **Run / Pause / Next day / +5 days / Settle / Reset** control the paper simulation.
 - Scrub the replay slider to inspect a prior day; future events remain hidden.
 - **Export JSON** saves the complete synthetic run and daily operation ledger to \`user://\`.
-- A positive signed daily equity delta sends paper notes from the arena vault to the Agent; a negative delta sends them back. This is a visual metaphor only and never changes account balances.
+- A positive signed daily equity delta sends paper notes upward from that Agent’s own account marker; a negative delta returns notes toward the same Agent’s marker. There is no shared vault or inter-Agent transfer. The effect is visual only and never changes account balances.
 
 ## Art and generation notes
 
