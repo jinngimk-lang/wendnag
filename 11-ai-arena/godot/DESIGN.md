@@ -13,14 +13,14 @@ The user should feel that six independent investment managers are physically pre
 3. Six distinct account objects with separate cash, shares, equity, drawdown and append-only operation ledgers.
 4. The same start capital and risk cap for every faction.
 5. Paper-only. No live brokerage, real orders, live company research or external LLM workers are implied.
-6. Money animation is driven by signed account equity change and never modifies accounting state.
+6. Money animation is driven by signed account equity change and never modifies accounting state. Each animation remains local to the same Agent account; no central vault, shared cash pool or inter-Agent transfer exists.
 7. Replay can only inspect days already simulated; it cannot reveal future events or ledger entries.
 8. Every decision exposes a concise reason, target exposure, price, fee, slippage and market context; no hidden chain-of-thought is exposed.
 
 ## Chosen architecture
 
 - **Godot 4.7.1 / GDScript** owns the native runtime, input, responsive UI, 3D world, simulation controls and replay.
-- **Blender 4.x** is the editable source of truth for six Agent busts, six room sets and the banknote prop. Each asset is exported as GLB for Godot.
+- **Blender 4.x** is the editable source of truth for six Agent busts, six room sets, six per-Agent account markers and the banknote prop. Each asset is exported as GLB for Godot.
 - **Image textures** use the user's supplied reference boards: six portrait crops and six room-scene crops. Each room GLB includes its matching environment backplate texture; Godot also uses portrait crops in the detail panel.
 - **One 3D viewport** switches between the central arena and the selected faction room. UI remains a separate Control layer.
 - **Deterministic simulation** is a GDScript module with seeded synthetic market factors, six independent portfolios, daily operations, account snapshots and replay-safe event access.
@@ -29,11 +29,11 @@ The user should feel that six independent investment managers are physically pre
 ## Interaction map
 
 ### Arena
-- Central vault, six illuminated Agent podiums and a cinematic financial-lab environment.
+- A shared-market information display, six illuminated Agent podiums and a cinematic financial-lab environment. Each podium has its own account marker; there is no central capital vault.
 - Six faction cards show portraits, identity, account equity, P&L, rank and latest decision.
 - Top metrics show shared price, market sentiment, macro liquidity, sector momentum and volatility.
 - Live controls: run, pause, next day, next five days, settle, reset and replay scrubber.
-- Signed-P&L paper notes visibly travel from the central vault to a winning Agent or back from a losing Agent.
+- Signed-P&L paper notes move only between one Agent’s own account marker and its local podium: gains rise from that account; losses return to the same account marker. No inter-Agent movement or shared vault.
 
 ### Agent research room
 - A distinct 3D room for the selected faction, not a recolored generic card.
