@@ -57,3 +57,8 @@ The GitHub Actions workflow runs backend contract tests and the full Playwright 
 ## Next real-data gates
 
 See REAL_DATA_BLUEPRINT.md for entity resolution, licensed point-in-time evidence, source citations, independent Agent workers, reproducible paper simulation and append-only audit requirements. Do not replace synthetic values with live-looking numbers unless provenance, timestamps, licensing and replayability are implemented.
+
+
+## V0.5.0 verification
+
+GitHub Actions run #41797576138 passed both isolated-venv jobs: 30 backend contract tests, Playwright functional regression, 252-day / 1,512-operation stress, six portrait and six room asset checks, and visual QA at 1440 / 1024 / 768 / 390 / 320px with zero horizontal overflow and zero browser errors. Screenshot artifact ID: 13305748269.

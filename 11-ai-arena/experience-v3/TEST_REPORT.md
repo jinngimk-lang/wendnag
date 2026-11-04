@@ -74,3 +74,17 @@ The backend is a contract core plus a mocked/tested SEC transport/parser, not an
 - Browser checks cover 1440 / 1024 / 768 / 390 / 320px; no page/console errors or horizontal overflow.
 - Existing 252-day stress, 1,512 daily decisions, bidirectional accounting-linked money flow, replay, filters, export and deterministic rerun remain covered by tests/test_ui.py.
 - GitHub Actions run #100 also passed in a clean isolated `.venv` with Playwright and Chromium installed from the test requirements. No external fonts, CDN, npm dependencies or image assets introduced.
+
+
+## V0.5.0 faction-first UI regression — 2026-11-04
+
+**GitHub Actions run #41797576138: PASS.** The workflow created an isolated Python virtual environment, installed Playwright and Chromium, served the experience over a local HTTP test server, and executed both browser and backend suites.
+
+- Browser regression: PASS — six unique Agent cards and six independent portfolios; six portrait assets loaded; six research-room scenes present; selected-Agent room, three challenge roles and trade-decision panel render.
+- Simulation: PASS — shared market path, separate cash/share/equity paths, one independent ledger per Agent, pause/step/replay/settle/reset behavior, JSON export and deterministic rerun.
+- Long-run stress: PASS — 252 simulated days and 1,512 ledger operations.
+- Responsive visual QA: PASS — 1440 / 1024 / 768 / 390 / 320px; zero horizontal overflow and zero browser errors.
+- Backend evidence contracts: 30 / 30 PASS — issuer resolution, point-in-time evidence snapshots, immutable evidence, typed research contracts, append-only ledger, SEC parser and SEC client safeguards.
+- Screenshot artifact: finance-lab-visual-qa, ID 13305748269.
+
+No live market-data request, external LLM request or brokerage order was made. The V0.5.0 page remains a synthetic local prototype.

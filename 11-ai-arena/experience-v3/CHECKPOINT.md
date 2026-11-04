@@ -105,7 +105,7 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Added keyboard-accessible Agent card selection and a selected-Agent detail workspace with thesis, signals, risks, triggers, invalidation, cash, shares, weight, trade count and drawdown.
 - Updated README and architecture contract; added AGENT_VISUAL_SYSTEM.md with six distinct personas, a shared 4:5 cinematic portrait art direction, prompt briefs and stable asset paths.
 - Browser regression and visual QA scripts were rewritten for the new layout. GitHub Actions now includes this work branch in its push validation trigger and runs the suite in an isolated Python virtual environment.
-- Portrait image slots are wired by stable Agent IDs, but six generated image files are not yet present. No image-generation jobs have been submitted; await explicit user authorization before using a paid image-generation balance.
+- Six previously generated individual portraits and six faction research-room images are now integrated through optimized WebP sprite atlases. The UI crops one cell per faction; the composite atlases are not shown as contact sheets.
 - GitHub Actions run #128 passed: backend contracts, browser regression, 252-day stress test and responsive visual QA; actual position weight is reconciled from shares × shared price ÷ equity, with target weight stored separately. Screenshots were downloaded and visually inspected. No horizontal overflow or browser errors (artifact 13220476296).
 - No live company research, real market data, LLM workers, broker or real trades have been connected. V0.4.0 remains a synthetic local prototype.
 
@@ -120,4 +120,4 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Rebuilt the faction card hierarchy, dark institutional research-room surfaces, portrait framing, accent-color mapping, and responsive behavior for 1440 / 1024 / 768 / 390 / 320px.
 - Kept shared market conditions and independent-account accounting intact. No central vault, Agent-to-Agent transfer, real market-data or brokerage claims were introduced.
 - Upgraded export schema and research/simulator identifiers to V0.5.0.
-- Updated Playwright and visual-QA scripts to load the local HTML through a file origin so sprite assets are genuinely fetched and verified. Browser regression / isolated-venv CI evidence is pending this commit.
+- Updated Playwright and visual-QA scripts to serve the page over a local HTTP test server, verifying actual sprite fetches. Isolated-venv GitHub Actions run #41797576138 passed: 30 backend tests, six loaded portraits, six room scenes, 252-day simulation / 1,512 ledger operations, five viewport widths, zero horizontal overflow and zero browser errors (artifact 13305748269).
