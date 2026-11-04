@@ -85,7 +85,7 @@ jobs:
           git add 11-ai-arena/godot/assets/source 11-ai-arena/godot/assets/generated
           if ! git diff --cached --quiet; then
             git commit -m "build(ai-arena): add Blender 3D source assets"
-            git push origin "HEAD:\${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 
       - name: Package Godot project
