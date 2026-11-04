@@ -356,4 +356,4 @@ func _decision_reason(agent_id: String, action: String, context: Dictionary, tar
 static func cashflow_direction(signed_delta: float, minimum_delta: float = 5.0) -> String:
 	if absf(signed_delta) < minimum_delta:
 		return "none"
-	return "to_agent" if signed_delta > 0.0 else "to_vault"
+	return "gain" if signed_delta > 0.0 else "loss"
