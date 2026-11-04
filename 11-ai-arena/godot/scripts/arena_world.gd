@@ -313,7 +313,9 @@ func animate_cashflow(agent_id: String, signed_delta: float) -> String:
 	var direction := ArenaSimulation.cashflow_direction(signed_delta)
 	if direction == "none" or not _station_positions.has(agent_id):
 		return "none"
-	var note := _load_glb("res://assets/generated/banknote.glb", self, 0.46)
+	var note: Node3D = null
+	if use_imported_models:
+		note = _load_glb("res://assets/generated/banknote.glb", self, 0.46)
 	if note == null:
 		note = Node3D.new()
 		var note_mesh := MeshInstance3D.new()
