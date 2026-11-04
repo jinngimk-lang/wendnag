@@ -16,7 +16,6 @@ var _room_views: Dictionary = {}
 var _station_positions: Dictionary = {}
 var _station_nodes: Dictionary = {}
 var _camera: Camera3D
-var _vault_position := Vector3.ZERO
 
 func _ready() -> void:
 	_build_environment()
@@ -73,18 +72,24 @@ func _build_arena_stage() -> void:
 	_box(_arena_stage, "LeftArchitecture", Vector3(-11.2, 2.1, 0), Vector3(0.35, 4.8, 16), Color("#14222f"), 0.58, 0.48)
 	_box(_arena_stage, "RightArchitecture", Vector3(11.2, 2.1, 0), Vector3(0.35, 4.8, 16), Color("#14222f"), 0.58, 0.48)
 
-	_cylinder(_arena_stage, "CentralVaultBase", Vector3(0, 0.12, 0), 2.1, 0.32, Color("#8f7048"), 0.72)
-	_cylinder(_arena_stage, "CentralVaultGlass", Vector3(0, 0.78, 0), 1.15, 1.05, Color("#263f50"), 0.42)
-	_cylinder(_arena_stage, "CentralVaultCap", Vector3(0, 1.36, 0), 1.42, 0.16, Color("#c5a16b"), 0.72)
-	_box(_arena_stage, "VaultFrontPlate", Vector3(0, 0.88, 1.10), Vector3(0.9, 0.34, 0.08), Color("#142431"), 0.55, 0.28, Color("#e8c98e"), 0.75)
-	var vault_label := Label3D.new()
-	vault_label.name = "VaultLabel"
-	vault_label.text = "AI  ·  CAPITAL VAULT"
-	vault_label.font_size = 30
-	vault_label.pixel_size = 0.006
-	vault_label.position = Vector3(0, 1.75, 0)
-	vault_label.modulate = Color("#f1d9ac")
-	_arena_stage.add_child(vault_label)
+	_box(_arena_stage, "SharedMarketFrame", Vector3(0, 3.05, -7.72), Vector3(12.2, 2.45, 0.28), Color("#1a2b38"), 0.68, 0.32, Color("#6c9db9"), 0.18)
+	_box(_arena_stage, "SharedMarketScreen", Vector3(0, 3.05, -7.54), Vector3(11.78, 2.08, 0.045), Color("#071722"), 0.18, 0.2, Color("#4e89ad"), 0.12)
+	var market_label := Label3D.new()
+	market_label.name = "SharedMarketLabel"
+	market_label.text = "SHARED MARKET  ·  SYNTHETIC INDEX"
+	market_label.font_size = 34
+	market_label.pixel_size = 0.008
+	market_label.position = Vector3(0, 3.36, -7.48)
+	market_label.modulate = Color("#c5dce8")
+	_arena_stage.add_child(market_label)
+	var market_subtitle := Label3D.new()
+	market_subtitle.name = "MarketSubtitle"
+	market_subtitle.text = "ONE MARKET PATH  /  SIX INDEPENDENT ACCOUNTS"
+	market_subtitle.font_size = 16
+	market_subtitle.pixel_size = 0.006
+	market_subtitle.position = Vector3(0, 2.72, -7.48)
+	market_subtitle.modulate = Color("#89a6b8")
+	_arena_stage.add_child(market_subtitle)
 
 	var ring := _cylinder(_arena_stage, "ArenaInnerRing", Vector3(0, -0.01, 0), 8.3, 0.055, Color("#263d4c"), 0.7)
 	ring.scale = Vector3(1.0, 1.0, 0.72)
@@ -113,6 +118,8 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	_cylinder(station, "PodiumBase", Vector3(0, 0.18, 0), 1.38, 0.34, Color("#1a2b38"), 0.62)
 	_cylinder(station, "PodiumAccent", Vector3(0, 0.39, 0), 1.18, 0.075, accent, 0.68)
 	_cylinder(station, "PodiumTop", Vector3(0, 0.49, 0), 1.08, 0.10, Color("#233744"), 0.44)
+	_cylinder(station, "AccountMarker", Vector3(0, 0.64, 0.92), 0.42, 0.16, Color("#24463e"), 0.3)
+	_box(station, "AccountMarkerTop", Vector3(0, 0.74, 0.92), Vector3(0.62, 0.055, 0.42), accent.darkened(0.18), 0.42, 0.28, accent, 0.22)
 	_box(station, "RoomFrame", Vector3(0, 2.25, -0.82), Vector3(3.75, 2.42, 0.18), Color("#1b2c38"), 0.58, 0.34, accent, 0.35)
 	_add_textured_quad(station, "RoomBackdrop", Vector3(0, 2.25, -0.70), Vector2(3.46, 2.13), AgentCatalog.room_texture(agent_id))
 	_box(station, "PortraitFrame", Vector3(-1.30, 1.88, -0.68), Vector3(0.94, 1.26, 0.12), accent, 0.55, 0.28)
@@ -322,21 +329,26 @@ func animate_cashflow(agent_id: String, signed_delta: float) -> String:
 		var box := BoxMesh.new()
 		box.size = Vector3(1.15, 0.055, 0.62)
 		note_mesh.mesh = box
-		note_mesh.material_override = _material(Color("#8bc39c"), 0.12, 0.48)
+		var note_color := Color("#8bc39c") if direction == "gain" else Color("#d98b8b")
+		note_mesh.material_override = _material(note_color, 0.12, 0.48)
 		note.add_child(note_mesh)
 		add_child(note)
 	note.name = "CashflowNote"
 	note.add_to_group("cashflow_notes")
-	var target: Vector3 = _station_positions[agent_id] + Vector3(0, 2.4, 0)
-	if direction == "to_agent":
-		note.position = _vault_position + Vector3(0, 1.7, 0)
-	else:
-		note.position = target
-		target = _vault_position + Vector3(0, 1.7, 0)
-	note.rotation_degrees = Vector3(0, 0, 18 if direction == "to_agent" else -18)
+	var account_anchor: Vector3 = _station_positions[agent_id] + Vector3(0, 0.88, 0.92)
+	var local_podium_anchor: Vector3 = _station_positions[agent_id] + Vector3(0, 2.45, 0.55)
+	var start_position: Vector3 = account_anchor if direction == "gain" else local_podium_anchor
+	var target_position: Vector3 = local_podium_anchor if direction == "gain" else account_anchor
+	note.position = start_position
+	note.set_meta("agent_id", agent_id)
+	note.set_meta("source_agent_id", agent_id)
+	note.set_meta("target_agent_id", agent_id)
+	note.set_meta("start_position", start_position)
+	note.set_meta("target_position", target_position)
+	note.rotation_degrees = Vector3(0, 0, 18 if direction == "gain" else -18)
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(note, "position", target, 0.95)
+	tween.tween_property(note, "position", target_position, 0.95)
 	tween.parallel().tween_property(note, "rotation_degrees:y", 360.0, 0.95)
 	tween.tween_callback(note.queue_free)
 	return direction
