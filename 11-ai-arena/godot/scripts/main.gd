@@ -126,7 +126,7 @@ func _set_status(message: String) -> void:
 
 func _refresh() -> void:
 	if _hud != null:
-		_hud.update_view(_simulation, _selected_agent, _status)
+		_hud.update_view(_simulation, selected_agent, _status)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:

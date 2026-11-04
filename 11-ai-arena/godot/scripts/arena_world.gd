@@ -93,7 +93,7 @@ func _build_arena_stage() -> void:
 	_arena_stage.add_child(stations)
 
 	for index in range(AGENT_IDS.size()):
-		var agent_id := AGENT_IDS[index]
+		var agent_id: String = str(AGENT_IDS[index])
 		var angle := -PI * 0.5 + float(index) * TAU / 6.0
 		var station_position := Vector3(cos(angle) * 7.1, 0.0, sin(angle) * 5.15)
 		_station_positions[agent_id] = station_position

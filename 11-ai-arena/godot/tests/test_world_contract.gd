@@ -5,6 +5,10 @@ const ArenaWorld = preload("res://scripts/arena_world.gd")
 var _failed := false
 
 func _initialize() -> void:
+	if not ArenaWorld.can_instantiate():
+		push_error("ArenaWorld script did not compile")
+		quit(1)
+		return
 	_run()
 
 func _run() -> void:

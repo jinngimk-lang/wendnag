@@ -22,6 +22,9 @@ class AssetContractTests(unittest.TestCase):
         for key in ("sprite_x", "sprite_y", "room_x", "room_y"):
             self.assertGreaterEqual(source.count('"' + key + '"'), 6)
 
+    def test_blender_source_is_kept_out_of_godot_import_scan(self):
+        self.assertTrue((ROOT / "assets" / "source" / ".gdignore").is_file())
+
     def test_blender_builder_and_asset_verifier_are_valid_python(self):
         for relative in ("blender/build_ai_arena_assets.py", "tools/verify_generated_assets.py"):
             path = ROOT / relative

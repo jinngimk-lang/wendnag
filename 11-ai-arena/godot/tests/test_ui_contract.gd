@@ -9,6 +9,10 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var app = MainScene.instantiate()
+	if app == null:
+		push_error("Main scene failed to instantiate")
+		quit(1)
+		return
 	app.use_imported_models = false
 	root.add_child(app)
 	_check(app.apply_responsive_layout(1600.0) == "desktop", "wide desktop layout must be selected")
