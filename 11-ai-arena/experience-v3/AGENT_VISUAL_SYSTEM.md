@@ -69,24 +69,28 @@ Each brief is intended to be generated as its own image using the shared art dir
 
 ## Asset contract
 
-| Agent ID | Asset path | Ratio | Intended use |
-|---|---|---:|---|
-| value | assets/agents/value.webp | 4:5 | Agent card + selected workspace |
-| growth | assets/agents/growth.webp | 4:5 | Agent card + selected workspace |
-| trend | assets/agents/trend.webp | 4:5 | Agent card + selected workspace |
-| quant | assets/agents/quant.webp | 4:5 | Agent card + selected workspace |
-| sentiment | assets/agents/sentiment.webp | 4:5 | Agent card + selected workspace |
-| macro | assets/agents/macro.webp | 4:5 | Agent card + selected workspace |
+| Faction | Portrait atlas cell | Research-room atlas cell | Ratio / use |
+|---|---:|---:|---|
+| value | (0, 0) | (0, 0) | 4:5 portrait / card + selected workspace |
+| growth | (1, 0) | (1, 0) | 4:5 portrait / card + selected workspace |
+| trend | (2, 0) | (2, 0) | 4:5 portrait / card + selected workspace |
+| quant | (0, 1) | (0, 1) | 4:5 portrait / card + selected workspace |
+| sentiment | (1, 1) | (1, 1) | 4:5 portrait / card + selected workspace |
+| macro | (2, 1) | (2, 1) | 4:5 portrait / card + selected workspace |
 
-The UI already maps each Agent to a stable data-image-src slot. The generated assets should be added under assets/agents/ and then bound as the real img.src values. Do not substitute initials or hand-drawn SVG as the finished portrait artwork.
+- Portrait atlas: assets/agents-sprite.webp (3 columns × 2 rows, six 120 × 150 cells).
+- Research-room atlas: assets/rooms-sprite.webp (3 columns × 2 rows, six 160 × 90 cells).
+- Each Agent definition owns stable spriteX/spriteY and roomX/roomY coordinates. Cards and the selected-Agent workspace crop the mapped cell using CSS; they do not render the composite atlas as an image.
+- Keep the faction IDs stable if replacing the compact atlases with separate full-resolution files later.
 
 ## Generation / delivery status
 
-- Persona system and prompt briefs: defined.
-- Image output: pending explicit user authorization; no image-generation jobs have been submitted.
-- Do not mark this asset set complete until all six images are generated, inspected for consistency, added to the repository and loaded by the browser regression.
-
-
+- Persona briefs and six generated individual portraits: complete and integrated.
+- Six generated research-room scenes: complete and integrated.
+- Asset files committed and loaded by Playwright in the V0.5.0 browser suite.
+- Visual mapping, portrait load, room scene count and selected workspace are verified in GitHub Actions run #41797576138.
+- No image-generation job or paid generation balance was needed in this continuation; the existing generated assets were reused.
+ 
 ## V0.5.0 generated asset integration
 
 The six individual portraits and six room references have now been integrated into the running prototype. The six portraits were mapped in faction order (value, growth, trend, quant, sentiment, macro); the six research-room images use the same faction order. The two source atlases are WebP files:
