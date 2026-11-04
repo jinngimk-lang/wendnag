@@ -1,6 +1,9 @@
 from pathlib import Path
 import json
 import tempfile
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from threading import Thread
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -8,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def run():
     errors = []
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
+    server_thread = Thread(target=server.serve_forever, daemon=True)
+    server_thread.start()
     with sync_playwright() as p:
         launch = {"headless": True, "args": ["--no-sandbox"]}
         if Path("/usr/bin/chromium").exists():
@@ -16,7 +22,9 @@ def run():
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
         page.on("pageerror", lambda e: errors.append(str(e)))
         page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-        page.goto((ROOT / "index.html").as_uri(), wait_until="load")
+        page.goto(f"http://127.0.0.1:{server.server_port}/index.html", wait_until="load")
+        page.wait_for_selector("#arenaGrid .agent-card", state="attached")
+        assert not errors, f"JavaScript errors during initial render: {errors}"
 
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
         assert page.locator("#setupModal").is_visible()
@@ -209,6 +217,9 @@ def run():
         assert page.locator("#ledgerSummary").inner_text().startswith("已记录 1,512 条")
         assert not errors, errors
         browser.close()
+    server.shutdown()
+    server.server_close()
+    server_thread.join(timeout=2)
     print("PASS: six independent Agent portfolios, shared market path, distinct research/persona cards, per-agent cash/share/equity paths, selected Agent workspace, isolated ledger, replay, export, deterministic rerun, 252-day stress, responsive and no browser errors")
 
 

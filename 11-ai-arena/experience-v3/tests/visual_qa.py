@@ -1,5 +1,8 @@
 from pathlib import Path
 import json
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from threading import Thread
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,6 +14,9 @@ HTML = (ROOT / "index.html").read_text(encoding="utf-8")
 def run():
     errors = []
     viewport_results = []
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
+    server_thread = Thread(target=server.serve_forever, daemon=True)
+    server_thread.start()
     with sync_playwright() as p:
         launch = {"headless": True, "args": ["--no-sandbox"]}
         if Path("/usr/bin/chromium").exists():
@@ -19,7 +25,9 @@ def run():
         page = browser.new_page(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
         page.on("pageerror", lambda error: errors.append(f"pageerror: {error}"))
         page.on("console", lambda message: errors.append(f"console: {message.text}") if message.type == "error" else None)
-        page.goto((ROOT / "index.html").as_uri(), wait_until="load")
+        page.goto(f"http://127.0.0.1:{server.server_port}/index.html", wait_until="load")
+        page.wait_for_selector("#arenaGrid .agent-card", state="attached")
+        assert not errors, f"JavaScript errors during initial render: {errors}"
         page.wait_for_function("Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).length === 6 && Array.from(document.querySelectorAll('#arenaGrid .agent-card img')).every(img => img.complete && img.naturalWidth > 0)")
         assert page.title().startswith("AI ARENA / FINANCE RESEARCH LAB")
         assert page.locator("#setupModal").is_visible()
@@ -88,6 +96,9 @@ def run():
         }
         (SHOTS / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         browser.close()
+    server.shutdown()
+    server.server_close()
+    server_thread.join(timeout=2)
 
     if errors:
         raise AssertionError("Browser errors: " + " | ".join(errors))

@@ -464,8 +464,7 @@ function renderAgentDetail(){
   '<section class="decision-panel" id="tradeDecision" data-action="'+(last?last.action:'WAIT')+'">'+
    '<div class="decision-head"><div><span class="kicker">EXECUTION DESK / '+decisionDay+'</span><h4>交易决策与执行记录</h4></div><b class="decision-badge">'+decisionLabel+'</b></div>'+
    '<div class="decision-metrics"><div><small>模拟成交价</small><b>'+decisionPrice+'</b></div><div><small>成交数量</small><b>'+decisionQty+'</b></div><div><small>实际仓位</small><b>'+decisionWeight+'</b></div></div>'+
-   '<p class="decision-reason">'+decisionReason+'</p><div class="decision-foot"><span>仅影响 '+a.name+' 的独立账户</span><span>纸面模拟 · 无真实订单</span></div>
-  </section>';
+   '<p class="decision-reason">'+decisionReason+'</p><div class="decision-foot"><span>仅影响 '+a.name+' 的独立账户</span><span>纸面模拟 · 无真实订单</span></div></section>';
 }
 function renderDay(day){
  if(!state.simulation)return;
