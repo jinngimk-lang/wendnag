@@ -14,6 +14,8 @@ func _run() -> void:
 	_check(world.current_mode == "arena", "the initial 3D mode must be the arena")
 	_check(world.select_agent("growth"), "a faction podium must be selectable")
 	world.enter_room("growth")
+	_check(world.get_node_or_null("RoomViews/growth/AIEnvironmentBackdrop") != null, "selected room must show its generated environment image")
+	_check(world.get_node_or_null("RoomViews/growth/RoomTitle") != null, "selected room must show its title")
 	_check(world.current_mode == "room", "entering a research room must change the 3D environment")
 	_check(world.current_agent == "growth", "the selected Agent must own the room")
 	world.return_to_arena()

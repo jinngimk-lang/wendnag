@@ -113,9 +113,9 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	_cylinder(station, "PodiumAccent", Vector3(0, 0.39, 0), 1.18, 0.075, accent, 0.68)
 	_cylinder(station, "PodiumTop", Vector3(0, 0.49, 0), 1.08, 0.10, Color("#233744"), 0.44)
 	_box(station, "RoomFrame", Vector3(0, 2.25, -0.82), Vector3(3.75, 2.42, 0.18), Color("#1b2c38"), 0.58, 0.34, accent, 0.35)
-	_add_textured_quad(station, "RoomBackdrop", Vector3(0, 2.25, -0.925), Vector2(3.46, 2.13), AgentCatalog.room_texture(agent_id))
+	_add_textured_quad(station, "RoomBackdrop", Vector3(0, 2.25, -0.70), Vector2(3.46, 2.13), AgentCatalog.room_texture(agent_id))
 	_box(station, "PortraitFrame", Vector3(-1.30, 1.88, -0.68), Vector3(0.94, 1.26, 0.12), accent, 0.55, 0.28)
-	_add_textured_quad(station, "Portrait", Vector3(-1.30, 1.88, -0.755), Vector2(0.78, 1.10), AgentCatalog.portrait_texture(agent_id))
+	_add_textured_quad(station, "Portrait", Vector3(-1.30, 1.88, -0.59), Vector2(0.78, 1.10), AgentCatalog.portrait_texture(agent_id))
 
 	var agent_model := _load_glb("res://assets/generated/agents/%s.glb" % agent_id, station, 0.52)
 	if agent_model == null:
@@ -168,33 +168,45 @@ func _build_room_views() -> void:
 	room_root.name = "RoomViews"
 	add_child(room_root)
 	for agent_id in AGENT_IDS:
-		var faction := AgentCatalog.get_faction(agent_id)
-		var accent := AgentCatalog.color_for(agent_id)
 		var room := Node3D.new()
 		room.name = agent_id
 		room.visible = false
+		room.set_meta("loaded", false)
 		room_root.add_child(room)
 		_room_views[agent_id] = room
 
-		var room_model := _load_glb("res://assets/generated/rooms/%s.glb" % agent_id, room, 0.92)
-		if room_model == null:
-			_build_fallback_room(room, agent_id, accent)
-		else:
-			room_model.position = Vector3.ZERO
-		_add_textured_quad(room, "AIEnvironmentBackdrop", Vector3(0, 3.25, -4.75), Vector2(10.6, 5.4), AgentCatalog.room_texture(agent_id))
-		var agent_model := _load_glb("res://assets/generated/agents/%s.glb" % agent_id, room, 0.96)
-		if agent_model == null:
-			_build_fallback_agent(room, agent_id)
-		else:
-			agent_model.position = Vector3(-0.55, 0.05, 1.25)
-		var room_label := Label3D.new()
-		room_label.name = "RoomTitle"
-		room_label.text = "%s  /  %s" % [str(faction.get("room_name", "RESEARCH ROOM")), str(faction.get("english", ""))]
-		room_label.font_size = 34
-		room_label.pixel_size = 0.009
-		room_label.position = Vector3(0, 4.9, -4.1)
-		room_label.modulate = accent.lightened(0.22)
-		room.add_child(room_label)
+func _ensure_room_loaded(agent_id: String) -> void:
+	if not _room_views.has(agent_id):
+		return
+	var room := _room_views[agent_id] as Node3D
+	if bool(room.get_meta("loaded", false)):
+		return
+	var faction := AgentCatalog.get_faction(agent_id)
+	var accent := AgentCatalog.color_for(agent_id)
+	var room_model := _load_glb("res://assets/generated/rooms/%s.glb" % agent_id, room, 0.92)
+	var backdrop_z := -4.72
+	if room_model == null:
+		_build_fallback_room(room, agent_id, accent)
+	else:
+		room_model.name = "RoomModel"
+		room_model.position = Vector3.ZERO
+		backdrop_z = -3.70
+	_add_textured_quad(room, "AIEnvironmentBackdrop", Vector3(0, 3.25, backdrop_z), Vector2(10.6, 5.4), AgentCatalog.room_texture(agent_id))
+	var agent_model := _load_glb("res://assets/generated/agents/%s.glb" % agent_id, room, 0.96)
+	if agent_model == null:
+		_build_fallback_agent(room, agent_id)
+	else:
+		agent_model.name = "AgentModel"
+		agent_model.position = Vector3(-0.55, 0.05, 1.25)
+	var room_label := Label3D.new()
+	room_label.name = "RoomTitle"
+	room_label.text = "%s  /  %s" % [str(faction.get("room_name", "RESEARCH ROOM")), str(faction.get("english", ""))]
+	room_label.font_size = 34
+	room_label.pixel_size = 0.009
+	room_label.position = Vector3(0, 4.9, backdrop_z + 0.14)
+	room_label.modulate = accent.lightened(0.22)
+	room.add_child(room_label)
+	room.set_meta("loaded", true)
 
 func _build_fallback_room(parent: Node3D, agent_id: String, accent: Color) -> void:
 	_box(parent, "RoomFloor", Vector3(0, -0.20, 0), Vector3(13, 0.4, 10), Color("#17232e"), 0.68, 0.42)
@@ -260,6 +272,7 @@ func select_agent(agent_id: String) -> bool:
 func enter_room(agent_id: String) -> void:
 	if not _room_views.has(agent_id):
 		return
+	_ensure_room_loaded(agent_id)
 	selected_agent = agent_id
 	current_agent = agent_id
 	current_view = "room"
