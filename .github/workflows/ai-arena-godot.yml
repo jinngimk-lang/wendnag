@@ -9,7 +9,7 @@ on:
       - ".github/workflows/ai-arena-godot.yml"
   pull_request:
     branches:
-      - feat/ai-arena-concept-research
+      - feat/ai-arena-independent-agent-workspace-v04
     paths:
       - "11-ai-arena/godot/**"
       - ".github/workflows/ai-arena-godot.yml"
