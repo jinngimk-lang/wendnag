@@ -49,6 +49,19 @@ jobs:
         run: .venv/bin/python 11-ai-arena/experience-v3/tests/test_ui.py
       - name: Capture responsive visual QA
         run: .venv/bin/python 11-ai-arena/experience-v3/tests/visual_qa.py
+      - name: Package runnable HTML experience
+        run: |
+          mkdir -p package/ai-investment-arena-v050
+          cp 11-ai-arena/experience-v3/index.html package/ai-investment-arena-v050/
+          cp 11-ai-arena/experience-v3/README.md package/ai-investment-arena-v050/
+          cp -R 11-ai-arena/experience-v3/assets package/ai-investment-arena-v050/
+          (cd package/ai-investment-arena-v050 && zip -qr ../ai-investment-arena-v050.zip .)
+      - name: Upload runnable HTML package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-investment-arena-v050-package
+          path: package/ai-investment-arena-v050.zip
+          if-no-files-found: error
       - name: Upload visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
