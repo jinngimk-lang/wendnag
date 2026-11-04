@@ -94,3 +94,10 @@ The V0.3.x arena visualization implied that six factions were positioned around 
 - Portrait asset slots are keyed by stable Agent IDs and use a shared crop ratio / image style contract. See AGENT_VISUAL_SYSTEM.md.
 
 The UI must not render a central vault, money-flow animation, or copy suggesting that capital moves between Agents. Any aggregate view must preserve the independent-account label.
+
+
+## V0.5.0 visual and interaction layer
+
+The experience-v3 page is now faction-first while retaining the V0.4.0 simulation core. The six faction definitions own stable spriteX/spriteY and roomX/roomY coordinates. A faction card renders one crop of the portrait atlas and one crop of the research-room atlas; the selected-Agent workspace repeats the same mapping, so selection never changes persona identity. The workspace also renders the faction's three challenge roles and the most recent simulated execution decision.
+
+The UI layer does not mutate authoritative account values. It reads the existing day-indexed portfolio paths and trade logs. The execution panel is a view of the selected Agent's last paper decision, not a new order-entry surface. Shared market state remains read-only for each strategy; all cash/share/equity accounting stays in the deterministic simulator.

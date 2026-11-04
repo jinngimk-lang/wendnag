@@ -1,4 +1,4 @@
-# Agent Persona & Portrait Visual System — V0.4.0
+# Agent Persona & Portrait Visual System — V0.5.0
 
 ## Purpose
 
@@ -85,3 +85,24 @@ The UI already maps each Agent to a stable data-image-src slot. The generated as
 - Persona system and prompt briefs: defined.
 - Image output: pending explicit user authorization; no image-generation jobs have been submitted.
 - Do not mark this asset set complete until all six images are generated, inspected for consistency, added to the repository and loaded by the browser regression.
+
+
+## V0.5.0 generated asset integration
+
+The six individual portraits and six room references have now been integrated into the running prototype. The six portraits were mapped in faction order (value, growth, trend, quant, sentiment, macro); the six research-room images use the same faction order. The two source atlases are WebP files:
+
+- assets/agents-sprite.webp — 3 columns × 2 rows; each portrait occupies one 120 × 150 cell.
+- assets/rooms-sprite.webp — 3 columns × 2 rows; each research room occupies one 160 × 90 cell.
+
+CSS positions each card and detail avatar against its faction cell. The room banner and card background use the corresponding room cell. These are implementation atlases only: the UI crops one cell at a time and never displays the composite atlas as a contact sheet.
+
+| Faction | Portrait cell | Room cell | Accent |
+|---|---:|---:|---|
+| Value / 价值派 | (0, 0) | (0, 0) | Champagne gold |
+| Growth / 成长派 | (1, 0) | (1, 0) | Emerald |
+| Trend / 趋势派 | (2, 0) | (2, 0) | Glacier blue |
+| Quant / 量化派 | (0, 1) | (0, 1) | Soft violet |
+| Sentiment / 情绪派 | (1, 1) | (1, 1) | Warm amber |
+| Macro / 宏观派 | (2, 1) | (2, 1) | Ice cyan |
+
+The portrait atlas is deliberately compact for workstation rendering. If a later large-screen art direction requires full-bleed portraits, replace the atlas with six separate optimized WebP assets without changing faction IDs or visual-role mapping.

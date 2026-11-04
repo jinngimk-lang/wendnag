@@ -143,3 +143,11 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 - Draft PR #26 remains open and unmerged; no production or live-finance integration is implied.
 
 - Final documentation-closure workflow run #100 also passed; the responsive visual artifact was uploaded successfully.
+
+
+## 2026-11-04 — AI Investment Arena V0.5.0 faction-first reframe
+
+- Continued the existing independent-Agent workstation branch and kept its simulation/accounting engine unchanged.
+- Rebuilt the visible experience around six investment factions, individual Agent portraits, dedicated research-room scenes, three-role adversarial research teams, and per-Agent paper-trade decision panels.
+- Added compact WebP portrait/room atlases and mapped each faction to its own visual cell.
+- Updated export identifiers and responsive browser-QA assertions. GitHub Actions isolated-venv validation is the release gate; results will be recorded after the run completes.

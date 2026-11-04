@@ -172,3 +172,8 @@ This parser does not fetch data. A production SEC fetcher must implement the req
 SEC parser hardening also rejects conflicting duplicate submissions metadata for one accession and includes fiscal year/period/frame in fact identity so distinct SEC observations cannot silently collide under one evidence ID. The SEC parser and evidence contract now have 21 standard-library unit tests.
 
 A separate `backend/adapters/sec_client.py` now supplies an opt-in, read-only SEC JSON transport. It requires an explicit contact-email `SEC_USER_AGENT`, permits HTTPS only to SEC hosts, paces requests at 4/sec by default, honors `Retry-After`, bounds transient retries and response size, and briefly caches successful JSON in memory. All transport tests use a fake transport; no live SEC request has been issued. Before activation, configure a monitored contact identity and verify the current SEC access policy; the parser still defaults all records to license review required.
+
+
+## V0.5.0 UI/UX direction
+
+The user-facing investment arena is faction-first: six schools, six recognizable Agent personas, six dedicated research rooms, six independent paper portfolios. Every Agent runs its own thesis, challenger and risk-control roles; all compare against the same market path and shared execution assumptions. The selected-Agent workspace shows research signals, account state and the last trade decision. The product remains a synthetic prototype until licensed issuer/market evidence and external Agent workers are implemented.
