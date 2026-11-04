@@ -6,6 +6,7 @@ Updated: 2026-11-04
 
 - Repository: `jinngimk-lang/wendnag`
 - Working branch: `feat/ai-arena-godot-3d-experience-v01`
+- Target PR base: `feat/ai-arena-independent-agent-workspace-v04`
 - Engine target: Godot 4.7.1 stable, Compatibility renderer
 - This is an additive native client; the existing HTML Finance Arena remains untouched.
 
@@ -23,13 +24,18 @@ Updated: 2026-11-04
 - Godot world builds six clickable faction stations, a shared-market display and lazily loaded faction research rooms.
 - HUD supports Agent selection, research/account/ledger tabs, playback, replay scrubbing, JSON export and responsive desktop/tablet/mobile layouts.
 - Godot's source folder is marked with `.gdignore` so the editor does not try to import the editable `.blend` file as a runtime resource; GLB exports remain importable.
+- The supplied portrait and room atlases are reused as source textures. Replacement prompts are included; no paid GPT image-generation call or new generated scene background is claimed.
 
 ## Verification
 
-- Python asset contract and Godot project import have passed in GitHub Actions.
-- Earlier CI exposed two GDScript compile defects; both were fixed.
-- World/UI test setup is deferred until the SceneTree is ready. The next CI run is the gate for the world, responsive UI and main-scene runtime contracts.
-- The last failing run before this correction was `41809420086`; it showed that a SceneTree test instantiated the world before `_ready()` ran. The test now uses `call_deferred`, and cashflow assertions now verify per-Agent-local endpoints.
+<badge>CI PASS</badge>
+
+- GitHub Actions run `41810176381` passed at commit `000fa607bf4160b84fe1a4ed0cb89123b419bf6e`.
+- Passed steps: Python asset contract, Godot 4.7.1 project import, simulation contract, 3D world contract, responsive UI contract, main-scene smoke test, generated-asset verification, packaging and artifact upload.
+- Downloadable CI artifact: `ai-investment-arena-godot` (artifact ID `13311482622`).
+- Local isolated `.venv` verification: 8/8 Python unit tests passed; `tools/verify_generated_assets.py --require-generated` passed.
+- Blender rebuild was skipped on the latest CI run because the committed editable source and GLB exports were already present; the generated-asset integrity check did run and pass.
+- Earlier compile and SceneTree test-timing failures were corrected and are covered by the passing run above.
 
 ## Local run
 
