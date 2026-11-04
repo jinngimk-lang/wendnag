@@ -108,3 +108,16 @@ Read `11-ai-arena/PROJECT.md`, `STATUS.md`, `experience-v3/CHECKPOINT.md`, `expe
 - Portrait image slots are wired by stable Agent IDs, but six generated image files are not yet present. No image-generation jobs have been submitted; await explicit user authorization before using a paid image-generation balance.
 - GitHub Actions run #128 passed: backend contracts, browser regression, 252-day stress test and responsive visual QA; actual position weight is reconciled from shares × shared price ÷ equity, with target weight stored separately. Screenshots were downloaded and visually inspected. No horizontal overflow or browser errors (artifact 13220476296).
 - No live company research, real market data, LLM workers, broker or real trades have been connected. V0.4.0 remains a synthetic local prototype.
+
+
+## 2026-11-04 — V0.5.0 AI Investment Arena faction-first reframe
+
+- Continued on feat/ai-arena-independent-agent-workspace-v04; retained the V0.4 deterministic simulator and accounting model as the stable execution core.
+- Reframed the UI around six distinct investment schools and their own research worlds, rather than generic Agent cards.
+- Integrated the six previously generated individual Agent portraits and six faction research-room scenes into compact WebP sprite atlases. Each card and selected-Agent workspace crops the correct cell by faction ID; no group portrait is shown as an Agent.
+- Added a five-stage investment workflow strip: company input → independent research → adversarial challenge → isolated paper execution → audit/replay.
+- Added dedicated selected-Agent research-room banner, three challenge roles, and a trade-decision/execution panel with action, day, fill price, quantity, actual exposure and reason.
+- Rebuilt the faction card hierarchy, dark institutional research-room surfaces, portrait framing, accent-color mapping, and responsive behavior for 1440 / 1024 / 768 / 390 / 320px.
+- Kept shared market conditions and independent-account accounting intact. No central vault, Agent-to-Agent transfer, real market-data or brokerage claims were introduced.
+- Upgraded export schema and research/simulator identifiers to V0.5.0.
+- Updated Playwright and visual-QA scripts to load the local HTML through a file origin so sprite assets are genuinely fetched and verified. Browser regression / isolated-venv CI evidence is pending this commit.
