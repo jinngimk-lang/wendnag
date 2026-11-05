@@ -170,10 +170,10 @@ func _on_investor_view_requested() -> void:
 	_refresh()
 
 func _reset_simulation() -> void:
-	var mode := _simulation.investor_mode
-	var followed := _simulation.followed_agent_id
-	var challenged := _simulation.challenged_agent_id
-	var personal_weight := _simulation.investor_target_weight
+	var mode: String = str(_simulation.investor_mode)
+	var followed: String = str(_simulation.followed_agent_id)
+	var challenged: String = str(_simulation.challenged_agent_id)
+	var personal_weight: float = float(_simulation.investor_target_weight)
 	_simulation.configure(_simulation.starting_capital, _simulation.trading_days, _simulation.seed_value, _simulation.risk_cap, _simulation.scenario_label)
 	if mode == "follow":
 		_simulation.set_investor_mode("follow", followed)
