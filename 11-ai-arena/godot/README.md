@@ -9,6 +9,7 @@ A spectator-first 3D paper-trading arena with six visibly different AI investmen
 - **Engine:** Godot 4.7.1 stable, GDScript, Compatibility renderer.
 - **3D content:** Blender-authored \`.blend\` source plus optimized GLB exports.
 - **Reference art:** crops from the three user-provided AI Arena reference boards. Only the character and room crops needed by this project are included.
+- **Typography:** a project-specific Noto Sans SC subset is generated before Godot import, with its SIL Open Font License notice, so Chinese UI and 3D labels render consistently across developer machines and CI. The generated font is included in the CI package artifact and excluded from source control.
 - **Runtime:** no API keys, broker connection, network access or external runtime dependency.
 - **Truth boundary:** all prices, factors, events, research signals and fills are synthetic paper-mode fixtures. Nothing places a real order.
 
@@ -24,8 +25,9 @@ The user is a separate personal portfolio, not a seventh AI faction and not an e
 ## Run locally
 
 1. Install Godot 4.7.1 stable.
-2. Open \`11-ai-arena/godot/project.godot\` in Godot Project Manager.
-3. Press **F5** to run the project.
+2. Prepare the Chinese font before opening the project. On Ubuntu/CI, install \`fonts-noto-cjk\` and \`python3-fonttools\`, then run \`python3 tools/prepare_cjk_font.py\`. On other systems, supply a Noto Sans CJK Simplified Chinese TTC source with \`--source-font\` and its OFL notice with \`--license-source\`; pass \`--font-number -1\` for a standalone OTF.
+3. Open \`project.godot\` with Godot Project Manager.
+4. Press **F5** to run the project.
 4. To rebuild the 3D source assets, install Blender 4.x and run:
 
    \`\`\`bash

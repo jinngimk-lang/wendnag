@@ -48,6 +48,20 @@ class RuntimeContractTests(unittest.TestCase):
         for token in ("arena-desktop.png", "investor-desktop.png", "investor-mobile.png", "RenderingServer.frame_post_draw"):
             self.assertIn(token, source)
 
+    def test_cjk_font_is_generated_and_applied_to_hud_and_world_labels(self):
+        font = ROOT / "assets" / "fonts" / "NotoSansSC-Subset.otf"
+        self.assertTrue(font.is_file(), "CI must generate the CJK font before Godot import")
+        self.assertTrue((ROOT / "assets" / "fonts" / "OFL.txt").is_file(), "the generated font must include its license")
+        hud = (ROOT / "scripts" / "arena_hud.gd").read_text(encoding="utf-8")
+        world = (ROOT / "scripts" / "arena_world.gd").read_text(encoding="utf-8")
+        self.assertIn("hud_theme.default_font = CJK_FONT", hud)
+        self.assertIn("market_label.font = CJK_FONT", world)
+        self.assertIn("title.font = CJK_FONT", world)
+
+    def test_cjk_font_builder_is_valid_python(self):
+        source = (ROOT / "tools" / "prepare_cjk_font.py").read_text(encoding="utf-8")
+        compile(source, "prepare_cjk_font.py", "exec")
+
     def test_godot_project_ignores_local_caches_and_blender_backups(self):
         ignore_file = ROOT / ".gitignore"
         self.assertTrue(ignore_file.is_file(), "Godot project must own a local-artifact ignore file")

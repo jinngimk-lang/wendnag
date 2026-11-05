@@ -4,6 +4,7 @@ class_name ArenaWorld
 const AgentCatalog = preload("res://scripts/agent_catalog.gd")
 const ArenaSimulation = preload("res://scripts/arena_simulation.gd")
 const AGENT_IDS := ["value", "growth", "trend", "quant", "sentiment", "macro"]
+const CJK_FONT = preload("res://assets/fonts/NotoSansSC-Subset.otf")
 
 var current_view := "arena"
 var current_mode := "arena"
@@ -16,6 +17,7 @@ var _room_views: Dictionary = {}
 var _station_positions: Dictionary = {}
 var _station_nodes: Dictionary = {}
 var _camera: Camera3D
+var _layout_width := 1600.0
 
 func _ready() -> void:
 	_build_environment()
@@ -39,10 +41,10 @@ func _build_environment() -> void:
 	environment.sky = sky
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.ambient_light_color = Color("#8a9baa")
-	environment.ambient_light_energy = 0.52
+	environment.ambient_light_energy = 0.82
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	environment.glow_enabled = true
-	environment.glow_intensity = 0.28
+	environment.glow_intensity = 0.20
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -50,7 +52,7 @@ func _build_environment() -> void:
 	key.name = "WarmKeyLight"
 	key.rotation_degrees = Vector3(-48, -28, 0)
 	key.light_color = Color("#ffe0b0")
-	key.light_energy = 1.25
+	key.light_energy = 1.65
 	key.shadow_enabled = true
 	add_child(key)
 
@@ -58,7 +60,7 @@ func _build_environment() -> void:
 	fill.name = "CoolFillLight"
 	fill.position = Vector3(6.0, 7.0, 7.0)
 	fill.light_color = Color("#70aee4")
-	fill.light_energy = 520.0
+	fill.light_energy = 340.0
 	fill.omni_range = 22.0
 	add_child(fill)
 
@@ -76,6 +78,7 @@ func _build_arena_stage() -> void:
 	_box(_arena_stage, "SharedMarketScreen", Vector3(0, 3.05, -7.54), Vector3(11.78, 2.08, 0.045), Color("#071722"), 0.18, 0.2, Color("#4e89ad"), 0.12)
 	var market_label := Label3D.new()
 	market_label.name = "SharedMarketLabel"
+	market_label.font = CJK_FONT
 	market_label.text = "SHARED MARKET  ·  SYNTHETIC INDEX"
 	market_label.font_size = 34
 	market_label.pixel_size = 0.008
@@ -84,7 +87,8 @@ func _build_arena_stage() -> void:
 	_arena_stage.add_child(market_label)
 	var market_subtitle := Label3D.new()
 	market_subtitle.name = "MarketSubtitle"
-	market_subtitle.text = "ONE MARKET PATH  /  SIX INDEPENDENT ACCOUNTS"
+	market_subtitle.font = CJK_FONT
+	market_subtitle.text = "ONE MARKET PATH  /  SIX AI ACCOUNTS + YOUR PORTFOLIO"
 	market_subtitle.font_size = 16
 	market_subtitle.pixel_size = 0.006
 	market_subtitle.position = Vector3(0, 2.72, -7.48)
@@ -133,14 +137,16 @@ func _build_investor_seat(station_position: Vector3) -> Node3D:
 	_box(seat, "AccountMarkerTop", Vector3(0, 0.73, 0.92), Vector3(0.58, 0.05, 0.38), accent.darkened(0.18), 0.42, 0.28, accent, 0.28)
 	var title := Label3D.new()
 	title.name = "InvestorSeatTitle"
+	title.font = CJK_FONT
 	title.text = "YOU  ·  THE 7TH INVESTOR"
-	title.font_size = 30
-	title.pixel_size = 0.007
+	title.font_size = 40
+	title.pixel_size = 0.009
 	title.position = Vector3(0, 2.75, 0.28)
 	title.modulate = accent.lightened(0.22)
 	seat.add_child(title)
 	var subtitle := Label3D.new()
 	subtitle.name = "InvestorSeatSubtitle"
+	subtitle.font = CJK_FONT
 	subtitle.text = "FOLLOW  /  CHALLENGE  /  COMPARE"
 	subtitle.font_size = 14
 	subtitle.pixel_size = 0.006
@@ -151,8 +157,8 @@ func _build_investor_seat(station_position: Vector3) -> Node3D:
 	glow.name = "FactionGlow"
 	glow.position = Vector3(0, 1.9, 0.2)
 	glow.light_color = accent
-	glow.light_energy = 160.0
-	glow.omni_range = 4.0
+	glow.light_energy = 48.0
+	glow.omni_range = 3.6
 	seat.add_child(glow)
 	var pick_area := Area3D.new()
 	pick_area.name = "PickArea"
@@ -196,6 +202,7 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 
 	var name_label := Label3D.new()
 	name_label.name = "FactionName"
+	name_label.font = CJK_FONT
 	name_label.text = str(faction.get("name", agent_id))
 	name_label.font_size = 34
 	name_label.pixel_size = 0.007
@@ -205,6 +212,7 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 
 	var role_label := Label3D.new()
 	role_label.name = "FactionRole"
+	role_label.font = CJK_FONT
 	role_label.text = str(faction.get("english", "INVESTMENT AGENT"))
 	role_label.font_size = 17
 	role_label.pixel_size = 0.006
@@ -216,8 +224,8 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	glow.name = "FactionGlow"
 	glow.position = Vector3(0, 2.2, 0.1)
 	glow.light_color = accent
-	glow.light_energy = 180.0
-	glow.omni_range = 4.4
+	glow.light_energy = 48.0
+	glow.omni_range = 3.8
 	station.add_child(glow)
 
 	var pick_area := Area3D.new()
@@ -275,6 +283,7 @@ func _ensure_room_loaded(agent_id: String) -> void:
 		agent_model.position = Vector3(-0.55, 0.05, 1.25)
 	var room_label := Label3D.new()
 	room_label.name = "RoomTitle"
+	room_label.font = CJK_FONT
 	room_label.text = "%s  /  %s" % [str(faction.get("room_name", "RESEARCH ROOM")), str(faction.get("english", ""))]
 	room_label.font_size = 34
 	room_label.pixel_size = 0.009
@@ -317,6 +326,30 @@ func _build_camera() -> void:
 	_camera.fov = 50.0
 	_camera.position = Vector3(0, 11.8, 18.4)
 	add_child(_camera)
+	apply_responsive_layout(_layout_width)
+
+func apply_responsive_layout(width: float) -> void:
+	_layout_width = width
+	if _camera == null:
+		return
+	if current_mode == "room":
+		if width < 680.0:
+			_camera.position = Vector3(0, 7.0, 14.2)
+			_camera.fov = 62.0
+		else:
+			_camera.position = Vector3(0, 5.1, 10.6)
+			_camera.fov = 54.0
+		_camera.look_at(Vector3(0, 1.65, -0.3), Vector3.UP)
+		return
+	if width < 680.0:
+		_camera.position = Vector3(0, 15.2, 25.5)
+		_camera.fov = 62.0
+	elif width < 1120.0:
+		_camera.position = Vector3(0, 13.2, 21.0)
+		_camera.fov = 56.0
+	else:
+		_camera.position = Vector3(0, 11.8, 18.4)
+		_camera.fov = 50.0
 	_camera.look_at(Vector3(0, 1.0, 0), Vector3.UP)
 
 func get_camera() -> Camera3D:
@@ -336,7 +369,7 @@ func select_agent(agent_id: String) -> bool:
 		var accent := AgentCatalog.color_for(str(id))
 		var glow := station.get_node_or_null("FactionGlow") as OmniLight3D
 		if glow != null:
-			glow.light_energy = 260.0 if id == agent_id else 130.0
+			glow.light_energy = 88.0 if id == agent_id else 42.0
 		var podium := station.get_node_or_null("PodiumAccent") as MeshInstance3D
 		if podium != null:
 			var mat := _material(accent if id == agent_id else accent.darkened(0.38), 0.62, 0.3)
@@ -355,10 +388,7 @@ func enter_room(agent_id: String) -> void:
 	_arena_stage.visible = false
 	for id in _room_views:
 		(_room_views[id] as Node3D).visible = id == agent_id
-	if _camera != null:
-		_camera.position = Vector3(0, 5.1, 10.6)
-		_camera.fov = 54.0
-		_camera.look_at(Vector3(0, 1.65, -0.3), Vector3.UP)
+	apply_responsive_layout(_layout_width)
 	select_agent(agent_id)
 
 func return_to_arena() -> void:
@@ -368,10 +398,7 @@ func return_to_arena() -> void:
 	_arena_stage.visible = true
 	for id in _room_views:
 		(_room_views[id] as Node3D).visible = false
-	if _camera != null:
-		_camera.position = Vector3(0, 11.8, 18.4)
-		_camera.fov = 50.0
-		_camera.look_at(Vector3(0, 1.0, 0), Vector3.UP)
+	apply_responsive_layout(_layout_width)
 	select_agent(selected_agent)
 
 static func cashflow_direction_for(signed_delta: float) -> String:

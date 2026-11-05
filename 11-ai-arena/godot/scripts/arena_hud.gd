@@ -14,6 +14,7 @@ signal investor_target_weight_changed(weight: float)
 signal investor_view_requested
 
 const AgentCatalog = preload("res://scripts/agent_catalog.gd")
+const CJK_FONT = preload("res://assets/fonts/NotoSansSC-Subset.otf")
 
 var _simulator
 var _selected_agent := "value"
@@ -121,8 +122,9 @@ func apply_responsive_layout(width: float) -> String:
 			_detail_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 			_detail_panel.offset_left = 12.0
 			_detail_panel.offset_right = -12.0
-			_detail_panel.offset_top = -408.0
+			_detail_panel.offset_top = -470.0
 			_detail_panel.offset_bottom = -150.0
+			_detail_panel.custom_minimum_size = Vector2(0, 320)
 		else:
 			_detail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
 			_detail_panel.offset_top = 108.0 if mode == "desktop" else 102.0
@@ -152,6 +154,10 @@ func _build_ui() -> void:
 	_root.name = "HUDRoot"
 	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_PASS
+	var hud_theme := Theme.new()
+	hud_theme.default_font = CJK_FONT
+	hud_theme.default_font_size = 14
+	_root.theme = hud_theme
 	add_child(_root)
 	_build_header()
 	_build_agent_rail()
@@ -175,20 +181,23 @@ func _build_header() -> void:
 	brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(brand)
 	brand.add_child(_label("AI  /  INVESTMENT ARENA", 19, Color("#f0d6a8"), true))
-	brand.add_child(_label("SIX STRATEGIES  ·  ONE MARKET  ·  INDEPENDENT CAPITAL", 10, Color("#8fa2b2")))
+	brand.add_child(_label("SIX AI MANAGERS  ·  YOUR SEVENTH SEAT  ·  ONE MARKET", 10, Color("#8fa2b2")))
 	_market_box = VBoxContainer.new()
+	_market_box.custom_minimum_size = Vector2(220, 0)
 	_market_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	_market_box.add_child(_label("SHARED MARKET  /  PAPER MODE", 10, Color("#8fa2b2")))
 	_market_label = _label("INDEX  100.00   ·   VOL  1.8%", 14, Color("#dce7ed"), true)
 	_market_box.add_child(_market_label)
 	row.add_child(_market_box)
 	_status_box = VBoxContainer.new()
+	_status_box.custom_minimum_size = Vector2(145, 0)
 	_status_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	_status_box.add_child(_label("ENGINE STATUS", 10, Color("#8fa2b2")))
 	_status_label = _label(_status, 12, Color("#8de0b2"), true)
 	_status_box.add_child(_status_label)
 	row.add_child(_status_box)
 	var actions := VBoxContainer.new()
+	actions.custom_minimum_size = Vector2(112, 0)
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
 	var investor_button := Button.new()
 	investor_button.name = "HeaderInvestorButton"
@@ -429,6 +438,7 @@ func _build_run_setup_dialog() -> void:
 	_setup_dialog.unresizable = true
 	_setup_dialog.close_requested.connect(func(): _setup_dialog.hide())
 	_setup_dialog.visible = false
+	_setup_dialog.theme = _root.theme
 	add_child(_setup_dialog)
 	var panel := PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

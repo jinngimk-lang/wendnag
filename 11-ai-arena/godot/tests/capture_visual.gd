@@ -33,6 +33,9 @@ func _capture() -> void:
 	app.apply_responsive_layout(390.0)
 	await process_frame
 	await RenderingServer.frame_post_draw
+	var detail_panel := app.find_child("DetailPanel", true, false) as Control
+	if detail_panel != null:
+		print("MOBILE DETAIL RECT: %s" % str(detail_panel.get_global_rect()))
 	_save_capture("investor-mobile.png")
 
 	if _failed:

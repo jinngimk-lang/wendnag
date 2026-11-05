@@ -27,6 +27,8 @@ Updated: 2026-11-05
 - Editable Blender source project plus six Agent GLBs, six research-room GLBs and a banknote GLB.
 - Godot world builds six clickable faction stations, a shared-market display, a gold-accented seventh-investor desk and lazily loaded faction research rooms.
 - HUD supports Agent selection, research/account/ledger tabs, playback, replay scrubbing, JSON export and responsive desktop/tablet/mobile layouts.
+- A project-specific Noto Sans SC subset is generated and applied to HUD controls, run setup and 3D labels to avoid missing CJK glyphs on clean hosts. CI installs Noto CJK/fontTools and generates the subset before Godot import; the font and OFL notice are included in the downloadable package but excluded from source control.
+- Responsive 3D camera presets and softened local faction lights improve portrait-screen framing; mobile investor detail is given a larger bottom-sheet viewport.
 - Run-setup modal configures a display-only scenario label, 20–252 trading days, starting capital and a shared 10–90% risk cap.
 - Seventh-investor panel exposes follow/challenge state, personal account metrics, account and ledger views, a personal target-exposure slider and a seven-seat risk-adjusted leaderboard.
 - tests/capture_visual.gd captures the desktop arena, desktop investor panel and mobile investor layout for CI visual inspection.

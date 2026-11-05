@@ -44,6 +44,8 @@ func _ready() -> void:
 	_playback_timer.one_shot = false
 	_playback_timer.timeout.connect(_advance_one_day)
 	add_child(_playback_timer)
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
+	apply_responsive_layout(get_viewport().get_visible_rect().size.x)
 	_refresh()
 
 func _on_playback_action(action: String) -> void:
@@ -231,9 +233,14 @@ func _pick_agent(screen_position: Vector2) -> void:
 		_on_agent_selected(str(collider.get_meta("agent_id")))
 
 func apply_responsive_layout(width: float) -> String:
+	if _world != null:
+		_world.apply_responsive_layout(width)
 	if _hud == null:
 		return ArenaHUD.layout_mode_for(width)
 	return _hud.apply_responsive_layout(width)
+
+func _on_viewport_size_changed() -> void:
+	apply_responsive_layout(get_viewport().get_visible_rect().size.x)
 
 func advance_one_day() -> void:
 	_advance_one_day()

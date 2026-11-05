@@ -6,3 +6,6 @@ __pycache__/
 *.blend1
 *.blend2
 /visual-qa/
+/assets/fonts/NotoSansSC-Subset.otf
+/assets/fonts/OFL.txt
+/assets/fonts/font-subset-chars.txt
