@@ -23,19 +23,36 @@ class RuntimeContractTests(unittest.TestCase):
 
     def test_hud_has_responsive_controls_and_replay(self):
         source = (ROOT / "scripts" / "arena_hud.gd").read_text(encoding="utf-8")
-        for token in ("class_name ArenaHUD", "layout_mode_for", "apply_responsive_layout", "ReplaySlider", "export_requested"):
+        for token in ("class_name ArenaHUD", "layout_mode_for", "apply_responsive_layout", "ReplaySlider", "export_requested", "RunSetupDialog", "InvestorTargetWeightSlider", "FollowStrategyButton", "ChallengeStrategyButton", "run_setup_confirmed"):
             self.assertIn(token, source)
 
     def test_main_wires_simulation_world_and_hud(self):
         source = (ROOT / "scripts" / "main.gd").read_text(encoding="utf-8")
-        for token in ("ArenaSimulation", "ArenaWorld", "ArenaHUD", "advance_day", "set_replay_day", "export_payload"):
+        for token in ("ArenaSimulation", "ArenaWorld", "ArenaHUD", "advance_day", "set_replay_day", "export_payload", "investor_mode_requested", "_on_run_setup_confirmed", "_on_investor_mode_requested"):
+            self.assertIn(token, source)
+
+    def test_simulation_keeps_six_agents_and_adds_a_separate_seventh_investor(self):
+        source = (ROOT / "scripts" / "arena_simulation.gd").read_text(encoding="utf-8")
+        for token in ('const INVESTOR_ID := "investor"', "var investor_account", "set_investor_mode", "set_investor_target_weight", "_advance_investor", "get_investor_snapshot", "challenged_agent_id", "get_rankings"):
+            self.assertIn(token, source)
+        self.assertIn('"investor": investor_account.duplicate(true)', source)
+
+    def test_world_builds_a_separate_seventh_investor_seat(self):
+        source = (ROOT / "scripts" / "arena_world.gd").read_text(encoding="utf-8")
+        self.assertIn("_build_investor_seat", source)
+        self.assertIn('seat.name = "investor"', source)
+        self.assertIn('title.text = "YOU  ·  THE 7TH INVESTOR"', source)
+
+    def test_visual_capture_covers_arena_investor_and_mobile(self):
+        source = (ROOT / "tests" / "capture_visual.gd").read_text(encoding="utf-8")
+        for token in ("arena-desktop.png", "investor-desktop.png", "investor-mobile.png", "RenderingServer.frame_post_draw"):
             self.assertIn(token, source)
 
     def test_godot_project_ignores_local_caches_and_blender_backups(self):
         ignore_file = ROOT / ".gitignore"
         self.assertTrue(ignore_file.is_file(), "Godot project must own a local-artifact ignore file")
         ignore = ignore_file.read_text(encoding="utf-8")
-        for pattern in (".godot/", ".venv/", "__pycache__/", "*.py[cod]", "*.blend1", "*.blend2"):
+        for pattern in (".godot/", ".venv/", "__pycache__/", "*.py[cod]", "*.blend1", "*.blend2", "visual-qa/"):
             self.assertIn(pattern, ignore)
 
     def test_hud_uses_button_theme_constants_for_icon_sizing(self):

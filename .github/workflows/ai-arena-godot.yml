@@ -90,6 +90,24 @@ jobs:
         working-directory: 11-ai-arena/godot
         run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 smoke --headless --path . --quit-after 4
 
+      - name: Capture desktop and mobile visual QA
+        working-directory: 11-ai-arena/godot
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 visual --path . --script res://tests/capture_visual.gd
+          test -s visual-qa/arena-desktop.png
+          test -s visual-qa/investor-desktop.png
+          test -s visual-qa/investor-mobile.png
+
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-investment-arena-visual-qa
+          path: 11-ai-arena/godot/visual-qa/*.png
+          if-no-files-found: error
+
       - name: Verify generated Blender assets
         if: hashFiles('11-ai-arena/godot/tools/verify_generated_assets.py') != ''
         working-directory: 11-ai-arena/godot
@@ -110,7 +128,7 @@ jobs:
         if: success()
         run: |
           cd 11-ai-arena/godot
-          zip -qr /tmp/ai-investment-arena-godot.zip . -x ".godot/*" ".venv/*" "*/.venv/*" "__pycache__/*" "*/__pycache__/*" "*.pyc" "*.pyo" "*.blend1" "*.blend2"
+          zip -qr /tmp/ai-investment-arena-godot.zip . -x ".godot/*" ".venv/*" "*/.venv/*" "__pycache__/*" "*/__pycache__/*" "visual-qa/*" "*.pyc" "*.pyo" "*.blend1" "*.blend2"
 
       - name: Upload Godot project
         if: always()

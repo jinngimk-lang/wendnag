@@ -14,17 +14,22 @@ Updated: 2026-11-05
 
 ## Product invariants
 
-- Six stable factions, six independent paper accounts, and one shared synthetic market path.
-- Each account owns its own cash, shares, equity, drawdown, history and operation ledger.
-- The 3D center is a shared-market information display, not a capital vault.
-- P&L notes stay inside the same Agent's station/account marker. Positive deltas rise from that account; negative deltas return to the same account marker. No shared cash pool or inter-Agent transfers.
+- Six stable AI factions, six independent Agent paper accounts, one separate seventh-investor personal account, and one shared synthetic market path.
+- The six-agent roster remains exactly six; the user portfolio is not a seventh AI Agent.
+- All seven accounts use the same starting capital, fee/slippage assumptions, market path and shared risk cap.
+- Follow mode synchronizes the user's daily target exposure with one selected Agent while keeping the user's cash, shares, fills and ledger independent.
+- Challenge mode uses the user's own target stock exposure and records the selected rival for comparison.
+- The 3D center is a shared-market information display, not a capital vault. P&L notes stay local to the same account marker; there is no shared cash pool or inter-account transfer.
 - All prices, research signals, events and fills are synthetic paper-mode data. No broker, real orders, external LLM workers or licensed live feed are connected.
 
 ## Current implementation
 
 - Editable Blender source project plus six Agent GLBs, six research-room GLBs and a banknote GLB.
-- Godot world builds six clickable faction stations, a shared-market display and lazily loaded faction research rooms.
+- Godot world builds six clickable faction stations, a shared-market display, a gold-accented seventh-investor desk and lazily loaded faction research rooms.
 - HUD supports Agent selection, research/account/ledger tabs, playback, replay scrubbing, JSON export and responsive desktop/tablet/mobile layouts.
+- Run-setup modal configures a display-only scenario label, 20–252 trading days, starting capital and a shared 10–90% risk cap.
+- Seventh-investor panel exposes follow/challenge state, personal account metrics, account and ledger views, a personal target-exposure slider and a seven-seat risk-adjusted leaderboard.
+- tests/capture_visual.gd captures the desktop arena, desktop investor panel and mobile investor layout for CI visual inspection.
 - Button icon sizing uses the Godot theme constant `icon_max_width`; the desktop and mobile values are covered by the UI contract.
 - `tools/run_godot_check.sh` wraps Godot import, simulation, world, UI and main-scene checks and fails on `SCRIPT ERROR:` or `Parse Error:` log entries.
 - Godot's source folder is marked with `.gdignore`; the project `.gitignore` excludes Godot caches, Python virtual environments/bytecode and Blender backup files.
@@ -39,7 +44,10 @@ Updated: 2026-11-05
 - Code-fix verification artifact: `ai-investment-arena-godot`, ID `13382140939`. The downloaded package contains 6 Agent GLBs, 6 room GLBs, 6 room WebP atlases, the banknote GLB, the editable 11.23 MB Blender source and the runtime-check helper. No `.blend1`, `.blend2`, `.godot`, `.venv`, `__pycache__`, `.pyc` or `.pyo` residue was found.
 - Documentation-sync PR run [#41953215975](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215975) also passed at commit `ea120585e75369531bbd460a4eedc700deb66b43`; its artifact `13381398583` was downloaded and inspected with the same asset counts and zero cache/backup residue.
 - Companion HTML regression run [#41953215990](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215990) passed backend evidence contracts and the Finance Lab browser regression. The existing HTML V0.5.0 remained unchanged; responsive QA at 1440/1024/768/390/320px reported no horizontal overflow or browser errors. Artifacts: runnable package `13381931491` and visual QA `13381896589`.
-- Isolated local Python `.venv`: 13 tests passed; the workflow-only test was skipped because the standalone downloaded project does not contain `.github/workflows`. `tools/verify_generated_assets.py --require-generated` passed. The runtime-check helper was tested with clean output and intentionally injected script-error output.
+- Previous isolated Python baseline: 13 tests passed; the workflow-only test was skipped because the standalone downloaded project does not contain `.github/workflows`.
+- Current isolated Python 3.13.5 `.venv`: 17 tests passed, 1 workflow-only test skipped; `tools/verify_generated_assets.py --require-generated` passed.
+- Current Godot GDScript and screenshot changes require the next PR CI run; Python source-contract checks are not a substitute for Godot import/runtime validation.
+- The local sandbox has no Godot 4.7.1 executable or graphical display, so the Xvfb-backed GitHub Actions run must validate the runtime and produce screenshots before visual QA is considered complete.
 - Blender reported that the optional Draco compression library was unavailable. The exported files are valid glTF 2.0 assets without the Draco extension; generated-asset verification passed.
 
 ## Local run
@@ -52,6 +60,6 @@ Updated: 2026-11-05
 
 ## Follow-on product work
 
-1. Add a run-setup modal for a synthetic scenario label, trading-day window, starting capital and risk cap. The current runtime still starts with fixed defaults of $100,000 and 90 trading days.
-2. Add the seventh-investor follow/challenge interactions without changing the six independent-account rules.
-3. Perform visual QA in the local Godot editor for camera framing, portrait/room visibility, mobile layout and cash-note choreography. Headless CI is not a substitute for visual review.
+1. Inspect the next PR CI run for GDScript parse/runtime errors and all simulation/world/UI contracts.
+2. Download and visually inspect the Xvfb screenshot artifact for seat framing, modal layout, detail-panel clipping and mobile control reachability.
+3. Keep PR #28 as draft until runtime checks are green and the visual artifact has been inspected.

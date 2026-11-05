@@ -7,6 +7,11 @@ signal room_requested(agent_id: String)
 signal room_exit_requested
 signal day_scrubbed(day: int)
 signal export_requested
+signal run_setup_requested
+signal run_setup_confirmed(scenario_label: String, trading_days: int, starting_capital: float, risk_cap: float)
+signal investor_mode_requested(mode: String, agent_id: String)
+signal investor_target_weight_changed(weight: float)
+signal investor_view_requested
 
 const AgentCatalog = preload("res://scripts/agent_catalog.gd")
 
@@ -38,6 +43,22 @@ var _slider: HSlider
 var _room_button: Button
 var _mobile_room_button: Button
 var _tab_buttons: Dictionary = {}
+var _market_box: VBoxContainer
+var _status_box: VBoxContainer
+var _investor_button: Button
+var _mobile_investor_button: Button
+var _follow_button: Button
+var _challenge_button: Button
+var _investor_controls: VBoxContainer
+var _investor_target_slider: HSlider
+var _investor_target_label: Label
+var _updating_investor_slider := false
+var _setup_dialog: Window
+var _scenario_input: LineEdit
+var _days_spin: SpinBox
+var _capital_option: OptionButton
+var _risk_slider: HSlider
+var _risk_label: Label
 
 func _ready() -> void:
 	_build_ui()
@@ -76,6 +97,10 @@ func set_room_mode(enabled: bool, agent_id: String = "") -> void:
 	if agent_id != "":
 		_selected_agent = agent_id
 	if _room_button != null:
+		_room_button.visible = _selected_agent != "investor"
+	if _mobile_room_button != null:
+		_mobile_room_button.visible = _selected_agent != "investor"
+	if _room_button != null:
 		_room_button.text = "← 返回竞技场" if enabled else "进入研究室  ↗"
 	if _mobile_room_button != null:
 		_mobile_room_button.text = "← 返回竞技场" if enabled else "进入研究室 ↗"
@@ -108,6 +133,10 @@ func apply_responsive_layout(width: float) -> String:
 		_bottom_dock.offset_top = -142.0 if mode == "mobile" else -108.0
 	if _header != null:
 		_header.offset_bottom = 82.0 if mode == "mobile" else 76.0
+	if _market_box != null:
+		_market_box.visible = mode != "mobile"
+	if _status_box != null:
+		_status_box.visible = mode != "mobile"
 	if _mobile_agents != null:
 		_mobile_agents.offset_top = 94.0
 		_mobile_agents.offset_bottom = 168.0
@@ -129,6 +158,7 @@ func _build_ui() -> void:
 	_build_mobile_agents()
 	_build_detail_panel()
 	_build_bottom_dock()
+	_build_run_setup_dialog()
 
 func _build_header() -> void:
 	_header = _panel("Header")
@@ -146,18 +176,33 @@ func _build_header() -> void:
 	row.add_child(brand)
 	brand.add_child(_label("AI  /  INVESTMENT ARENA", 19, Color("#f0d6a8"), true))
 	brand.add_child(_label("SIX STRATEGIES  ·  ONE MARKET  ·  INDEPENDENT CAPITAL", 10, Color("#8fa2b2")))
-	var market_box := VBoxContainer.new()
-	market_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	market_box.add_child(_label("SHARED MARKET  /  PAPER MODE", 10, Color("#8fa2b2")))
+	_market_box = VBoxContainer.new()
+	_market_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	_market_box.add_child(_label("SHARED MARKET  /  PAPER MODE", 10, Color("#8fa2b2")))
 	_market_label = _label("INDEX  100.00   ·   VOL  1.8%", 14, Color("#dce7ed"), true)
-	market_box.add_child(_market_label)
-	row.add_child(market_box)
-	var status_box := VBoxContainer.new()
-	status_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	status_box.add_child(_label("ENGINE STATUS", 10, Color("#8fa2b2")))
+	_market_box.add_child(_market_label)
+	row.add_child(_market_box)
+	_status_box = VBoxContainer.new()
+	_status_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	_status_box.add_child(_label("ENGINE STATUS", 10, Color("#8fa2b2")))
 	_status_label = _label(_status, 12, Color("#8de0b2"), true)
-	status_box.add_child(_status_label)
-	row.add_child(status_box)
+	_status_box.add_child(_status_label)
+	row.add_child(_status_box)
+	var actions := VBoxContainer.new()
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	var investor_button := Button.new()
+	investor_button.name = "HeaderInvestorButton"
+	investor_button.text = "我的组合"
+	investor_button.custom_minimum_size = Vector2(104, 28)
+	investor_button.pressed.connect(func(): investor_view_requested.emit())
+	actions.add_child(investor_button)
+	var setup_button := Button.new()
+	setup_button.name = "RunSetupButton"
+	setup_button.text = "配置实验"
+	setup_button.custom_minimum_size = Vector2(104, 28)
+	setup_button.pressed.connect(func(): run_setup_requested.emit())
+	actions.add_child(setup_button)
+	row.add_child(actions)
 
 func _build_agent_rail() -> void:
 	_agent_rail = _panel("AgentRail")
@@ -167,9 +212,15 @@ func _build_agent_rail() -> void:
 	_agent_rail.offset_top = 108
 	_agent_rail.offset_bottom = -128
 	_root.add_child(_agent_rail)
+	var scroll := ScrollContainer.new()
+	scroll.name = "AgentRailScroll"
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_agent_rail.add_child(scroll)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 8)
-	_agent_rail.add_child(column)
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(column)
 	column.add_child(_label("STRATEGY TEAMS", 12, Color("#aab9c5"), true))
 	column.add_child(_label("Select an Agent to inspect its account", 10, Color("#7e93a3")))
 	for faction in AgentCatalog.all():
@@ -188,6 +239,14 @@ func _build_agent_rail() -> void:
 		button.pressed.connect(_on_agent_pressed.bind(agent_id))
 		column.add_child(button)
 		_agent_buttons[agent_id] = button
+	_investor_button = Button.new()
+	_investor_button.name = "InvestorPortfolioButton"
+	_investor_button.custom_minimum_size = Vector2(0, 58)
+	_investor_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_investor_button.text = "第七位投资者 · 我的组合\n$100,000   +0.00%"
+	_investor_button.pressed.connect(func(): investor_view_requested.emit())
+	_investor_button.add_theme_color_override("font_color", Color("#f1d19b"))
+	column.add_child(_investor_button)
 
 func _build_mobile_agents() -> void:
 	_mobile_agents = _panel("MobileAgents")
@@ -216,6 +275,12 @@ func _build_mobile_agents() -> void:
 		button.pressed.connect(_on_agent_pressed.bind(agent_id))
 		row.add_child(button)
 		_mobile_buttons[agent_id] = button
+	_mobile_investor_button = Button.new()
+	_mobile_investor_button.name = "MobileInvestorButton"
+	_mobile_investor_button.custom_minimum_size = Vector2(116, 52)
+	_mobile_investor_button.text = "我的组合\n+0.0%"
+	_mobile_investor_button.pressed.connect(func(): investor_view_requested.emit())
+	row.add_child(_mobile_investor_button)
 	_mobile_room_button = Button.new()
 	_mobile_room_button.name = "MobileRoomButton"
 	_mobile_room_button.custom_minimum_size = Vector2(132, 52)
@@ -279,6 +344,39 @@ func _build_detail_panel() -> void:
 	_detail_body.add_theme_color_override("default_color", Color("#c4d0d8"))
 	_detail_body.add_theme_font_size_override("normal_font_size", 12)
 	column.add_child(_detail_body)
+	var investor_actions := HBoxContainer.new()
+	investor_actions.name = "InvestorActions"
+	investor_actions.add_theme_constant_override("separation", 6)
+	_follow_button = Button.new()
+	_follow_button.name = "FollowStrategyButton"
+	_follow_button.text = "跟随策略 +"
+	_follow_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_follow_button.pressed.connect(_on_follow_pressed)
+	investor_actions.add_child(_follow_button)
+	_challenge_button = Button.new()
+	_challenge_button.name = "ChallengeStrategyButton"
+	_challenge_button.text = "亲自挑战"
+	_challenge_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_challenge_button.pressed.connect(_on_challenge_pressed)
+	investor_actions.add_child(_challenge_button)
+	column.add_child(investor_actions)
+	_investor_controls = VBoxContainer.new()
+	_investor_controls.name = "InvestorControls"
+	_investor_controls.add_theme_constant_override("separation", 4)
+	_investor_controls.visible = false
+	_investor_controls.add_child(_label("自主挑战 · 目标股票仓位", 10, Color("#c9b17e"), true))
+	_investor_target_label = _label("目标仓位 50%", 12, Color("#f1d19b"), true)
+	_investor_controls.add_child(_investor_target_label)
+	_investor_target_slider = HSlider.new()
+	_investor_target_slider.name = "InvestorTargetWeightSlider"
+	_investor_target_slider.min_value = 0.0
+	_investor_target_slider.max_value = 0.90
+	_investor_target_slider.step = 0.05
+	_investor_target_slider.value = 0.50
+	_investor_target_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_investor_target_slider.value_changed.connect(_on_investor_target_changed)
+	_investor_controls.add_child(_investor_target_slider)
+	column.add_child(_investor_controls)
 	_room_button = Button.new()
 	_room_button.text = "进入研究室  ↗"
 	_room_button.custom_minimum_size = Vector2(0, 42)
@@ -319,6 +417,109 @@ func _build_bottom_dock() -> void:
 	_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_slider.value_changed.connect(_on_slider_changed)
 	column.add_child(_slider)
+
+func _build_run_setup_dialog() -> void:
+	_setup_dialog = Window.new()
+	_setup_dialog.name = "RunSetupDialog"
+	_setup_dialog.title = "配置本轮模拟实验"
+	_setup_dialog.size = Vector2i(520, 500)
+	_setup_dialog.min_size = Vector2i(460, 460)
+	_setup_dialog.transient = true
+	_setup_dialog.exclusive = true
+	_setup_dialog.unresizable = true
+	_setup_dialog.close_requested.connect(func(): _setup_dialog.hide())
+	_setup_dialog.visible = false
+	add_child(_setup_dialog)
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#0b1520")
+	style.border_color = Color("#596d79")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(12)
+	style.content_margin_left = 22
+	style.content_margin_right = 22
+	style.content_margin_top = 18
+	style.content_margin_bottom = 18
+	panel.add_theme_stylebox_override("panel", style)
+	_setup_dialog.add_child(panel)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 10)
+	panel.add_child(column)
+	column.add_child(_label("RUN CONFIGURATION  /  PAPER SIMULATION", 11, Color("#e9c78d"), true))
+	column.add_child(_label("所有价格、事件与收益均为合成演示数据；场景名称只用于标注，不会触发真实公司研究。", 10, Color("#8fa2b2")))
+	column.add_child(_label("模拟场景名称", 10, Color("#c4d0d8"), true))
+	_scenario_input = LineEdit.new()
+	_scenario_input.name = "ScenarioLabelInput"
+	_scenario_input.placeholder_text = "例如：SYNTHETIC MARKET"
+	_scenario_input.text = "SYNTHETIC MARKET"
+	column.add_child(_scenario_input)
+	column.add_child(_label("交易日窗口  /  20–252", 10, Color("#c4d0d8"), true))
+	_days_spin = SpinBox.new()
+	_days_spin.name = "TradingDaysInput"
+	_days_spin.min_value = 20
+	_days_spin.max_value = 252
+	_days_spin.step = 1
+	_days_spin.value = 90
+	column.add_child(_days_spin)
+	column.add_child(_label("起始资金  /  七个账户相同", 10, Color("#c4d0d8"), true))
+	_capital_option = OptionButton.new()
+	_capital_option.name = "StartingCapitalInput"
+	for amount in [50000, 100000, 250000, 500000]:
+		_capital_option.add_item("$%s" % _money_grouped(float(amount)))
+		_capital_option.set_item_metadata(_capital_option.item_count - 1, float(amount))
+	_capital_option.select(1)
+	column.add_child(_capital_option)
+	column.add_child(_label("统一风险上限  /  同时作用于六位 Agent 与个人账户", 10, Color("#c4d0d8"), true))
+	_risk_label = _label("最大股票仓位 90%", 12, Color("#f1d19b"), true)
+	column.add_child(_risk_label)
+	_risk_slider = HSlider.new()
+	_risk_slider.name = "RiskCapInput"
+	_risk_slider.min_value = 10
+	_risk_slider.max_value = 90
+	_risk_slider.step = 5
+	_risk_slider.value = 90
+	_risk_slider.value_changed.connect(func(value: float): _risk_label.text = "最大股票仓位 %.0f%%" % value)
+	column.add_child(_risk_slider)
+	var note := _label("第七位投资者拥有独立的个人模拟账户。跟随会同步所选 Agent 的目标仓位；自主挑战使用个人目标仓位。七个账户共享同一合成市场、费用与风险上限。", 10, Color("#91a5b4"))
+	column.add_child(note)
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(spacer)
+	var buttons := HBoxContainer.new()
+	buttons.alignment = BoxContainer.ALIGNMENT_END
+	buttons.add_theme_constant_override("separation", 8)
+	var cancel := Button.new()
+	cancel.text = "取消"
+	cancel.pressed.connect(func(): _setup_dialog.hide())
+	buttons.add_child(cancel)
+	var apply := Button.new()
+	apply.name = "ApplyRunSetupButton"
+	apply.text = "应用配置并重置"
+	apply.pressed.connect(_on_setup_apply_pressed)
+	buttons.add_child(apply)
+	column.add_child(buttons)
+
+func open_run_setup(simulator) -> void:
+	if simulator != null:
+		_scenario_input.text = str(simulator.scenario_label)
+		_days_spin.value = int(simulator.trading_days)
+		_risk_slider.value = float(simulator.risk_cap) * 100.0
+		for index in range(_capital_option.item_count):
+			if is_equal_approx(float(_capital_option.get_item_metadata(index)), float(simulator.starting_capital)):
+				_capital_option.select(index)
+				break
+	_setup_dialog.popup_centered()
+
+func _on_setup_apply_pressed() -> void:
+	var label := _scenario_input.text.strip_edges()
+	if label.is_empty():
+		label = "SYNTHETIC MARKET"
+	var capital := float(_capital_option.get_item_metadata(_capital_option.selected))
+	var days := int(_days_spin.value)
+	var risk := float(_risk_slider.value) / 100.0
+	_setup_dialog.hide()
+	run_setup_confirmed.emit(label, days, capital, risk)
 
 func _action_button(parent: Control, caption: String, action: String) -> void:
 	var button := Button.new()
@@ -389,12 +590,22 @@ func _refresh_agent_cards() -> void:
 		]
 		(_agent_buttons[agent_id] as Button).text = caption
 		(_mobile_buttons[agent_id] as Button).text = str(faction.get("name", agent_id)) + "\n" + ("%+.1f%%" % change)
+	var investor_snapshot: Dictionary = _simulator.get_account_snapshot("investor", _simulator.replay_day)
+	var investor_rank: Dictionary = rank_map.get("investor", {})
+	var investor_return := float(investor_snapshot.get("cumulative_return_pct", 0.0))
+	var investor_equity := float(investor_snapshot.get("equity", _simulator.starting_capital))
+	_investor_button.text = "第七位投资者 · 我的组合\n#%d  $%s   %+.2f%%" % [int(investor_rank.get("rank", 7)), _format_money(investor_equity), investor_return]
+	_mobile_investor_button.text = "我的组合\n#%d  %+.1f%%" % [int(investor_rank.get("rank", 7)), investor_return]
 
 func _refresh_detail() -> void:
+	if _selected_agent == "investor":
+		_refresh_investor_detail()
+		return
 	var faction := AgentCatalog.get_faction(_selected_agent)
 	if faction.is_empty():
 		return
 	var snapshot: Dictionary = _simulator.get_account_snapshot(_selected_agent, _simulator.replay_day)
+	_portrait.visible = true
 	_portrait.texture = AgentCatalog.portrait_texture(_selected_agent)
 	_name_label.text = str(faction.get("name", "Agent"))
 	_role_label.text = "%s  ·  %s" % [str(faction.get("role", "")), str(faction.get("analyst", ""))]
@@ -405,7 +616,95 @@ func _refresh_detail() -> void:
 		var button := _tab_buttons[tab] as Button
 		button.modulate = Color("#f1d19b") if tab == _active_tab else Color("#d1dce2")
 	_detail_body.text = _detail_text(faction, snapshot)
+	_follow_button.visible = true
+	_challenge_button.visible = true
+	_investor_controls.visible = false
+	_room_button.visible = true
+	_mobile_room_button.visible = true
 	_room_button.text = "← 返回竞技场" if _room_mode else "进入研究室  ↗"
+	if _simulator != null and str(_simulator.investor_mode) == "follow" and str(_simulator.followed_agent_id) == _selected_agent:
+		_follow_button.text = "正在跟随 ✓"
+	else:
+		_follow_button.text = "跟随策略 +"
+	if _simulator != null and str(_simulator.investor_mode) == "challenge" and str(_simulator.challenged_agent_id) == _selected_agent:
+		_challenge_button.text = "正在挑战 ✓"
+	else:
+		_challenge_button.text = "亲自挑战"
+
+func _refresh_investor_detail() -> void:
+	if _simulator == null:
+		return
+	var snapshot: Dictionary = _simulator.get_account_snapshot("investor", _simulator.replay_day)
+	_portrait.visible = false
+	_name_label.text = "你 · 第七位投资者"
+	_role_label.text = "独立个人模拟账户  ·  与六位 AI 经理同场比较"
+	_equity_label.text = "$" + _format_money(float(snapshot.get("equity", _simulator.starting_capital)))
+	_return_label.text = "%+.2f%%" % float(snapshot.get("cumulative_return_pct", 0.0))
+	_cash_label.text = "$" + _format_money(float(snapshot.get("cash", _simulator.starting_capital)))
+	for tab in _tab_buttons:
+		var button := _tab_buttons[tab] as Button
+		button.modulate = Color("#f1d19b") if tab == _active_tab else Color("#d1dce2")
+	var mode := str(_simulator.investor_mode)
+	var followed := str(_simulator.followed_agent_id)
+	var challenged := str(_simulator.challenged_agent_id)
+	var mode_line := "自主挑战 · 对比 %s" % str(AgentCatalog.get_faction(challenged).get("name", challenged)) if mode == "challenge" else "跟随策略 · %s" % str(AgentCatalog.get_faction(followed).get("name", followed))
+	var lines := PackedStringArray()
+	if _active_tab == "ledger":
+		lines.append("我的交易记录  /  已回放至 DAY %03d" % int(snapshot.get("day", 0)))
+		lines.append("")
+		var ledger: Array = _simulator.investor_account.ledger
+		var visible_count := mini(ledger.size(), int(_simulator.replay_day))
+		var start := maxi(0, visible_count - 10)
+		if visible_count == 0:
+			lines.append("当前回放位置尚无已完成交易。")
+		else:
+			for index in range(start, visible_count):
+				var entry: Dictionary = ledger[index]
+				lines.append("DAY %03d   %s   $%s   %+.2f%%" % [int(entry.day), str(entry.action), _format_money(float(entry.notional)), float(entry.delta_equity) / maxf(float(_simulator.starting_capital), 1.0) * 100.0])
+				lines.append("  " + str(entry.reason))
+	elif _active_tab == "account":
+		lines.append("个人账户状态  /  DAY %03d" % int(snapshot.get("day", 0)))
+		lines.append("")
+		lines.append("账户净值      $%s" % _format_money(float(snapshot.get("equity", 0.0))))
+		lines.append("可用现金      $%s" % _format_money(float(snapshot.get("cash", 0.0))))
+		lines.append("持有份额      %.3f" % float(snapshot.get("shares", 0.0)))
+		lines.append("实际敞口      %.1f%%" % float(snapshot.get("exposure_pct", 0.0)))
+		lines.append("目标仓位      %.1f%%" % (float(snapshot.get("target_weight", 0.0)) * 100.0))
+		lines.append("最大回撤      %.2f%%" % float(snapshot.get("max_drawdown_pct", 0.0)))
+		lines.append("年化波动      %.2f%%" % float(snapshot.get("volatility_pct", 0.0)))
+		lines.append("")
+		lines.append("当前模式：%s" % mode_line)
+		lines.append("统一风险上限：%.0f%%" % (float(_simulator.risk_cap) * 100.0))
+	else:
+		lines = PackedStringArray([
+			"第七位投资者  /  %s" % mode_line,
+			"模拟场景：%s" % str(_simulator.scenario_label),
+			"",
+			"账户净值      $%s" % _format_money(float(snapshot.get("equity", 0.0))),
+			"可用现金      $%s" % _format_money(float(snapshot.get("cash", 0.0))),
+			"持有份额      %.3f" % float(snapshot.get("shares", 0.0)),
+			"累计收益      %+.2f%%" % float(snapshot.get("cumulative_return_pct", 0.0)),
+			"最大回撤      %.2f%%" % float(snapshot.get("max_drawdown_pct", 0.0)),
+			"统一风险上限  %.0f%%" % (float(_simulator.risk_cap) * 100.0),
+			"",
+			"最近决策：%s" % str(snapshot.get("last_decision", "HOLD")),
+			str(snapshot.get("last_reason", "等待首个市场交易日。")),
+			"",
+			"七席排名  /  风险调整分"
+		])
+		for row in _simulator.get_rankings(_simulator.replay_day):
+			lines.append("#%d  %s  %+.2f%%  ·  回撤 %.2f%%" % [int(row.rank), str(row.name), float(row.return_pct), float(row.drawdown_pct)])
+	_detail_body.text = "\n".join(lines)
+	_follow_button.visible = false
+	_challenge_button.visible = false
+	_investor_controls.visible = mode == "challenge"
+	_updating_investor_slider = true
+	_investor_target_slider.max_value = float(_simulator.risk_cap)
+	_investor_target_slider.value = minf(float(_simulator.investor_target_weight), float(_simulator.risk_cap))
+	_investor_target_label.text = "个人目标仓位  %.0f%%" % (_investor_target_slider.value * 100.0)
+	_updating_investor_slider = false
+	_room_button.visible = false
+	_mobile_room_button.visible = false
 
 func _detail_text(faction: Dictionary, snapshot: Dictionary) -> String:
 	match _active_tab:
@@ -464,6 +763,20 @@ func _on_agent_pressed(agent_id: String) -> void:
 	_active_tab = "research"
 	agent_selected.emit(agent_id)
 	_refresh_detail()
+
+func _on_follow_pressed() -> void:
+	if _selected_agent != "investor":
+		investor_mode_requested.emit("follow", _selected_agent)
+
+func _on_challenge_pressed() -> void:
+	if _selected_agent != "investor":
+		investor_mode_requested.emit("challenge", _selected_agent)
+
+func _on_investor_target_changed(value: float) -> void:
+	if _updating_investor_slider:
+		return
+	_investor_target_label.text = "个人目标仓位  %.0f%%" % (value * 100.0)
+	investor_target_weight_changed.emit(value)
 
 func _on_tab_pressed(tab: String) -> void:
 	_active_tab = tab

@@ -99,13 +99,74 @@ func _build_arena_stage() -> void:
 
 	for index in range(AGENT_IDS.size()):
 		var agent_id: String = str(AGENT_IDS[index])
-		var angle := -PI * 0.5 + float(index) * TAU / 6.0
+		var angle := -PI * 0.5 + PI / 6.0 + float(index) * TAU / 6.0
 		var station_position := Vector3(cos(angle) * 7.1, 0.0, sin(angle) * 5.15)
 		_station_positions[agent_id] = station_position
 		var station := _build_station(agent_id, station_position)
 		stations.add_child(station)
 		_station_nodes[agent_id] = station
 	agent_anchors = _station_positions.duplicate(true)
+	var investor_position := Vector3(0.0, 0.0, 6.45)
+	_station_positions["investor"] = investor_position
+	var investor_seat := _build_investor_seat(investor_position)
+	stations.add_child(investor_seat)
+	_station_nodes["investor"] = investor_seat
+
+func _build_investor_seat(station_position: Vector3) -> Node3D:
+	var seat := Node3D.new()
+	seat.name = "investor"
+	seat.position = station_position
+	seat.set_meta("agent_id", "investor")
+	var accent := Color("#e9c78d")
+	_cylinder(seat, "PodiumBase", Vector3(0, 0.12, 0), 1.28, 0.24, Color("#182a35"), 0.72)
+	_cylinder(seat, "PodiumAccent", Vector3(0, 0.27, 0), 1.12, 0.07, accent, 0.68)
+	_cylinder(seat, "PodiumTop", Vector3(0, 0.36, 0), 1.04, 0.10, Color("#263744"), 0.48)
+	_box(seat, "InvestorDesk", Vector3(0, 1.02, -0.58), Vector3(2.35, 0.12, 0.96), Color("#253746"), 0.72, 0.3, accent, 0.08)
+	for x in [-0.92, 0.92]:
+		for z in [-0.88, -0.28]:
+			_box(seat, "DeskLeg", Vector3(x, 0.58, z), Vector3(0.09, 0.84, 0.09), Color("#66717a"), 0.82, 0.24)
+	_box(seat, "InvestorMonitorFrame", Vector3(0, 1.78, -0.94), Vector3(1.72, 1.04, 0.12), Color("#172a36"), 0.6, 0.26, accent, 0.22)
+	_box(seat, "InvestorMonitorScreen", Vector3(0, 1.79, -0.865), Vector3(1.52, 0.84, 0.025), Color("#071722"), 0.18, 0.18, Color("#9dc5dc"), 0.16)
+	_box(seat, "ChairSeat", Vector3(0, 0.70, 0.92), Vector3(0.86, 0.16, 0.82), Color("#263b49"), 0.34, 0.58)
+	_box(seat, "ChairBack", Vector3(0, 1.20, 1.26), Vector3(0.86, 1.02, 0.16), Color("#1c2d3a"), 0.28, 0.5, accent, 0.08)
+	_cylinder(seat, "AccountMarker", Vector3(0, 0.64, 0.92), 0.36, 0.14, Color("#4d4030"), 0.38)
+	_box(seat, "AccountMarkerTop", Vector3(0, 0.73, 0.92), Vector3(0.58, 0.05, 0.38), accent.darkened(0.18), 0.42, 0.28, accent, 0.28)
+	var title := Label3D.new()
+	title.name = "InvestorSeatTitle"
+	title.text = "YOU  ·  THE 7TH INVESTOR"
+	title.font_size = 30
+	title.pixel_size = 0.007
+	title.position = Vector3(0, 2.75, 0.28)
+	title.modulate = accent.lightened(0.22)
+	seat.add_child(title)
+	var subtitle := Label3D.new()
+	subtitle.name = "InvestorSeatSubtitle"
+	subtitle.text = "FOLLOW  /  CHALLENGE  /  COMPARE"
+	subtitle.font_size = 14
+	subtitle.pixel_size = 0.006
+	subtitle.position = Vector3(0, 2.48, 0.28)
+	subtitle.modulate = Color("#d6e0e6")
+	seat.add_child(subtitle)
+	var glow := OmniLight3D.new()
+	glow.name = "FactionGlow"
+	glow.position = Vector3(0, 1.9, 0.2)
+	glow.light_color = accent
+	glow.light_energy = 160.0
+	glow.omni_range = 4.0
+	seat.add_child(glow)
+	var pick_area := Area3D.new()
+	pick_area.name = "PickArea"
+	pick_area.collision_layer = 2
+	pick_area.collision_mask = 0
+	pick_area.set_meta("agent_id", "investor")
+	var collision := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(3.1, 3.2, 3.0)
+	collision.shape = shape
+	collision.position = Vector3(0, 1.45, 0.1)
+	pick_area.add_child(collision)
+	seat.add_child(pick_area)
+	return seat
 
 func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	var faction := AgentCatalog.get_faction(agent_id)

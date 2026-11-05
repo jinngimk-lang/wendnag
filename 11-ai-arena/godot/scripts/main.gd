@@ -32,6 +32,11 @@ func _ready() -> void:
 	_hud.room_exit_requested.connect(_on_room_exit_requested)
 	_hud.day_scrubbed.connect(_on_day_scrubbed)
 	_hud.export_requested.connect(_on_export_requested)
+	_hud.run_setup_requested.connect(_on_run_setup_requested)
+	_hud.run_setup_confirmed.connect(_on_run_setup_confirmed)
+	_hud.investor_mode_requested.connect(_on_investor_mode_requested)
+	_hud.investor_target_weight_changed.connect(_on_investor_target_weight_changed)
+	_hud.investor_view_requested.connect(_on_investor_view_requested)
 
 	_playback_timer = Timer.new()
 	_playback_timer.name = "SimulationPlayback"
@@ -45,7 +50,7 @@ func _on_playback_action(action: String) -> void:
 	match action:
 		"play":
 			if _simulation.current_day >= _simulation.trading_days:
-				_simulation.configure(_simulation.starting_capital, _simulation.trading_days, _simulation.seed_value)
+				_reset_simulation()
 			_playback_timer.start()
 			_set_status("SIMULATION RUNNING  ·  PAPER MODE")
 		"pause":
@@ -66,10 +71,10 @@ func _on_playback_action(action: String) -> void:
 			_set_status("SIMULATION SETTLED  ·  %d DAYS" % _simulation.current_day)
 		"reset":
 			_playback_timer.stop()
-			_simulation.configure(_simulation.starting_capital, _simulation.trading_days, _simulation.seed_value)
+			_reset_simulation()
 			_world.return_to_arena()
 			current_view = "arena"
-			_hud.set_room_mode(false)
+			_hud.set_room_mode(false, selected_agent)
 			_set_status("RUN RESET  ·  SAME SEED / SAME MARKET PATH")
 
 func _advance_one_day() -> void:
@@ -80,6 +85,8 @@ func _advance_one_day() -> void:
 	var operations: Array[Dictionary] = _simulation.advance_day()
 	for operation in operations:
 		_world.animate_cashflow(str(operation.agent_id), float(operation.delta_equity))
+	if not _simulation.investor_last_operation.is_empty():
+		_world.animate_cashflow("investor", float(_simulation.investor_last_operation.get("delta_equity", 0.0)))
 	if _simulation.current_day >= _simulation.trading_days:
 		_playback_timer.stop()
 		_status = "SIMULATION SETTLED"
@@ -93,20 +100,86 @@ func _on_day_scrubbed(day: int) -> void:
 	_set_status("HISTORY REPLAY  ·  DAY %03d" % _simulation.replay_day)
 
 func _on_agent_selected(agent_id: String) -> void:
+	if current_view == "room":
+		_world.return_to_arena()
+	current_view = "arena"
 	selected_agent = agent_id
 	_world.select_agent(agent_id)
+	_hud.set_room_mode(false, agent_id)
 	_refresh()
 
 func _on_room_requested(agent_id: String) -> void:
 	selected_agent = agent_id
 	_world.enter_room(agent_id)
 	current_view = "room"
+	_hud.set_room_mode(true, agent_id)
 	_set_status("RESEARCH ROOM  ·  %s" % agent_id.to_upper())
 
 func _on_room_exit_requested() -> void:
 	_world.return_to_arena()
 	current_view = "arena"
-	_set_status("ARENA OVERVIEW  ·  SIX AGENTS")
+	_hud.set_room_mode(false, selected_agent)
+	_set_status("ARENA OVERVIEW  ·  SIX AGENTS + YOU")
+
+func _on_run_setup_requested() -> void:
+	_playback_timer.stop()
+	_hud.open_run_setup(_simulation)
+
+func _on_run_setup_confirmed(scenario_label: String, trading_days: int, starting_capital: float, risk_cap: float) -> void:
+	_playback_timer.stop()
+	var mode := _simulation.investor_mode
+	var followed := _simulation.followed_agent_id
+	var challenged := _simulation.challenged_agent_id
+	var personal_weight := _simulation.investor_target_weight
+	_simulation.configure(starting_capital, trading_days, _simulation.seed_value, risk_cap, scenario_label)
+	if mode == "follow":
+		_simulation.set_investor_mode("follow", followed)
+	else:
+		_simulation.set_investor_mode("challenge", challenged)
+		_simulation.set_investor_target_weight(personal_weight)
+	_set_status("NEW RUN CONFIGURED  ·  %s  ·  %d DAYS" % [scenario_label, trading_days])
+
+func _on_investor_mode_requested(mode: String, agent_id: String) -> void:
+	_playback_timer.stop()
+	_simulation.set_replay_day(_simulation.current_day)
+	if not _simulation.set_investor_mode(mode, agent_id):
+		_set_status("INVESTOR MODE CHANGE REJECTED")
+		return
+	if current_view == "room":
+		_world.return_to_arena()
+	selected_agent = "investor"
+	_world.select_agent("investor")
+	current_view = "arena"
+	_hud.set_room_mode(false, "investor")
+	if mode == "follow":
+		_set_status("FOLLOWING  ·  %s" % agent_id.to_upper())
+	else:
+		_set_status("CHALLENGE MODE  ·  SET YOUR OWN RISK WEIGHT")
+
+func _on_investor_target_weight_changed(weight: float) -> void:
+	_simulation.set_investor_target_weight(weight)
+	_set_status("PERSONAL TARGET WEIGHT  ·  %.0f%%" % (_simulation.investor_target_weight * 100.0))
+
+func _on_investor_view_requested() -> void:
+	if current_view == "room":
+		_world.return_to_arena()
+	selected_agent = "investor"
+	_world.select_agent("investor")
+	current_view = "arena"
+	_hud.set_room_mode(false, "investor")
+	_refresh()
+
+func _reset_simulation() -> void:
+	var mode := _simulation.investor_mode
+	var followed := _simulation.followed_agent_id
+	var challenged := _simulation.challenged_agent_id
+	var personal_weight := _simulation.investor_target_weight
+	_simulation.configure(_simulation.starting_capital, _simulation.trading_days, _simulation.seed_value, _simulation.risk_cap, _simulation.scenario_label)
+	if mode == "follow":
+		_simulation.set_investor_mode("follow", followed)
+	else:
+		_simulation.set_investor_mode("challenge", challenged)
+		_simulation.set_investor_target_weight(personal_weight)
 
 func _on_export_requested() -> void:
 	var payload: Dictionary = _simulation.export_payload()

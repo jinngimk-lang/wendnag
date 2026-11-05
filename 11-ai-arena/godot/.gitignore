@@ -5,3 +5,4 @@ __pycache__/
 .pytest_cache/
 *.blend1
 *.blend2
+/visual-qa/

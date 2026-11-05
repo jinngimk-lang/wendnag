@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 3 — Native Godot 4.7.1 3D Finance Arena client**, delivered additively alongside the existing HTML Finance Arena V0.5.0 and earlier research prototypes. The native client has six independent synthetic paper accounts, six Agent stations and research rooms, a shared synthetic market, replay and JSON export. It remains paper-mode only.
+**Phase 3 — Native Godot 4.7.1 3D Finance Arena client**, delivered additively alongside the existing HTML Finance Arena V0.5.0 and earlier research prototypes. The native client has six independent AI paper accounts plus a separate seventh-investor personal account, six Agent stations and research rooms, a dedicated user seat, a shared synthetic market, replay and JSON export. It remains paper-mode only.
 
 ## Repository state
 
@@ -24,7 +24,7 @@
 - Companion HTML regression run [#41953215990](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215990) passed backend contracts and browser regression, including responsive QA at 1440/1024/768/390/320px with no overflow or browser errors. Artifacts: `13381931491` and `13381896589`.
 - PR #28 changes no HTML/CSS/JS source files; the existing HTML V0.5.0 remains separate and its draft PR #26 is unchanged.
 - All finance data, events, prices and fills remain synthetic. No broker, live feed, external LLM workers or real orders are connected.
-- Remaining work: user-configurable run setup, seventh-investor follow/challenge interactions and local Godot editor visual QA.
+- Seventh-investor follow/challenge interactions and the user-configurable run-setup modal have now been implemented on the review branch. The next CI run adds Godot runtime checks plus Xvfb desktop/mobile screenshot capture; visual QA remains pending until those screenshots are inspected.
 
 
 ## New delivery — Capital Theater V0.2 (2026-11-03)
@@ -193,3 +193,14 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 - Removed the accidentally committed 11.2 MB Blender `.blend1` backup; added project ignore rules, deterministic Blender save-version settings, verifier rejection, CI cleanup and package exclusions.
 - The latest CI run skipped the Blender rebuild because the GLBs were already present. A forced rebuild is still required to verify the new save-version suppression in Blender itself.
 - Work remains on `feat/ai-arena-godot-3d-experience-v01`, stacked on `feat/ai-arena-independent-agent-workspace-v04`; draft PR creation follows the forced rebuild and whole-branch review.
+
+
+## 2026-11-05 — Seventh investor and run setup implementation
+
+- Added a separate personal paper portfolio for the seventh investor without changing the six-Agent roster.
+- Follow mode synchronizes the selected Agent's daily target exposure; the personal account retains its own cash, fills and ledger.
+- Challenge mode records the selected rival and uses the user's own target stock exposure under the same capital, fee, slippage and risk-cap assumptions.
+- Added a dedicated gold-accented 3D investor desk, a seven-seat risk-adjusted leaderboard, personal account/ledger views and personal P&L animation.
+- Added a run-setup modal for display-only scenario label, 20–252 trading days, starting capital and shared 10–90% risk cap.
+- Local isolated Python 3.13.5 virtual environment: 17 tests passed; generated Blender asset verifier passed.
+- The next PR CI run is responsible for Godot 4.7.1 parse/runtime checks and Xvfb desktop/mobile screenshot capture. Keep PR #28 draft until CI is green and the screenshot artifact has been visually inspected.
