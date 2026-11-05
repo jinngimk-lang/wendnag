@@ -1,16 +1,31 @@
-# STATUS — 2026-11-03
+# STATUS — 2026-11-05
 
 ## Current phase
 
-**Phase 2 — Finance Research Lab V0.3.2 + backend evidence contract V0.1.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.2 is still a local synthetic front-end demonstration; the new standard-library backend core validates issuer identity, point-in-time evidence snapshots, typed faction outputs and hash-chained events, but does not connect live data providers or run production agents.
+**Phase 3 — Native Godot 4.7.1 3D Finance Arena client**, delivered additively alongside the existing HTML Finance Arena V0.5.0 and earlier research prototypes. The native client has six independent AI paper accounts plus a separate seventh-investor personal account, six Agent stations and research rooms, a dedicated user seat, a shared synthetic market, replay and JSON export. It remains paper-mode only.
 
 ## Repository state
 
 - Parent repository: `jinngimk-lang/wendnag`
-- Work branch: `feat/ai-arena-concept-research`
-- Existing draft PR: [#26](https://github.com/jinngimk-lang/wendnag/pull/26)
+- Native Godot feature branch: `feat/ai-arena-godot-3d-experience-v01`
+- Current review branch: `fix/ai-arena-godot-hud-runtime-errors-20261105`
+- Native-client draft PR: [#28](https://github.com/jinngimk-lang/wendnag/pull/28), targeting `feat/ai-arena-independent-agent-workspace-v04`
+- Existing HTML V0.5.0 draft PR: [#26](https://github.com/jinngimk-lang/wendnag/pull/26), still open and unmerged; its head branch and contents were not changed by the Godot work.
 - Dedicated folder: `11-ai-arena/`
 - BP source and investor-deck workstreams remain untouched.
+
+## Latest delivery — Native Godot 3D verification (2026-11-05)
+
+- Forced Blender 4.0.2 rebuild run [#41950047674](https://github.com/jinngimk-lang/wendnag/actions/runs/41950047674) passed asset generation, Godot import/contracts, asset verification, packaging and upload. The run tested `392e616d`, then committed the generated Blender source and GLBs as `a4387d34`.
+- Follow-up HUD fix and runtime-error guard passed PR Actions run [#41952957967](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967) at commit `1b6f7f98`: 14/14 Python tests, Godot import, simulation, 3D world, responsive UI, main-scene smoke test, generated-asset verification and package upload. No `SCRIPT ERROR:` or `Parse Error:` was logged.
+- Latest package artifact: [13382140939](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967). Download inspection confirmed six Agent GLBs, six room GLBs, six room atlases, banknote GLB and the editable 11.23 MB Blender source; no local caches, Python bytecode, virtual environments or Blender backup files were present.
+- The Godot UI's icon sizing now uses the Button theme constant. UI contracts assert desktop/mobile sizing, and the shared CI runner fails if Godot logs script or parse errors.
+- Documentation-sync Godot run [#41953215975](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215975) passed; artifact `13381398583` was downloaded and inspected.
+- Companion HTML regression run [#41953215990](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215990) passed backend contracts and browser regression, including responsive QA at 1440/1024/768/390/320px with no overflow or browser errors. Artifacts: `13381931491` and `13381896589`.
+- PR #28 changes no HTML/CSS/JS source files; the existing HTML V0.5.0 remains separate and its draft PR #26 is unchanged.
+- All finance data, events, prices and fills remain synthetic. No broker, live feed, external LLM workers or real orders are connected.
+- Seventh-investor follow/challenge interactions and the user-configurable run-setup modal have now been implemented on the review branch. The next CI run adds Godot runtime checks plus Xvfb desktop/mobile screenshot capture; visual QA remains pending until those screenshots are inspected.
+
 
 ## New delivery — Capital Theater V0.2 (2026-11-03)
 
@@ -154,3 +169,42 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 
 
 - Draft PR #26 now carries the V0.5.0 faction-first implementation and CI evidence; it remains open and unmerged. Work branch: feat/ai-arena-independent-agent-workspace-v04.
+
+
+## 2026-11-04 — Native Godot 4.7.1 3D client
+
+- Added an additive native Godot client at `godot/`; the existing HTML V0.5.0 Finance Arena remains unchanged.
+- Six independent paper accounts share one synthetic market path and common fee/slippage assumptions.
+- Six Agent podiums and six lazily loaded faction research rooms use committed Blender source/GLB assets plus the supplied portrait and room reference atlases.
+- The arena center is a shared-market information display, not a central capital vault. Signed-P&L notes remain local to the same Agent account marker; there is no shared cash pool or inter-Agent transfer.
+- Godot 4.7.1 CI run #41810429080 passed project import, simulation, 3D world, responsive UI, main-scene smoke, generated-asset integrity and packaging.
+- Local isolated Python `.venv` passed 8/8 asset/runtime contract tests and `verify_generated_assets.py --require-generated`.
+- CI artifact: `ai-investment-arena-godot`, artifact ID `13311522692` from run #41810429080.
+- Current feature branch: `feat/ai-arena-godot-3d-experience-v01`; intended stacked PR base: `feat/ai-arena-independent-agent-workspace-v04`.
+- Scope remains synthetic paper mode only. No broker, live market feed, external LLM worker or real order execution is connected. No new paid GPT image-generation call is claimed.
+- Follow-on gaps: a run-setup modal (scenario label, trading days, capital and risk cap), seventh-investor follow/challenge interactions, and local visual QA in the Godot editor.
+
+
+## 2026-11-05 — Godot client verification and artifact hygiene
+
+- Latest Godot 4.7.1 CI run #41949187541 passed at commit `4f2e7e286704ac758b602021b561a25982b557d4`: Python asset contract, project import, simulation, 3D world, responsive UI, main-scene smoke, generated-asset verification, packaging and upload.
+- A fresh isolated Python 3.13.5 `.venv` run passed 11/11 unit tests and `verify_generated_assets.py --require-generated`.
+- Downloaded artifact #13379977035 was inspected: no `.venv`, `.godot`, `__pycache__`, `.pyc`, `.blend1` or `.blend2` files are packaged.
+- Removed the accidentally committed 11.2 MB Blender `.blend1` backup; added project ignore rules, deterministic Blender save-version settings, verifier rejection, CI cleanup and package exclusions.
+- The latest CI run skipped the Blender rebuild because the GLBs were already present. A forced rebuild is still required to verify the new save-version suppression in Blender itself.
+- Work remains on `feat/ai-arena-godot-3d-experience-v01`, stacked on `feat/ai-arena-independent-agent-workspace-v04`; draft PR creation follows the forced rebuild and whole-branch review.
+
+
+## 2026-11-05 — Seventh investor and run setup implementation
+
+- Added a separate personal paper portfolio for the seventh investor without changing the six-Agent roster.
+- Follow mode synchronizes the selected Agent's daily target exposure; the personal account retains its own cash, fills and ledger.
+- Challenge mode records the selected rival and uses the user's own target stock exposure under the same capital, fee, slippage and risk-cap assumptions.
+- Added a dedicated gold-accented 3D investor desk, a seven-seat risk-adjusted leaderboard, personal account/ledger views and personal P&L animation.
+- Added a run-setup modal for display-only scenario label, 20–252 trading days, starting capital and shared 10–90% risk cap.
+- Local isolated Python 3.13.5 virtual environment: 17 tests passed; generated Blender asset verifier passed.
+- PR Actions run #41995481978 passed the Godot 4.7.1 runtime contracts and Xvfb screenshot capture at commit 545e647c802c3440b5b4bcd2d1fd30bf4b9adebb. The 390×844 mobile screenshot was reviewed after the responsive layout correction; the mobile detail sheet is 240px high and playback controls are horizontally scrollable.
+- Isolated Python 3.13.5 .venv: 20 tests passed, 1 workflow-only test skipped; generated Blender asset verification and package hygiene passed. The downloadable Godot package contains 90 entries and no cache/backup residue.
+- A new TDD check first failed because the 520px run-setup window exceeded 390px and 320px viewports; commit 14f0754 sizes the dialog to the physical viewport. Godot UI contract and all companion HTML/backend checks then passed in run #41996618038 / #41996618004.
+- Final screenshot artifact #13400497028 and package artifact #13400188144 were downloaded and reviewed. Mobile UI shows the 240px detail sheet, separated header/Agent rail, scrollable playback controls and no viewport overflow.
+- PR #28 remains draft/open and stacked on the existing HTML feature branch. Next gate is final reviewer challenge and resolution of the two identically-pointed base-branch names; do not merge main or alter the existing HTML V0.5.0.
