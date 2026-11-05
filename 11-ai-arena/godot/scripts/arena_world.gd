@@ -342,8 +342,8 @@ func apply_responsive_layout(width: float) -> void:
 		_camera.look_at(Vector3(0, 1.65, -0.3), Vector3.UP)
 		return
 	if width < 680.0:
-		_camera.position = Vector3(0, 15.2, 25.5)
-		_camera.fov = 62.0
+		_camera.position = Vector3(0, 13.0, 22.0)
+		_camera.fov = 58.0
 	elif width < 1120.0:
 		_camera.position = Vector3(0, 13.2, 21.0)
 		_camera.fov = 56.0

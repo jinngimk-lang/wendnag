@@ -46,6 +46,11 @@ var _mobile_room_button: Button
 var _tab_buttons: Dictionary = {}
 var _market_box: VBoxContainer
 var _status_box: VBoxContainer
+var _brand_title: Label
+var _brand_subtitle: Label
+var _header_actions: VBoxContainer
+var _header_portfolio_button: Button
+var _header_setup_button: Button
 var _investor_button: Button
 var _mobile_investor_button: Button
 var _follow_button: Button
@@ -122,26 +127,46 @@ func apply_responsive_layout(width: float) -> String:
 			_detail_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 			_detail_panel.offset_left = 12.0
 			_detail_panel.offset_right = -12.0
-			_detail_panel.offset_top = -470.0
+			_detail_panel.offset_top = -390.0
 			_detail_panel.offset_bottom = -150.0
-			_detail_panel.custom_minimum_size = Vector2(0, 320)
+			_detail_panel.custom_minimum_size = Vector2.ZERO
 		else:
 			_detail_panel.set_anchors_preset(Control.PRESET_RIGHT_WIDE)
 			_detail_panel.offset_top = 108.0 if mode == "desktop" else 102.0
 			_detail_panel.offset_bottom = -128.0
+	if _portrait != null:
+		_portrait.visible = mode != "mobile" and _selected_agent != "investor"
+	if _role_label != null:
+		_role_label.visible = mode != "mobile" and _selected_agent != "investor"
+	if _name_label != null:
+		_name_label.add_theme_font_size_override("font_size", 18 if mode == "mobile" else 23)
+	if _detail_body != null:
+		_detail_body.custom_minimum_size = Vector2(0, 110 if mode == "mobile" else 220)
 	if _mobile_agents != null:
 		_mobile_agents.visible = mode == "mobile" or compact_tablet
 	if _bottom_dock != null:
 		_bottom_dock.offset_top = -142.0 if mode == "mobile" else -108.0
 	if _header != null:
-		_header.offset_bottom = 82.0 if mode == "mobile" else 76.0
+		_header.offset_bottom = 76.0
+	if _brand_title != null:
+		_brand_title.add_theme_font_size_override("font_size", 15 if mode == "mobile" else 19)
+	if _brand_subtitle != null:
+		_brand_subtitle.visible = mode != "mobile"
+	if _header_actions != null:
+		_header_actions.custom_minimum_size = Vector2(88 if mode == "mobile" else 112, 0)
+	if _header_portfolio_button != null:
+		_header_portfolio_button.custom_minimum_size = Vector2(82 if mode == "mobile" else 104, 24 if mode == "mobile" else 28)
+		_header_portfolio_button.add_theme_font_size_override("font_size", 10 if mode == "mobile" else 14)
+	if _header_setup_button != null:
+		_header_setup_button.custom_minimum_size = Vector2(82 if mode == "mobile" else 104, 24 if mode == "mobile" else 28)
+		_header_setup_button.add_theme_font_size_override("font_size", 10 if mode == "mobile" else 14)
 	if _market_box != null:
 		_market_box.visible = mode != "mobile"
 	if _status_box != null:
 		_status_box.visible = mode != "mobile"
 	if _mobile_agents != null:
-		_mobile_agents.offset_top = 94.0
-		_mobile_agents.offset_bottom = 168.0
+		_mobile_agents.offset_top = 108.0
+		_mobile_agents.offset_bottom = 180.0
 	if _agent_rail != null and mode == "tablet":
 		_agent_rail.offset_top = 102.0
 	return mode
@@ -180,8 +205,12 @@ func _build_header() -> void:
 	var brand := VBoxContainer.new()
 	brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(brand)
-	brand.add_child(_label("AI  /  INVESTMENT ARENA", 19, Color("#f0d6a8"), true))
-	brand.add_child(_label("SIX AI MANAGERS  ·  YOUR SEVENTH SEAT  ·  ONE MARKET", 10, Color("#8fa2b2")))
+	_brand_title = _label("AI  /  INVESTMENT ARENA", 19, Color("#f0d6a8"), true)
+	_brand_title.name = "BrandTitle"
+	brand.add_child(_brand_title)
+	_brand_subtitle = _label("SIX AI MANAGERS  ·  YOUR SEVENTH SEAT  ·  ONE MARKET", 10, Color("#8fa2b2"))
+	_brand_subtitle.name = "BrandSubtitle"
+	brand.add_child(_brand_subtitle)
 	_market_box = VBoxContainer.new()
 	_market_box.custom_minimum_size = Vector2(220, 0)
 	_market_box.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -196,22 +225,22 @@ func _build_header() -> void:
 	_status_label = _label(_status, 12, Color("#8de0b2"), true)
 	_status_box.add_child(_status_label)
 	row.add_child(_status_box)
-	var actions := VBoxContainer.new()
-	actions.custom_minimum_size = Vector2(112, 0)
-	actions.alignment = BoxContainer.ALIGNMENT_CENTER
-	var investor_button := Button.new()
-	investor_button.name = "HeaderInvestorButton"
-	investor_button.text = "我的组合"
-	investor_button.custom_minimum_size = Vector2(104, 28)
-	investor_button.pressed.connect(func(): investor_view_requested.emit())
-	actions.add_child(investor_button)
-	var setup_button := Button.new()
-	setup_button.name = "RunSetupButton"
-	setup_button.text = "配置实验"
-	setup_button.custom_minimum_size = Vector2(104, 28)
-	setup_button.pressed.connect(func(): run_setup_requested.emit())
-	actions.add_child(setup_button)
-	row.add_child(actions)
+	_header_actions = VBoxContainer.new()
+	_header_actions.custom_minimum_size = Vector2(112, 0)
+	_header_actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	_header_portfolio_button = Button.new()
+	_header_portfolio_button.name = "HeaderInvestorButton"
+	_header_portfolio_button.text = "我的组合"
+	_header_portfolio_button.custom_minimum_size = Vector2(104, 28)
+	_header_portfolio_button.pressed.connect(func(): investor_view_requested.emit())
+	_header_actions.add_child(_header_portfolio_button)
+	_header_setup_button = Button.new()
+	_header_setup_button.name = "RunSetupButton"
+	_header_setup_button.text = "配置实验"
+	_header_setup_button.custom_minimum_size = Vector2(104, 28)
+	_header_setup_button.pressed.connect(func(): run_setup_requested.emit())
+	_header_actions.add_child(_header_setup_button)
+	row.add_child(_header_actions)
 
 func _build_agent_rail() -> void:
 	_agent_rail = _panel("AgentRail")
@@ -403,9 +432,18 @@ func _build_bottom_dock() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 5)
 	_bottom_dock.add_child(column)
+	var controls_scroll := ScrollContainer.new()
+	controls_scroll.name = "PlaybackControlsScroll"
+	controls_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	controls_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	controls_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	controls_scroll.custom_minimum_size = Vector2(0, 34)
+	column.add_child(controls_scroll)
 	var controls := HBoxContainer.new()
+	controls.name = "PlaybackControlsRow"
+	controls.custom_minimum_size = Vector2(650, 0)
 	controls.add_theme_constant_override("separation", 6)
-	column.add_child(controls)
+	controls_scroll.add_child(controls)
 	_action_button(controls, "▶ 运行", "play")
 	_action_button(controls, "Ⅱ 暂停", "pause")
 	_action_button(controls, "下一日", "next")
