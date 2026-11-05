@@ -51,8 +51,9 @@ jobs:
         working-directory: 11-ai-arena/godot
         run: |
           PYTHONPATH=/usr/lib/python3/dist-packages blender --background --factory-startup --python-exit-code 1 --python blender/build_ai_arena_assets.py -- --output assets
-          find assets/source -type f \\( -name '*.blend1' -o -name '*.blend2' \\) -delete
-          find assets/source assets/generated -maxdepth 3 -type f -printf '%p %s bytes\\n'
+          find assets/source -type f -name '*.blend1' -delete
+          find assets/source -type f -name '*.blend2' -delete
+          find assets/source assets/generated -maxdepth 3 -type f -printf '%p %s bytes\n'
 
       - name: Install Godot 4.7.1 stable
         run: |

@@ -38,5 +38,14 @@ class RuntimeContractTests(unittest.TestCase):
         for pattern in (".godot/", ".venv/", "__pycache__/", "*.py[cod]", "*.blend1", "*.blend2"):
             self.assertIn(pattern, ignore)
 
+    def test_ci_blender_cleanup_uses_shell_safe_find_commands(self):
+        candidates = [ROOT.parents[1] / ".github" / "workflows" / "ai-arena-godot.yml", ROOT.parent / ".github" / "workflows" / "ai-arena-godot.yml"]
+        workflow = next((path for path in candidates if path.is_file()), None)
+        if workflow is None:
+            self.skipTest("workflow file is not included in the downloadable Godot project artifact")
+        source = workflow.read_text(encoding="utf-8")
+        self.assertIn("find assets/source -type f -name '*.blend1' -delete", source)
+        self.assertIn("find assets/source -type f -name '*.blend2' -delete", source)
+
 if __name__ == "__main__":
     unittest.main()
