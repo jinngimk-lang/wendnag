@@ -40,6 +40,8 @@ python tools/verify_generated_assets.py --require-generated
 
 The checks use the Python standard library; Blender 4.x is required only when regenerating the source project and GLB exports. Local virtual environments, Godot import caches, Python bytecode and Blender versioned backup files are excluded from source control and CI packages.
 
+To force a fresh Blender source/GLB rebuild in GitHub Actions, include `[rebuild-ai-arena-assets]` in the commit message. This rebuild is still followed by the full Godot import and test suite.
+
 ## Controls
 
 - Select any Agent card or click a 3D podium.
