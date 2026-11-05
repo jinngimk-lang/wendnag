@@ -557,6 +557,11 @@ func open_run_setup(simulator) -> void:
 			if is_equal_approx(float(_capital_option.get_item_metadata(index)), float(simulator.starting_capital)):
 				_capital_option.select(index)
 				break
+	var viewport_size := get_viewport().get_visible_rect().size
+	var dialog_width := mini(520, maxi(280, int(viewport_size.x) - 24))
+	var dialog_height := mini(500, maxi(360, int(viewport_size.y) - 24))
+	_setup_dialog.min_size = Vector2i(mini(460, dialog_width), mini(460, dialog_height))
+	_setup_dialog.size = Vector2i(dialog_width, dialog_height)
 	_setup_dialog.popup_centered()
 
 func _on_setup_apply_pressed() -> void:
