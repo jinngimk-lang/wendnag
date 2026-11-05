@@ -101,7 +101,7 @@ jobs:
           test -s visual-qa/investor-mobile.png
 
       - name: Upload visual QA screenshots
-        if: always()
+        if: always() && hashFiles('11-ai-arena/godot/visual-qa/*.png') != ''
         uses: actions/upload-artifact@v4
         with:
           name: ai-investment-arena-visual-qa

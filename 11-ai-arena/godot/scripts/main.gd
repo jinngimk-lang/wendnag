@@ -127,10 +127,10 @@ func _on_run_setup_requested() -> void:
 
 func _on_run_setup_confirmed(scenario_label: String, trading_days: int, starting_capital: float, risk_cap: float) -> void:
 	_playback_timer.stop()
-	var mode := _simulation.investor_mode
-	var followed := _simulation.followed_agent_id
-	var challenged := _simulation.challenged_agent_id
-	var personal_weight := _simulation.investor_target_weight
+	var mode: String = str(_simulation.investor_mode)
+	var followed: String = str(_simulation.followed_agent_id)
+	var challenged: String = str(_simulation.challenged_agent_id)
+	var personal_weight: float = float(_simulation.investor_target_weight)
 	_simulation.configure(starting_capital, trading_days, _simulation.seed_value, risk_cap, scenario_label)
 	if mode == "follow":
 		_simulation.set_investor_mode("follow", followed)
