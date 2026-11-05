@@ -203,4 +203,6 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 - Added a dedicated gold-accented 3D investor desk, a seven-seat risk-adjusted leaderboard, personal account/ledger views and personal P&L animation.
 - Added a run-setup modal for display-only scenario label, 20–252 trading days, starting capital and shared 10–90% risk cap.
 - Local isolated Python 3.13.5 virtual environment: 17 tests passed; generated Blender asset verifier passed.
-- The next PR CI run is responsible for Godot 4.7.1 parse/runtime checks and Xvfb desktop/mobile screenshot capture. Keep PR #28 draft until CI is green and the screenshot artifact has been visually inspected.
+- PR Actions run #41995481978 passed the Godot 4.7.1 runtime contracts and Xvfb screenshot capture at commit 545e647c802c3440b5b4bcd2d1fd30bf4b9adebb. The 390×844 mobile screenshot was reviewed after the responsive layout correction; the mobile detail sheet is 240px high and playback controls are horizontally scrollable.
+- Isolated Python 3.13.5 .venv: 20 tests passed, 1 workflow-only test skipped; generated Blender asset verification and package hygiene passed. The downloadable Godot package contains 90 entries and no cache/backup residue.
+- PR #28 remains draft/open and stacked on the existing HTML feature branch. Next gate is independent code review/challenge and final stacked-branch integration; do not merge main or alter the existing HTML V0.5.0.

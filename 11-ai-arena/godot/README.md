@@ -28,6 +28,7 @@ The user is a separate personal portfolio, not a seventh AI faction and not an e
 2. Prepare the Chinese font before opening the project. On Ubuntu/CI, install \`fonts-noto-cjk\` and \`python3-fonttools\`, then run \`python3 tools/prepare_cjk_font.py\`. On other systems, supply a Noto Sans CJK Simplified Chinese TTC source with \`--source-font\` and its OFL notice with \`--license-source\`; pass \`--font-number -1\` for a standalone OTF.
 3. Open \`project.godot\` with Godot Project Manager.
 4. Press **F5** to run the project.
+5. On phones, swipe the Agent strip and playback controls horizontally; the compact portfolio panel scrolls vertically.
 4. To rebuild the 3D source assets, install Blender 4.x and run:
 
    \`\`\`bash
