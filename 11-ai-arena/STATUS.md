@@ -20,6 +20,9 @@
 - Follow-up HUD fix and runtime-error guard passed PR Actions run [#41952957967](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967) at commit `1b6f7f98`: 14/14 Python tests, Godot import, simulation, 3D world, responsive UI, main-scene smoke test, generated-asset verification and package upload. No `SCRIPT ERROR:` or `Parse Error:` was logged.
 - Latest package artifact: [13382140939](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967). Download inspection confirmed six Agent GLBs, six room GLBs, six room atlases, banknote GLB and the editable 11.23 MB Blender source; no local caches, Python bytecode, virtual environments or Blender backup files were present.
 - The Godot UI's icon sizing now uses the Button theme constant. UI contracts assert desktop/mobile sizing, and the shared CI runner fails if Godot logs script or parse errors.
+- Documentation-sync Godot run [#41953215975](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215975) passed; artifact `13381398583` was downloaded and inspected.
+- Companion HTML regression run [#41953215990](https://github.com/jinngimk-lang/wendnag/actions/runs/41953215990) passed backend contracts and browser regression, including responsive QA at 1440/1024/768/390/320px with no overflow or browser errors. Artifacts: `13381931491` and `13381896589`.
+- PR #28 changes no HTML/CSS/JS source files; the existing HTML V0.5.0 remains separate and its draft PR #26 is unchanged.
 - All finance data, events, prices and fills remain synthetic. No broker, live feed, external LLM workers or real orders are connected.
 - Remaining work: user-configurable run setup, seventh-investor follow/challenge interactions and local Godot editor visual QA.
 
