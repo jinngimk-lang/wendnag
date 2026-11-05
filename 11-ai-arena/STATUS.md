@@ -1,16 +1,28 @@
-# STATUS — 2026-11-03
+# STATUS — 2026-11-05
 
 ## Current phase
 
-**Phase 2 — Finance Research Lab V0.3.2 + backend evidence contract V0.1.** V0.1 control room and V0.2 Capital Theater remain available. V0.3.2 is still a local synthetic front-end demonstration; the new standard-library backend core validates issuer identity, point-in-time evidence snapshots, typed faction outputs and hash-chained events, but does not connect live data providers or run production agents.
+**Phase 3 — Native Godot 4.7.1 3D Finance Arena client**, delivered additively alongside the existing HTML Finance Arena V0.5.0 and earlier research prototypes. The native client has six independent synthetic paper accounts, six Agent stations and research rooms, a shared synthetic market, replay and JSON export. It remains paper-mode only.
 
 ## Repository state
 
 - Parent repository: `jinngimk-lang/wendnag`
-- Work branch: `feat/ai-arena-concept-research`
-- Existing draft PR: [#26](https://github.com/jinngimk-lang/wendnag/pull/26)
+- Native Godot feature branch: `feat/ai-arena-godot-3d-experience-v01`
+- Current review branch: `fix/ai-arena-godot-hud-runtime-errors-20261105`
+- Native-client draft PR: [#28](https://github.com/jinngimk-lang/wendnag/pull/28), targeting `feat/ai-arena-independent-agent-workspace-v04`
+- Existing HTML V0.5.0 draft PR: [#26](https://github.com/jinngimk-lang/wendnag/pull/26), still open and unmerged; its head branch and contents were not changed by the Godot work.
 - Dedicated folder: `11-ai-arena/`
 - BP source and investor-deck workstreams remain untouched.
+
+## Latest delivery — Native Godot 3D verification (2026-11-05)
+
+- Forced Blender 4.0.2 rebuild run [#41950047674](https://github.com/jinngimk-lang/wendnag/actions/runs/41950047674) passed asset generation, Godot import/contracts, asset verification, packaging and upload. The run tested `392e616d`, then committed the generated Blender source and GLBs as `a4387d34`.
+- Follow-up HUD fix and runtime-error guard passed PR Actions run [#41952957967](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967) at commit `1b6f7f98`: 14/14 Python tests, Godot import, simulation, 3D world, responsive UI, main-scene smoke test, generated-asset verification and package upload. No `SCRIPT ERROR:` or `Parse Error:` was logged.
+- Latest package artifact: [13382140939](https://github.com/jinngimk-lang/wendnag/actions/runs/41952957967). Download inspection confirmed six Agent GLBs, six room GLBs, six room atlases, banknote GLB and the editable 11.23 MB Blender source; no local caches, Python bytecode, virtual environments or Blender backup files were present.
+- The Godot UI's icon sizing now uses the Button theme constant. UI contracts assert desktop/mobile sizing, and the shared CI runner fails if Godot logs script or parse errors.
+- All finance data, events, prices and fills remain synthetic. No broker, live feed, external LLM workers or real orders are connected.
+- Remaining work: user-configurable run setup, seventh-investor follow/challenge interactions and local Godot editor visual QA.
+
 
 ## New delivery — Capital Theater V0.2 (2026-11-03)
 
