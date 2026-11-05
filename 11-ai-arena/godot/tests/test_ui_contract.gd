@@ -89,6 +89,18 @@ func _run() -> void:
 	_check(bottom_dock != null and bottom_dock.get_global_rect().end.y <= 844.0, "mobile playback dock must stay inside the visible viewport")
 	if detail_panel != null and bottom_dock != null:
 		_check(detail_panel.get_global_rect().end.y <= bottom_dock.get_global_rect().position.y, "mobile detail sheet must not overlap playback controls")
+	app._on_run_setup_requested()
+	await process_frame
+	_check(setup_dialog.size.x <= 366.0, "run setup modal must fit within a 390px phone viewport")
+	_check(setup_dialog.size.y <= 820.0, "run setup modal must fit within a 844px phone viewport")
+	setup_dialog.hide()
+	root.size = Vector2i(320, 560)
+	app.apply_responsive_layout(320.0)
+	app._on_run_setup_requested()
+	await process_frame
+	_check(setup_dialog.size.x <= 296.0, "run setup modal must fit within a 320px minimum phone viewport")
+	_check(setup_dialog.size.y <= 536.0, "run setup modal must fit within a 560px minimum phone viewport")
+	setup_dialog.hide()
 	app.queue_free()
 	if _failed:
 		quit(1)
