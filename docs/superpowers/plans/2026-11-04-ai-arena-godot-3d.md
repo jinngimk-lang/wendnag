@@ -169,3 +169,14 @@
 1. Add a run-setup modal for a clearly synthetic scenario label, trading-day window, starting capital and risk cap.
 2. Add the user's seventh-investor interaction: follow an Agent or challenge its strategy, preserving six independent paper accounts.
 3. Perform visual QA in the Godot editor for camera framing, room/portrait visibility, mobile layout and cash-note choreography.
+
+
+## Current checkpoint — 2026-11-05 final mobile closure
+
+- The native client now has six independent AI paper accounts plus a separate seventh-investor personal portfolio, with follow/challenge modes, a shared synthetic market, common capital/fees/slippage/risk cap, seven-seat risk-adjusted ranking, personal ledger and export.
+- Run setup supports a display-only scenario label, 20–252 trading days, starting capital and a shared 10–90% risk cap. The dialog now sizes itself to the physical viewport and is runtime-tested at 390×844 and 320×560.
+- Mobile HUD regression was reproduced with a red UI contract, then fixed: 240px bottom sheet, hidden portrait/role block, compact header and Agent rail below it, horizontally scrollable playback controls, physical viewport coordinates and a closer portrait camera.
+- Latest Godot Actions run #41996618038 passed at commit `14f07545025cd129ff1fbcb6f0e7aac1f00fac83`; companion validation run #41996618004 passed. Desktop and 390×844 mobile screenshots were inspected.
+- Isolated Python 3.13.5 `.venv`: 20 tests passed, 1 workflow-only test skipped; generated Blender asset verification, bytecode compilation and package hygiene passed. Final package artifact #13400188144 has 90 entries and no caches/backups.
+- The six-Agent roster remains unchanged; no live market data, broker, external LLM worker or real orders are connected. The original HTML Finance Arena V0.5.0 remains unchanged.
+- Remaining gate: independent code-review challenge and resolve stacked PR base branch identity before integration. PR #28 remains draft; parent PR #26 and main remain untouched.

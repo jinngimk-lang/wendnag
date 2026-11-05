@@ -53,8 +53,9 @@ The user should feel that six independent investment managers are physically pre
 ### Responsive behavior
 - Desktop (>= 1120 px): left navigation, 3D stage, six cards and right Agent inspector.
 - Tablet (680–1119 px): compact navigation and overlay Agent inspector.
-- Mobile (< 680 px): compact rail, two-column faction cards, hidden inspector until requested and vertically stacked content.
-- Reduced-motion mode disables bill travel and non-essential camera movement while retaining accounting feedback.
+- Mobile (< 680 px): compact horizontally scrollable Agent rail, central 3D stage, compact 240px bottom sheet for the selected Agent or personal portfolio, vertically scrollable detail content and horizontally scrollable playback controls.
+- The run-setup dialog clamps its dimensions to the available viewport with 12px side/bottom safety margins; it is verified at 390×844 and 320×560.
+- Reduced-motion mode remains a follow-on accessibility enhancement; the current build does not expose a reduced-motion setting.
 
 ## Visual language
 
@@ -91,5 +92,5 @@ The connected image tool in this runtime exposes GPT 2.5 through a Premium-gated
 - Each day creates exactly six AI-agent operations plus one separately recorded personal operation.
 - Positive/negative signed equity deltas trigger opposite cash-note directions; animation never changes account balances.
 - Replay clamps to simulated history and hides future events.
-- Responsive layout modes are verified at 1600, 1024, 768, 390 and 320 logical widths.
+- Responsive layout modes are verified at 1600, 1024, 768, 390 and 320 logical widths; mobile bottom-sheet geometry, horizontally scrollable playback controls and setup-dialog fit at 390×844 / 320×560 are covered by runtime UI contracts.
 - JSON export includes simulator version, seed, synthetic-data declaration, assumptions, six Agent histories, the seventh-investor history and all operation ledgers.

@@ -28,8 +28,8 @@ The user is a separate personal portfolio, not a seventh AI faction and not an e
 2. Prepare the Chinese font before opening the project. On Ubuntu/CI, install \`fonts-noto-cjk\` and \`python3-fonttools\`, then run \`python3 tools/prepare_cjk_font.py\`. On other systems, supply a Noto Sans CJK Simplified Chinese TTC source with \`--source-font\` and its OFL notice with \`--license-source\`; pass \`--font-number -1\` for a standalone OTF.
 3. Open \`project.godot\` with Godot Project Manager.
 4. Press **F5** to run the project.
-5. On phones, swipe the Agent strip and playback controls horizontally; the compact portfolio panel scrolls vertically.
-4. To rebuild the 3D source assets, install Blender 4.x and run:
+5. On phones, swipe the Agent strip and playback controls horizontally; the compact portfolio panel scrolls vertically. The run-setup dialog automatically fits 390px and 320px phone viewports.
+6. To rebuild the 3D source assets, install Blender 4.x and run:
 
    \`\`\`bash
    blender --background --factory-startup --python blender/build_ai_arena_assets.py
@@ -66,7 +66,7 @@ To force a fresh Blender source/GLB rebuild in GitHub Actions, include `[rebuild
 - **Run / Pause / Next day / +5 days / Settle / Reset** control the paper simulation.
 - Scrub the replay slider to inspect a prior day; future events remain hidden.
 - **Export JSON** saves the complete synthetic run and daily operation ledger to \`user://\`.
-- A positive signed daily equity delta sends paper notes upward from that Agent’s own account marker; a negative delta returns notes toward the same Agent’s marker. There is no shared vault or inter-Agent transfer. The effect is visual only and never changes account balances.
+- A positive signed daily equity delta sends paper notes upward from that account’s own marker; a negative delta returns notes toward the same account marker. This also applies to the seventh investor’s desk. There is no shared vault or inter-account transfer. The effect is visual only and never changes account balances.
 
 ## Art and generation notes
 
