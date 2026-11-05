@@ -15,6 +15,14 @@ func _run() -> void:
 		return
 	app.use_imported_models = false
 	root.add_child(app)
+	var agent_button := app.find_child("Agent_value", true, false) as Button
+	var mobile_button := app.find_child("MobileAgent_value", true, false) as Button
+	_check(agent_button != null, "desktop Agent button must be created")
+	_check(mobile_button != null, "mobile Agent button must be created")
+	if agent_button != null:
+		_check(agent_button.get_theme_constant("icon_max_width") == 48, "desktop portrait icon width must use a theme override")
+	if mobile_button != null:
+		_check(mobile_button.get_theme_constant("icon_max_width") == 28, "mobile portrait icon width must use a theme override")
 	_check(app.apply_responsive_layout(1600.0) == "desktop", "wide desktop layout must be selected")
 	_check(app.apply_responsive_layout(1024.0) == "tablet", "tablet layout must be selected")
 	_check(app.apply_responsive_layout(768.0) == "tablet", "small tablet layout must be selected")

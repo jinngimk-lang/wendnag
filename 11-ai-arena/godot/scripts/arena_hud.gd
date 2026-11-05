@@ -180,7 +180,7 @@ func _build_agent_rail() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.icon = AgentCatalog.portrait_texture(agent_id)
-		button.icon_max_width = 48
+		button.add_theme_constant_override("icon_max_width", 48)
 		button.expand_icon = true
 		button.text = "%s   %s\n%s" % [str(faction.get("english", "")), str(faction.get("name", "")), str(faction.get("analyst", ""))]
 		button.add_theme_font_size_override("font_size", 11)
@@ -210,7 +210,7 @@ func _build_mobile_agents() -> void:
 		button.name = "MobileAgent_" + agent_id
 		button.custom_minimum_size = Vector2(108, 52)
 		button.icon = AgentCatalog.portrait_texture(agent_id)
-		button.icon_max_width = 28
+		button.add_theme_constant_override("icon_max_width", 28)
 		button.expand_icon = true
 		button.text = str(faction.get("name", agent_id))
 		button.pressed.connect(_on_agent_pressed.bind(agent_id))

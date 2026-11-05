@@ -38,6 +38,19 @@ class RuntimeContractTests(unittest.TestCase):
         for pattern in (".godot/", ".venv/", "__pycache__/", "*.py[cod]", "*.blend1", "*.blend2"):
             self.assertIn(pattern, ignore)
 
+    def test_hud_uses_button_theme_constants_for_icon_sizing(self):
+        source = (ROOT / "scripts" / "arena_hud.gd").read_text(encoding="utf-8")
+        self.assertIn('button.add_theme_constant_override("icon_max_width", 48)', source)
+        self.assertIn('button.add_theme_constant_override("icon_max_width", 28)', source)
+        self.assertNotIn("button.icon_max_width", source)
+
+    def test_godot_check_runner_fails_on_script_errors(self):
+        runner = ROOT / "tools" / "run_godot_check.sh"
+        self.assertTrue(runner.is_file(), "CI must use the checked Godot runner")
+        source = runner.read_text(encoding="utf-8")
+        self.assertIn("SCRIPT ERROR:", source)
+        self.assertIn("Parse Error:", source)
+
     def test_ci_blender_cleanup_uses_shell_safe_find_commands(self):
         candidates = [ROOT.parents[1] / ".github" / "workflows" / "ai-arena-godot.yml", ROOT.parent / ".github" / "workflows" / "ai-arena-godot.yml"]
         workflow = next((path for path in candidates if path.is_file()), None)

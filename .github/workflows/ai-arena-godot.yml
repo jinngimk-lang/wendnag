@@ -72,23 +72,23 @@ jobs:
 
       - name: Import project and parse all scenes
         working-directory: 11-ai-arena/godot
-        run: /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --editor --path . --quit
+        run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 import --headless --editor --path . --quit
 
       - name: Run simulation contract
         working-directory: 11-ai-arena/godot
-        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_arena.gd
+        run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 simulation --headless --path . --script res://tests/test_arena.gd
 
       - name: Run 3D world contract
         working-directory: 11-ai-arena/godot
-        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_world_contract.gd
+        run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 world --headless --path . --script res://tests/test_world_contract.gd
 
       - name: Run responsive UI contract
         working-directory: 11-ai-arena/godot
-        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --script res://tests/test_ui_contract.gd
+        run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 ui --headless --path . --script res://tests/test_ui_contract.gd
 
       - name: Run main scene smoke test
         working-directory: 11-ai-arena/godot
-        run: timeout 90s /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 --headless --path . --quit-after 4
+        run: bash tools/run_godot_check.sh /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 smoke --headless --path . --quit-after 4
 
       - name: Verify generated Blender assets
         if: hashFiles('11-ai-arena/godot/tools/verify_generated_assets.py') != ''
