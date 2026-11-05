@@ -168,3 +168,13 @@ Before continuing, read root `AGENTS.md`, then `PROJECT.md`, `STATUS.md`, `CHECK
 - Current feature branch: `feat/ai-arena-godot-3d-experience-v01`; intended stacked PR base: `feat/ai-arena-independent-agent-workspace-v04`.
 - Scope remains synthetic paper mode only. No broker, live market feed, external LLM worker or real order execution is connected. No new paid GPT image-generation call is claimed.
 - Follow-on gaps: a run-setup modal (scenario label, trading days, capital and risk cap), seventh-investor follow/challenge interactions, and local visual QA in the Godot editor.
+
+
+## 2026-11-05 — Godot client verification and artifact hygiene
+
+- Latest Godot 4.7.1 CI run #41949187541 passed at commit `4f2e7e286704ac758b602021b561a25982b557d4`: Python asset contract, project import, simulation, 3D world, responsive UI, main-scene smoke, generated-asset verification, packaging and upload.
+- A fresh isolated Python 3.13.5 `.venv` run passed 11/11 unit tests and `verify_generated_assets.py --require-generated`.
+- Downloaded artifact #13379977035 was inspected: no `.venv`, `.godot`, `__pycache__`, `.pyc`, `.blend1` or `.blend2` files are packaged.
+- Removed the accidentally committed 11.2 MB Blender `.blend1` backup; added project ignore rules, deterministic Blender save-version settings, verifier rejection, CI cleanup and package exclusions.
+- The latest CI run skipped the Blender rebuild because the GLBs were already present. A forced rebuild is still required to verify the new save-version suppression in Blender itself.
+- Work remains on `feat/ai-arena-godot-3d-experience-v01`, stacked on `feat/ai-arena-independent-agent-workspace-v04`; draft PR creation follows the forced rebuild and whole-branch review.

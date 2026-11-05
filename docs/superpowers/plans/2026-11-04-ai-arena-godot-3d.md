@@ -153,3 +153,19 @@
 2. Add the user's seventh-investor interaction: follow an Agent or challenge its strategy, without changing the six independent-account accounting rules.
 3. Perform visual QA in the user's local Godot editor for camera framing, portrait/room visibility, mobile layout and note choreography; CI evidence is headless and is not a substitute for visual review.
 4. If a non-paid image-generation route becomes available, replace room backplates using the included prompts without changing the scene or account contracts.
+
+
+## Current checkpoint — 2026-11-05
+
+- Latest Godot CI: run `41949187541`, commit `4f2e7e286704ac758b602021b561a25982b557d4`; all Godot and Python asset steps passed.
+- Local isolated Python 3.13.5 `.venv`: 11/11 tests passed; generated asset verifier passed.
+- Artifact `13379977035` was inspected and contains no local caches, bytecode or Blender backup files.
+- Blender rebuild run `41810847462` passed and produced the current committed GLBs/source. The current workflow's Blender step skipped because assets existed; force one new build after the backup-suppression fix to verify that code path.
+- Removed the accidental `ai_arena_assets.blend1` backup; project ignore rules, builder save-version setting, verifier guard, CI cleanup and package exclusions are now in place.
+- Final whole-branch self-review is in progress; no merge or deployment has been performed.
+
+## Follow-on product work (separate implementation tasks)
+
+1. Add a run-setup modal for a clearly synthetic scenario label, trading-day window, starting capital and risk cap.
+2. Add the user's seventh-investor interaction: follow an Agent or challenge its strategy, preserving six independent paper accounts.
+3. Perform visual QA in the Godot editor for camera framing, room/portrait visibility, mobile layout and cash-note choreography.

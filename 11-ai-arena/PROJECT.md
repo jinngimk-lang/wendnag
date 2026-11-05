@@ -177,3 +177,8 @@ A separate `backend/adapters/sec_client.py` now supplies an opt-in, read-only SE
 ## V0.5.0 UI/UX direction
 
 The user-facing investment arena is faction-first: six schools, six recognizable Agent personas, six dedicated research rooms, six independent paper portfolios. Every Agent runs its own thesis, challenger and risk-control roles; all compare against the same market path and shared execution assumptions. The selected-Agent workspace shows research signals, account state and the last trade decision. The product remains a synthetic prototype until licensed issuer/market evidence and external Agent workers are implemented.
+
+
+## 2026-11-05 — Godot 3D accounting presentation clarification
+
+The native Godot client intentionally supersedes the 2026-11-03 V0.3.2 central-pool visual metaphor. Its shared arena center displays the common synthetic market; it is not a capital vault. Each Agent's positive/negative P&L note remains local to that Agent's own account marker and podium. This is a visual rule only: six accounts remain financially independent, and no cash moves between Agents. The older HTML Capital Theater remains a separate historical prototype and must not override the Godot client's current interaction contract.

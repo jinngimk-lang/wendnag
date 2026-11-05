@@ -1,6 +1,6 @@
 # Godot 3D Client — Status
 
-Updated: 2026-11-04
+Updated: 2026-11-05
 
 ## Working scope
 
@@ -8,7 +8,7 @@ Updated: 2026-11-04
 - Working branch: `feat/ai-arena-godot-3d-experience-v01`
 - Target PR base: `feat/ai-arena-independent-agent-workspace-v04`
 - Engine target: Godot 4.7.1 stable, Compatibility renderer
-- This is an additive native client; the existing HTML Finance Arena remains untouched.
+- Additive native client; the existing HTML Finance Arena remains untouched.
 
 ## Product invariants
 
@@ -23,23 +23,30 @@ Updated: 2026-11-04
 - Blender source project plus six Agent GLBs, six research-room GLBs and a banknote GLB are committed.
 - Godot world builds six clickable faction stations, a shared-market display and lazily loaded faction research rooms.
 - HUD supports Agent selection, research/account/ledger tabs, playback, replay scrubbing, JSON export and responsive desktop/tablet/mobile layouts.
-- Godot's source folder is marked with `.gdignore` so the editor does not try to import the editable `.blend` file as a runtime resource; GLB exports remain importable.
-- The supplied portrait and room atlases are reused as source textures. Replacement prompts are included; no paid GPT image-generation call or new generated scene background is claimed.
+- Godot's source folder is marked with `.gdignore`; the project `.gitignore` excludes Godot caches, Python virtual environments/bytecode and Blender backup files.
+- The supplied portrait and room atlases are reused as source textures. No paid GPT image-generation call or new generated scene background is claimed.
 
 ## Verification
 
 <badge>CI PASS</badge>
 
-- GitHub Actions run `41810176381` passed at commit `000fa607bf4160b84fe1a4ed0cb89123b419bf6e`.
+- GitHub Actions run `41949187541` passed at commit `4f2e7e286704ac758b602021b561a25982b557d4`.
 - Passed steps: Python asset contract, Godot 4.7.1 project import, simulation contract, 3D world contract, responsive UI contract, main-scene smoke test, generated-asset verification, packaging and artifact upload.
-- Downloadable CI artifact: `ai-investment-arena-godot` (artifact ID `13311482622`).
-- Local isolated `.venv` verification: 8/8 Python unit tests passed; `tools/verify_generated_assets.py --require-generated` passed.
-- Blender rebuild was skipped on the latest CI run because the committed editable source and GLB exports were already present; the generated-asset integrity check did run and pass.
-- Earlier compile and SceneTree test-timing failures were corrected and are covered by the passing run above.
+- Latest artifact: `ai-investment-arena-godot`, artifact ID `13379977035`.
+- Downloaded artifact was inspected; local caches, bytecode and Blender backups are absent from the package.
+- Local isolated Python 3.13.5 `.venv`: 11/11 unit tests passed; `tools/verify_generated_assets.py --require-generated` passed.
+- Earlier Blender rebuild run `41810847462` successfully generated the source and GLBs and committed them as `84aa7187`. The latest run skipped Blender because the generated assets already existed; a forced rebuild is still needed to validate the new backup-suppression setting itself.
 
 ## Local run
 
 1. Install Godot 4.7.1 stable.
 2. Open `11-ai-arena/godot/project.godot` and press F5.
-3. Run the headless tests listed in `README.md`.
-4. Blender 4.x is required only to regenerate the editable source and GLB exports; normal Godot runtime uses the committed GLBs.
+3. Run the Python asset checks in an isolated environment as documented in `README.md`.
+4. Run the Godot headless commands in `README.md`.
+5. Blender 4.x is required only to regenerate the editable source and GLB exports; normal Godot runtime uses the committed GLBs.
+
+## Follow-on product work
+
+1. Add a run-setup modal for a synthetic scenario label, trading-day window, starting capital and risk cap.
+2. Add the seventh-investor follow/challenge interactions without changing the six independent-account rules.
+3. Perform visual QA in the local Godot editor for camera framing, portrait/room visibility, mobile layout and cash-note choreography. Headless CI is not a substitute for visual review.
