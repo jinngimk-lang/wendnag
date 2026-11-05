@@ -59,6 +59,7 @@ var _investor_controls: VBoxContainer
 var _investor_target_slider: HSlider
 var _investor_target_label: Label
 var _updating_investor_slider := false
+var _layout_mode := "desktop"
 var _setup_dialog: Window
 var _scenario_input: LineEdit
 var _days_spin: SpinBox
@@ -114,6 +115,7 @@ func set_room_mode(enabled: bool, agent_id: String = "") -> void:
 
 func apply_responsive_layout(width: float) -> String:
 	var mode := layout_mode_for(width)
+	_layout_mode = mode
 	set_meta("layout_mode", mode)
 	var compact_tablet := mode == "tablet" and width < 920.0
 	if _agent_rail != null:
@@ -658,7 +660,7 @@ func _refresh_detail() -> void:
 	if faction.is_empty():
 		return
 	var snapshot: Dictionary = _simulator.get_account_snapshot(_selected_agent, _simulator.replay_day)
-	_portrait.visible = true
+	_portrait.visible = _layout_mode != "mobile"
 	_portrait.texture = AgentCatalog.portrait_texture(_selected_agent)
 	_name_label.text = str(faction.get("name", "Agent"))
 	_role_label.text = "%s  ·  %s" % [str(faction.get("role", "")), str(faction.get("analyst", ""))]
