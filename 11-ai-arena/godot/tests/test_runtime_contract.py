@@ -31,5 +31,12 @@ class RuntimeContractTests(unittest.TestCase):
         for token in ("ArenaSimulation", "ArenaWorld", "ArenaHUD", "advance_day", "set_replay_day", "export_payload"):
             self.assertIn(token, source)
 
+    def test_godot_project_ignores_local_caches_and_blender_backups(self):
+        ignore_file = ROOT / ".gitignore"
+        self.assertTrue(ignore_file.is_file(), "Godot project must own a local-artifact ignore file")
+        ignore = ignore_file.read_text(encoding="utf-8")
+        for pattern in (".godot/", ".venv/", "__pycache__/", "*.py[cod]", "*.blend1", "*.blend2"):
+            self.assertIn(pattern, ignore)
+
 if __name__ == "__main__":
     unittest.main()

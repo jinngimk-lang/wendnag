@@ -51,6 +51,7 @@ jobs:
         working-directory: 11-ai-arena/godot
         run: |
           PYTHONPATH=/usr/lib/python3/dist-packages blender --background --factory-startup --python-exit-code 1 --python blender/build_ai_arena_assets.py -- --output assets
+          find assets/source -type f \\( -name '*.blend1' -o -name '*.blend2' \\) -delete
           find assets/source assets/generated -maxdepth 3 -type f -printf '%p %s bytes\\n'
 
       - name: Install Godot 4.7.1 stable
@@ -108,7 +109,7 @@ jobs:
         if: success()
         run: |
           cd 11-ai-arena/godot
-          zip -qr /tmp/ai-investment-arena-godot.zip . -x ".godot/*"
+          zip -qr /tmp/ai-investment-arena-godot.zip . -x ".godot/*" ".venv/*" "*/.venv/*" "__pycache__/*" "*/__pycache__/*" "*.pyc" "*.pyo" "*.blend1" "*.blend2"
 
       - name: Upload Godot project
         if: always()

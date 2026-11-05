@@ -27,6 +27,19 @@ A spectator-first 3D paper-trading arena with six visibly different investment p
 
 GitHub Actions builds the Blender assets, imports the Godot project, runs headless simulation tests and publishes a downloadable package artifact.
 
+## Python asset checks (isolated virtual environment)
+
+From this folder, create and activate a local environment before running the asset contracts:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+python -m unittest discover -s tests -p "test_*.py" -v
+python tools/verify_generated_assets.py --require-generated
+```
+
+The checks use the Python standard library; Blender 4.x is required only when regenerating the source project and GLB exports. Local virtual environments, Godot import caches, Python bytecode and Blender versioned backup files are excluded from source control and CI packages.
+
 ## Controls
 
 - Select any Agent card or click a 3D podium.

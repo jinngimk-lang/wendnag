@@ -413,7 +413,13 @@ def main():
                 pass
 
     blend_path = os.path.join(source_dir, "ai_arena_assets.blend")
+    # Rebuilds are deterministic artifacts; do not create versioned .blend1 backups.
+    bpy.context.preferences.filepaths.save_version = 0
     bpy.ops.wm.save_as_mainfile(filepath=blend_path)
+    for backup_suffix in (".blend1", ".blend2"):
+        backup_path = blend_path + backup_suffix
+        if os.path.exists(backup_path):
+            os.remove(backup_path)
 
     manifest = {
         "source": os.path.relpath(blend_path, PROJECT_ROOT),

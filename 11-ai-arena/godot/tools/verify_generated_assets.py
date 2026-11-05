@@ -20,7 +20,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--require-generated", action="store_true")
     args = parser.parse_args()
-    source = ROOT / "assets" / "source" / "ai_arena_assets.blend"
+    source_dir = ROOT / "assets" / "source"
+    source = source_dir / "ai_arena_assets.blend"
+    backups = sorted(list(source_dir.glob("*.blend[0-9]")) + list(source_dir.glob("*.blend[0-9][0-9]")))
+    if backups:
+        names = ", ".join(path.name for path in backups)
+        raise SystemExit(f"Unexpected Blender backup files: {names}")
     generated = ROOT / "assets" / "generated"
     if not args.require_generated and not source.exists():
         print("Blender assets not generated yet; procedural fallbacks remain available.")
