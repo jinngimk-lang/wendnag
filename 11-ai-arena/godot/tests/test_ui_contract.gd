@@ -71,6 +71,24 @@ func _run() -> void:
 	app._on_investor_target_weight_changed(0.35)
 	_check(is_equal_approx(app.simulation.investor_target_weight, 0.35), "the personal target-weight slider must update the investor policy")
 	_check(app.find_child("InvestorSeatTitle", true, false) != null, "the 3D arena must include a dedicated seventh-investor seat")
+	root.size = Vector2i(390, 844)
+	_check(app.apply_responsive_layout(390.0) == "mobile", "the final visual contract must use a phone viewport")
+	await process_frame
+	var hud_root := app.find_child("HUDRoot", true, false) as Control
+	var header := app.find_child("Header", true, false) as Control
+	var mobile_agents := app.find_child("MobileAgents", true, false) as Control
+	var detail_panel := app.find_child("DetailPanel", true, false) as Control
+	var bottom_dock := app.find_child("BottomDock", true, false) as Control
+	var portrait := app.find_child("AgentPortrait", true, false) as Control
+	var controls_scroll := app.find_child("PlaybackControlsScroll", true, false) as ScrollContainer
+	_check(hud_root != null and hud_root.size == Vector2(390, 844), "mobile HUD must use the physical phone viewport")
+	_check(header != null and mobile_agents != null and header.get_global_rect().end.y <= mobile_agents.get_global_rect().position.y, "mobile Agent navigation must start below the header without overlap")
+	_check(detail_panel != null and detail_panel.size.y <= 250.0, "mobile detail must be a compact bottom sheet no taller than 250px")
+	_check(portrait != null and not portrait.visible, "mobile detail must hide the large Agent portrait to preserve content space")
+	_check(controls_scroll != null and controls_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_AUTO, "mobile playback controls must be horizontally scrollable instead of clipped")
+	_check(bottom_dock != null and bottom_dock.get_global_rect().end.y <= 844.0, "mobile playback dock must stay inside the visible viewport")
+	if detail_panel != null and bottom_dock != null:
+		_check(detail_panel.get_global_rect().end.y <= bottom_dock.get_global_rect().position.y, "mobile detail sheet must not overlap playback controls")
 	app.queue_free()
 	if _failed:
 		quit(1)
