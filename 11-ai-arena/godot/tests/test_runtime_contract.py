@@ -62,6 +62,10 @@ class RuntimeContractTests(unittest.TestCase):
         source = (ROOT / "tools" / "prepare_cjk_font.py").read_text(encoding="utf-8")
         compile(source, "prepare_cjk_font.py", "exec")
 
+    def test_mobile_layout_uses_physical_viewport_coordinates(self):
+        project = (ROOT / "project.godot").read_text(encoding="utf-8")
+        self.assertIn('window/stretch/mode="disabled"', project)
+
     def test_godot_project_ignores_local_caches_and_blender_backups(self):
         ignore_file = ROOT / ".gitignore"
         self.assertTrue(ignore_file.is_file(), "Godot project must own a local-artifact ignore file")

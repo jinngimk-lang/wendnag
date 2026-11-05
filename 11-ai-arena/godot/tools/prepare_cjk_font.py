@@ -49,6 +49,7 @@ def main() -> int:
         str(args.source_font),
         f"--text-file={text_file}",
         f"--output-file={OUTPUT_FONT}",
+        "--unicodes=U+0000-00FF,U+2000-206F,U+3000-30FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FF00-FFEF",
         "--layout-features=*",
         "--name-IDs=*",
         "--name-languages=*",

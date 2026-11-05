@@ -41,10 +41,10 @@ func _build_environment() -> void:
 	environment.sky = sky
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.ambient_light_color = Color("#8a9baa")
-	environment.ambient_light_energy = 0.82
+	environment.ambient_light_energy = 0.72
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	environment.glow_enabled = true
-	environment.glow_intensity = 0.20
+	environment.glow_intensity = 0.18
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -52,7 +52,7 @@ func _build_environment() -> void:
 	key.name = "WarmKeyLight"
 	key.rotation_degrees = Vector3(-48, -28, 0)
 	key.light_color = Color("#ffe0b0")
-	key.light_energy = 1.65
+	key.light_energy = 1.40
 	key.shadow_enabled = true
 	add_child(key)
 
@@ -60,7 +60,7 @@ func _build_environment() -> void:
 	fill.name = "CoolFillLight"
 	fill.position = Vector3(6.0, 7.0, 7.0)
 	fill.light_color = Color("#70aee4")
-	fill.light_energy = 340.0
+	fill.light_energy = 300.0
 	fill.omni_range = 22.0
 	add_child(fill)
 
@@ -139,9 +139,9 @@ func _build_investor_seat(station_position: Vector3) -> Node3D:
 	title.name = "InvestorSeatTitle"
 	title.font = CJK_FONT
 	title.text = "YOU  ·  THE 7TH INVESTOR"
-	title.font_size = 40
-	title.pixel_size = 0.009
-	title.position = Vector3(0, 2.75, 0.28)
+	title.font_size = 34
+	title.pixel_size = 0.008
+	title.position = Vector3(0, 3.10, 0.28)
 	title.modulate = accent.lightened(0.22)
 	seat.add_child(title)
 	var subtitle := Label3D.new()
@@ -150,14 +150,14 @@ func _build_investor_seat(station_position: Vector3) -> Node3D:
 	subtitle.text = "FOLLOW  /  CHALLENGE  /  COMPARE"
 	subtitle.font_size = 14
 	subtitle.pixel_size = 0.006
-	subtitle.position = Vector3(0, 2.48, 0.28)
+	subtitle.position = Vector3(0, 2.82, 0.28)
 	subtitle.modulate = Color("#d6e0e6")
 	seat.add_child(subtitle)
 	var glow := OmniLight3D.new()
 	glow.name = "FactionGlow"
 	glow.position = Vector3(0, 1.9, 0.2)
 	glow.light_color = accent
-	glow.light_energy = 48.0
+	glow.light_energy = 38.0
 	glow.omni_range = 3.6
 	seat.add_child(glow)
 	var pick_area := Area3D.new()
@@ -224,7 +224,7 @@ func _build_station(agent_id: String, station_position: Vector3) -> Node3D:
 	glow.name = "FactionGlow"
 	glow.position = Vector3(0, 2.2, 0.1)
 	glow.light_color = accent
-	glow.light_energy = 48.0
+	glow.light_energy = 38.0
 	glow.omni_range = 3.8
 	station.add_child(glow)
 
@@ -369,7 +369,7 @@ func select_agent(agent_id: String) -> bool:
 		var accent := AgentCatalog.color_for(str(id))
 		var glow := station.get_node_or_null("FactionGlow") as OmniLight3D
 		if glow != null:
-			glow.light_energy = 88.0 if id == agent_id else 42.0
+			glow.light_energy = 66.0 if id == agent_id else 34.0
 		var podium := station.get_node_or_null("PodiumAccent") as MeshInstance3D
 		if podium != null:
 			var mat := _material(accent if id == agent_id else accent.darkened(0.38), 0.62, 0.3)
