@@ -48,3 +48,21 @@ wendnag 中既有 AegistonTeam 原型与设计资料可作为产品结构参考�
 ## 使用规则
 
 外部行业研究只用于构建问题框架和销售准备；AegistonTeam 的产品能力、案例、效率、客户、报价和安全承诺只能来自产品/合同/客户证据。
+
+
+## 2026-11-06 竞品官方资料补充
+
+用于补足买方“我们已经有编码助手/Agent，为什么还要采购”的问题。以下均为厂商官方能力声明，不是独立实测：
+
+- GitHub Copilot：云端 Agent、任务规划、代码修改、PR 和企业 Agent 管理  
+  https://docs.github.com/en/enterprise-cloud@latest/copilot/get-started/about-github-copilot  
+  https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/manage-copilot-in-the-cloud
+- Cursor：Cloud Agents、独立 VM、测试/PR，以及 SSO、SCIM、RBAC、审计和企业控制  
+  https://prod.cursor.com/docs/enterprise  
+  https://prod.cursor.com/help/ai-features/background-agents
+- Devin：官方产品页展示云端/本地执行、并行 Agent、测试、PR 和企业控制  
+  https://app.devin.ai/
+- OpenHands：Agent 工作流、Issue/PR/CI/QA 自动化、多运行时和 VPC 企业控制  
+  https://www.openhands.dev/
+
+销售回答不能把竞品描述为“只会代码补全”。应围绕客户同一任务比较需求澄清、项目协作、人工介入、变更追踪、质量、成本和现有工具共存能力。
