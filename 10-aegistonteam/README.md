@@ -45,6 +45,8 @@
 - [91 页 PPT 审计](./sales-deck/AUDIT_V1.md)
 - [客户版定位与结构](./sales-deck/POSITIONING_AND_DECK_ARCHITECTURE_V1.md)
 - [产品卖点与证据矩阵](./sales-deck/CLAIM_EVIDENCE_MATRIX_V1.md)
+- [竞争定位研究](./sales-deck/COMPETITIVE_POSITIONING_V1.md)
+- [视觉方向样张记录](./sales-deck/DIRECTION_EXPLORATION_V1.md)
 - [逐页处置建议](./sales-deck/SLIDE_BY_SLIDE_REVIEW_V1.md)
 
 ## 源文件锚点
