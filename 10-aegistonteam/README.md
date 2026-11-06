@@ -51,6 +51,7 @@
 - [保持原品牌的版式实验](./sales-playbook/VISUAL_LAYOUT_TRIALS_V1.md)
 - [91 页逐页修改建议](./sales-playbook/SLIDE_BY_SLIDE_REVIEW_V2.md)
 - [产品卖点与证据边界](./sales-playbook/CLAIM_AND_EVIDENCE_CONTROL_V1.md)
+- [竞品环境与差异化销售假设](./sales-playbook/COMPETITIVE_CONTEXT_V1.md)
 
 旧的 sales-deck 客户版重构方向已被用户最新要求纠正，不再作为本任务的执行依据。
 
