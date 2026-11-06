@@ -65,3 +65,5 @@
 - [CLAIM_EVIDENCE_MATRIX_V1.md](./CLAIM_EVIDENCE_MATRIX_V1.md)：卖点与证据状态。
 - [VISUAL_SYSTEM_V1.md](./VISUAL_SYSTEM_V1.md)：视觉方向与版式规则。
 - [DEMO_FLOW_V1.md](./DEMO_FLOW_V1.md)：研发任务演示脚本。
+
+- [竞争定位研究](./COMPETITIVE_POSITIONING_V1.md)：核验 GitHub Copilot、Cursor、Devin、OpenHands 的公开能力，避免错误差异化。
