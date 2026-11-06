@@ -57,3 +57,14 @@
 ## 6. 外部研究状态
 
 截至本文件创建时，尚未对竞品最新功能、行业市场数据或外部技术指标开展新一轮独立网页核验。正式竞争矩阵和任何外部数字须另建来源记录。
+
+## 6. 2026-11-06 外部竞争研究
+
+仅使用竞品官方页面作为一手能力声明来源；这些内容是厂商公开陈述，不是独立产品实测：
+
+- GitHub Copilot Agent / enterprise management: https://docs.github.com/en/enterprise-cloud@latest/copilot/get-started/about-github-copilot ; https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/manage-copilot-in-the-cloud
+- Cursor Enterprise / Cloud Agents / Security: https://prod.cursor.com/docs/enterprise ; https://prod.cursor.com/help/ai-features/background-agents ; https://prod.cursor.com/docs/enterprise/security-hardening
+- Devin official product site: https://app.devin.ai/
+- OpenHands official product site: https://www.openhands.dev/
+
+结论：市场已覆盖多步任务执行、云端 Agent、测试/PR、人工审核和企业控制。AegistonTeam 的差异化需通过同一任务对照测试验证，而非仅以功能清单宣传。
