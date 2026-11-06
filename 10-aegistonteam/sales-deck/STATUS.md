@@ -61,3 +61,13 @@ Last updated: 2026-11-06
 - 当前可承诺的 SaaS、私有化、私有云或一体机形态及其数据流边界。
 - 是否已有 AegistonTeam 专属客户案例、可公开的客户名称和授权证据。
 - 首批重点行业应选择软件/系统集成、企业内部研发，还是其他有明确研发任务的行业。
+
+## 2026-11-06 竞品研究增量
+
+- [x] 核验 GitHub Copilot、Cursor、Devin、OpenHands 官方产品资料。
+- [x] 发现“多 Agent / 云端执行 / 测试 / PR / 企业治理 / 端到端交付”均已有强竞争者公开覆盖，不能直接作为 AegistonTeam 独特卖点。
+- [x] 新增 COMPETITIVE_POSITIONING_V1.md，提出数字 FDE 业务需求桥梁、项目级人机协作、跨阶段变更追踪和组织知识沉淀四项待验证差异化假设。
+
+## 新增 P0 待验证问题
+
+AegistonTeam 相比 GitHub Copilot、Cursor、Devin、OpenHands 的独特价值是什么？必须通过同一任务对照测试回答，不能只靠宣传语。尤其要验证数字 FDE 是否能把模糊业务需求转化为结构化工程任务，并把业务/产品/研发/测试人员与多个 Agent 的工作、产物和变更连接起来。
