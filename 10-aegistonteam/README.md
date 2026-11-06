@@ -36,18 +36,23 @@
 - 状态：待确认 / 待修改 / 修改中 / 已完成 / 暂缓。
 - 正式改动记录集中于 [DEMO_CHANGELOG.md](./DEMO_CHANGELOG.md)；未确认的演示意见不直接视为已批准需求。
 
-## 销售提案工作流
+## 企业获客与销售作战手册
 
-2026-11-06 新增独立的企业销售提案工作流，避免将客户版提案与产品原型修改记录、公司融资 BP 和内部创意任务混在一起：
+2026-11-06 用户明确：这份 91 页 PPT 是**内部获客与销售成交手册**，不是客户版产品宣传 Deck。完整工作流和最新状态在：
 
-- [销售提案工作流 README](./sales-deck/README.md)
-- [销售提案当前状态](./sales-deck/STATUS.md)
-- [91 页 PPT 审计](./sales-deck/AUDIT_V1.md)
-- [客户版定位与结构](./sales-deck/POSITIONING_AND_DECK_ARCHITECTURE_V1.md)
-- [产品卖点与证据矩阵](./sales-deck/CLAIM_EVIDENCE_MATRIX_V1.md)
-- [竞争定位研究](./sales-deck/COMPETITIVE_POSITIONING_V1.md)
-- [视觉方向样张记录](./sales-deck/DIRECTION_EXPLORATION_V1.md)
-- [逐页处置建议](./sales-deck/SLIDE_BY_SLIDE_REVIEW_V1.md)
+- [销售作战手册 README](./sales-playbook/README.md)
+- [销售作战手册 STATUS](./sales-playbook/STATUS.md)
+- [91 页获客能力审计](./sales-playbook/ACQUISITION_AUDIT_V1.md)
+- [购买方 15 个顾虑维度](./sales-playbook/BUYER_CONCERNS_MAP_V1.md)
+- [24 条获客渠道优先级](./sales-playbook/CHANNEL_PRIORITIZATION_V1.md)
+- [销售沟通话术](./sales-playbook/SALES_CONVERSATION_PLAYBOOK_V1.md)
+- [买方角色模拟压力测试](./sales-playbook/FIELD_TEST_SIMULATION_V1.md)
+- [试点与 ROI 评估](./sales-playbook/PILOT_ROI_SCORECARD_V1.md)
+- [保持原品牌的版式实验](./sales-playbook/VISUAL_LAYOUT_TRIALS_V1.md)
+- [91 页逐页修改建议](./sales-playbook/SLIDE_BY_SLIDE_REVIEW_V2.md)
+- [产品卖点与证据边界](./sales-playbook/CLAIM_AND_EVIDENCE_CONTROL_V1.md)
+
+旧的 sales-deck 客户版重构方向已被用户最新要求纠正，不再作为本任务的执行依据。
 
 ## 源文件锚点
 
