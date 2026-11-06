@@ -56,6 +56,7 @@ AegistonTeam 是一款线上的、多智能体与人协作的软件开发平台�
 - VISUAL_LAYOUT_TRIALS_V1.md：保持原风格的页面排版与配图实验。
 - SLIDE_BY_SLIDE_REVIEW_V2.md：91 页逐页修改建议。
 - CLAIM_AND_EVIDENCE_CONTROL_V1.md：产品卖点、证据状态与禁止承诺。
+- COMPETITIVE_CONTEXT_V1.md：竞品对照、客户常见替代方案异议与差异化假设。
 
 ## 工作规则
 
