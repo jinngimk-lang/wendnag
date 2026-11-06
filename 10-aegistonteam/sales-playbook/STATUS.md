@@ -51,6 +51,13 @@ Last updated: 2026-11-06
 - [x] 纠正任务定位：保留内部销售手册，不做客户版 Deck 替换。
 - [x] 建立独立工作分支：sales/aegistonteam-enterprise-deck-audit-20261106。
 
+## 最近一次仓库同步
+
+
+- [x] 将竞品比较从旧 sales-deck 目录迁移为销售异议与差异化假设文档 COMPETITIVE_CONTEXT_V1.md。
+- [x] 将旧 customer-deck 方向文件清理/标记为过期，避免后续上下文恢复时误走客户版 Deck 方向。
+- [x] 更新并保留现有 Draft PR #29：https://github.com/jinngimk-lang/wendnag/pull/29
+
 ## 目前判断
 
 原稿可以支持熟人引荐、伙伴关系、活动、定向拜访和需求交流，具备打开客户对话的基础；但还不足以证明可重复地产生合格商机并成交。
