@@ -71,3 +71,13 @@ Last updated: 2026-11-06
 ## 新增 P0 待验证问题
 
 AegistonTeam 相比 GitHub Copilot、Cursor、Devin、OpenHands 的独特价值是什么？必须通过同一任务对照测试回答，不能只靠宣传语。尤其要验证数字 FDE 是否能把模糊业务需求转化为结构化工程任务，并把业务/产品/研发/测试人员与多个 Agent 的工作、产物和变更连接起来。
+
+
+## 2026-11-06 视觉方向样张
+
+- [x] 生成 9 页《AegistonTeam_客户销售Deck_方向探索V1.pptx》：3 种封面方向 + 6 张核心内容样张。
+- [x] 通过 LibreOffice 导出 PDF 并检查 9 页渲染，无页面缺失或明显溢出。
+- [x] 样张文件 SHA-256：485eb01bb80d871519b80a714708ec52ea361ce5d2c932cbce99b043f5a69c6c。
+- [x] 新增 DIRECTION_EXPLORATION_V1.md 记录视觉方向、样张范围和待挑战问题。
+- [ ] 取得当前真实产品版本截图、运行日志、代码 diff 和测试报告，替换示意证据槽位。
+- [ ] 与最新品牌规范核对颜色、Logo 和字体。
