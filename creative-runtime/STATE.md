@@ -137,3 +137,14 @@ Prefer 6–7 tightly controlled beats over one undifferentiated long prompt if t
 ## Continuity checkpoint rule
 
 Before any major new creative phase or when the conversation becomes materially long, update this file rather than relying on chat history. Preserve only durable state; put reusable principles in `LEARNINGS.md`.
+
+## Parallel creative research track — Unimaginable Image Studio (2026-11-11)
+
+This is a separate, additive visual-research track. It does not replace or modify the active LegalLens film task above and does not alter BP source facts.
+
+- Durable archive: `creative-runtime/UNIMAGINABLE-IMAGE-STUDIO.md`
+- User's direction: explore images that exceed familiar visual conventions; do not equate the unimaginable with space, glowing lines, abstract geometry, or random surreal-object stacking.
+- Core method: begin with a believable ordinary scene; invent one hidden or impossible causal rule; show its effects through several independent material/spatial traces; keep each trace locally credible while making the total causal explanation impossible to close.
+- Current selected image experiment: **空位的重量 / The Weight of an Empty Place** — a completely empty volume in an ordinary room seems to exert weight on the floor, ceiling structure, hanging fabric and a small liquid surface. No object, person, transparent silhouette, outline or energy effect is shown.
+- Presentation constraint: one concept per image, one image at a time. No collage, contact sheet, or multi-concept composition.
+- Next action: generate the selected single image, inspect whether the empty volume remains truly empty and whether the material evidence reads as one coherent impossible cause; then record the result and any prompt/visual learnings in the archive.
