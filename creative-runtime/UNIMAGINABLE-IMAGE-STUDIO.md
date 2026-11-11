@@ -189,7 +189,7 @@
 
 ## 8. 本轮选定作品：空位的重量
 
-<badge>当前首选</badge>
+**当前首选**
 
 **英文工作名：The Weight of an Empty Place**
 
