@@ -133,3 +133,33 @@ Add a new entry only when it is:
 - a project insight likely to matter again after chat context is gone.
 
 Keep transient shot wording and current decisions in `STATE.md` or task-specific checkpoints.
+
+## 2026-11-11 — Make the cause absent; let the evidence carry the image
+
+### 13. The unimaginable is better approached through its boundary conditions
+
+If a concept is genuinely outside familiar human representation, drawing it as an exotic object only disguises the limits of the concept. A stronger image can show the traces, distortions, missing information, incompatible observations, or failed explanations that arise when we try to infer it.
+
+### 14. One hidden rule should generate several independent traces
+
+Do not stack unrelated surreal details. Define one impossible cause or altered rule, then let different materials and spatial relationships respond to it. Each trace should look individually plausible; together they should resist one ordinary explanation.
+
+### 15. Local credibility + global impossibility
+
+The viewer should first trust the scene. Only after that trust is established should the contradiction become apparent. The goal is not maximum strangeness; it is a coherent scene whose causal model cannot be completed.
+
+### 16. Let the viewer perform the inference
+
+A useful viewing sequence is: trust the ordinary scene → notice an anomaly → search for corroborating evidence → discover that the evidence supports an impossible cause → remain unable to identify the cause. This turns the viewer's act of interpretation into part of the artwork.
+
+### 17. Treat absence as an active physical condition
+
+An empty location can be the subject if its consequences are materially legible: compression, wear, displacement, maintenance, changed flow, altered reflections, or spatial accommodation. Avoid representing absence as a transparent body or glowing outline.
+
+### 18. Choose the medium after the conceptual mechanism
+
+Forensic still life, architectural photography, macro photography, material experiments, archives, multi-view optics, and installations are different instruments. Do not let the image model's favorite aesthetic dictate the concept.
+
+### 19. First selected experiment: “The Weight of an Empty Place”
+
+A room's empty central volume appears to exert weight on its surrounding materials, while remaining completely empty. The key is a shared direction and subtle physical response—not random warping, a visible invisible-object outline, or decorative VFX. The full brief and research sources are archived in `creative-runtime/UNIMAGINABLE-IMAGE-STUDIO.md`.
