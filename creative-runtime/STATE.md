@@ -147,7 +147,7 @@ This is a separate, additive visual-research track. It does not replace or modif
 - Core method: begin with a believable ordinary scene; invent one hidden or impossible causal rule; show its effects through several independent material/spatial traces; keep each trace locally credible while making the total causal explanation impossible to close.
 - Current selected image experiment: **空位的重量 / The Weight of an Empty Place** — a completely empty volume in an ordinary room seems to exert weight on the floor, ceiling structure, hanging fabric and a small liquid surface. No object, person, transparent silhouette, outline or energy effect is shown.
 - Presentation constraint: one concept per image, one image at a time. No collage, contact sheet, or multi-concept composition.
-- Next action: generate the selected single image, inspect whether the empty volume remains truly empty and whether the material evidence reads as one coherent impossible cause; then record the result and any prompt/visual learnings in the archive.
+- Next action: do not keep rerolling the same invisible-gravity prompt. For the next single image, switch to a different causal mechanism (likely “the unbuilt door has a history of use”) unless a materially stronger way to show an empty volume's independent physical traces is found.
 
 
 ### 2026-11-11 — First image experiment critique
