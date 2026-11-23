@@ -17,3 +17,16 @@
 3. 与智瞳安宇负责人确认 LegalLens/AragonTeam/AegisClaw 的**当前已交付能力**和接口/部署限制，再筛选3个可以用脱敏数据做POC的企业对象。
 ## 上下文恢复/更新触发
 每次会话开始、进入下一阶段、重要事实变更、一个新来源改变结论、或上下文开始变长时，先回读 README→PROJECT→STATE→EVIDENCE_LEDGER→AGENTS→ATLAS→REDTEAM，并提交新的STATE状态。若仅做草稿写PR，验证后可合并；不得覆盖BP的PROJECT/STATUS或创意runtime。
+
+## 2026-11-23 — V2图文PDF交付（第二轮存档）
+- 使用现有Python虚拟环境 /opt/pyvenv（Python3.13/ReportLab/fitz）制作25页A4咨询风格PDF；原始图表、分级矩阵、十Agent职责、产品架构、8类POC、90天路线和13条来源索引；中文字符可选择、字体嵌入，PDF预检通过。
+- 用户会话可下载的PDF文件：`秦商总会_AI赋能高价值企业商机研究报告_V2_20261123.pdf`，SHA-256 `b2939cef6be87b49b28565d85144dd979d25cadc01a462844e05206872e20175`；**本仓没有这个PDF二进制**，详见 REPORT_V2_PDF_MANIFEST。
+- 提交 REPORT_V2_EXECUTIVE / REPORT_V2_SOURCES / REPORT_V2_VISUAL_SPEC / REPORT_V2_PDF_MANIFEST，确保即便沙箱文件链接失效，也能依文字资料恢复研究结论和视觉设计。
+- 新一轮查实：S01清欠机制、S02经开区对接、S04秦商科创会客厅、S06医械检查要求、S08欣旺达已有电池护照平台、S09公安打假案例、S11陕西2026-11 AI场景支持方向。
+- 不改变先前所有 hard_gate=unknown；十Agent仍为工作包，不冒称真正启动十个独立持久Agent；产品就绪程度仍须研发核验。
+### 下一轮优先事项
+1. 核对PDF内13来源随时间的有效性，并针对2026-11新AI政策检查原政府发布，更新事实账本和各企业关系等级。
+2. 先找真实企业负责人确认“回款、医械质量、工程项目结算”三场景的预算/样本/损失，P0硬门槛未过不报价。
+3. 技术负责人逐项核实LegalLens/AragonTeam/AegisClaw现有部署能力，在独立分支开发可脱敏演示脚本并纳入CI/回归。
+### 长上下文规则
+跨轮或上下文较长时，先读 PROJECT→STATE→REPORT_V2_EXECUTIVE→REPORT_V2_SOURCES→REPORT_V2_VISUAL_SPEC→AGENTS→REDTEAM；有新增证据即早提交STATE。禁止从聊天猜测已签客户或已上传二进制PDF。
