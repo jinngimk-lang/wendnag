@@ -1,0 +1,9 @@
+id,title,stage,hard_gate,business_value,buyer_urgency,product_fit,data_access,poc_feasibility
+O01,应收账款与合同履约证据审查,public_signal,unknown,5,5,5,3,4
+O02,医疗器械质量体系文件一致性审核,regulatory_signal,unknown,5,5,4,3,4
+O03,工程变更验收与回款证据链,opportunity_hypothesis,unknown,5,4,5,3,4
+O04,跨境交易合同与合规资料审查,public_signal,unknown,4,4,4,3,4
+O05,品牌假冒及侵权线索收集,public_case_signal,unknown,4,4,4,3,4
+O06,先进制造供应商质量文件关联,opportunity_hypothesis,unknown,4,4,4,2,3
+O07,科技成果与企业应用需求匹配,ecosystem_signal,unknown,3,3,4,4,3
+O08,农产品质量证据与宣传合规,ecosystem_signal,unknown,3,3,4,3,3
