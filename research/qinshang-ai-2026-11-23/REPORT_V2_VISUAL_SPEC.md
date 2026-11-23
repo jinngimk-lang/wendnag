@@ -2,7 +2,7 @@
 ## 交付
 - 文件名：`秦商总会_AI赋能高价值企业商机研究报告_V2_20261123.pdf`
 - 25页，A4竖版，公开研究稿；各图/表/箭头/流程卡片/环形纹理均为**程序化原创矢量绘制**，非网络插图/第三方图片。
-- 最终SHA256：`b2939cef6be87b49b28565d85144dd979d25cadc01a462844e05206872e20175`。此哈希仅对应本次会话生成的可下载PDF字节。未来重建产生不同哈希时须标版本。
+- 最终SHA256：`2a3b647cc76610ca74fe2e445cf428a71604d8df8fd8ff2c73e3480b9b9455b5`。此哈希仅对应本次会话生成的可下载PDF字节。未来重建产生不同哈希时须标版本。
 - Linux Python 3.13 + ReportLab + PyMuPDF；运行环境：`/opt/pyvenv`（容器已存在的Python隔离虚拟环境）。
 - 字体：AR PL SungtiL GB（系统内置可嵌入TrueType，文件仅用于渲染，不上传字体）；英文字体DejaVu Sans；满足可全文检索/复制。
 - 主题色：Navy #142B3D、Teal #007E84、Light #F3F6F8、Ink #243A48、Gold #B78A45、Red #B85456。
@@ -29,3 +29,5 @@
 
 ## 长上下文再启动
 先读`PROJECT.md`→`STATE.md`→`AGENTS.md`→`EVIDENCE_LEDGER.md`→`REPORT_V2_EXECUTIVE.md`→`REPORT_V2_SOURCES.md`。核查时间/监管/产品版本后才更新PDF；先更新研究数据和反证，再调整设计。报告图表为研究评分，不能宣传为实测ROI。
+
+- 生成器采用 ReportLab `Canvas(invariant=1)` 固定文件ID与创建时间，保证同环境、同脚本重复构建的PDF字节哈希稳定。
