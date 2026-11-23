@@ -1,12 +1,12 @@
 id,scenario,evidence,impact,fit,poc,buyer,score,gate,owner
 A,品牌假货与维权证据协同,5,5,4,4,5,4.65,READY,品牌IP及法务
-B,既有SCRM增量复购/流失诊断,4,5,3,3,4,3.85,VENDOR_CHECK,私域增长
-C,质量与批次证据协同,3,5,4,3,4,3.85,DATA_CHECK,质量及生产
 D,销售宣称合规守门,3,4,5,4,4,3.95,INTERVIEW,法务及市场
+B,既有SCRM增量复购/流失诊断,4,5,3,3,4,3.90,VENDOR_CHECK,私域增长
+C,质量与批次证据协同,3,5,4,3,4,3.85,DATA_CHECK,质量及生产
 E,研发知识及专利协同,4,4,4,3,4,3.85,DATA_CHECK,研发及IP
+H,一线培训和知识,3,3,4,4,3,3.35,ADD_ON,人力及销售
 F,B端招采情报与资质匹配,3,3,4,3,3,3.20,CHANNEL_CHECK,渠道及商务
 G,供应链预测与库存优化,2,5,2,2,4,3.05,DEFER,供应链
-H,一线培训和知识,3,3,4,4,3,3.35,ADD_ON,人力及销售
 I,通用客服与文案机器人,2,2,5,5,2,3.05,REJECT,市场
 J,自动工艺及生物研发优化,3,5,1,1,4,2.95,REJECT,研发
-# score=.25*evidence+.25*impact+.20*fit+.15*poc+.15*buyer; ALL HYPOTHETICAL; GATES OVERRIDE SCORE
+# score=.25*evidence+.25*impact+.20*fit+.15*poc+.15*buyer; ALL SCORES HYPOTHETICAL; GATES OVERRIDE SCORE
