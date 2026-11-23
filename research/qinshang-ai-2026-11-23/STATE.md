@@ -20,7 +20,7 @@
 
 ## 2026-11-23 — V2图文PDF交付（第二轮存档）
 - 使用现有Python虚拟环境 /opt/pyvenv（Python3.13/ReportLab/fitz）制作25页A4咨询风格PDF；原始图表、分级矩阵、十Agent职责、产品架构、8类POC、90天路线和13条来源索引；中文字符可选择、字体嵌入，PDF预检通过。
-- 用户会话可下载的PDF文件：`秦商总会_AI赋能高价值企业商机研究报告_V2_20261123.pdf`，SHA-256 `b2939cef6be87b49b28565d85144dd979d25cadc01a462844e05206872e20175`；**本仓没有这个PDF二进制**，详见 REPORT_V2_PDF_MANIFEST。
+- 用户会话可下载的PDF文件：`秦商总会_AI赋能高价值企业商机研究报告_V2_20261123.pdf`，SHA-256 `2a3b647cc76610ca74fe2e445cf428a71604d8df8fd8ff2c73e3480b9b9455b5`；**本仓没有这个PDF二进制**，详见 REPORT_V2_PDF_MANIFEST。
 - 提交 REPORT_V2_EXECUTIVE / REPORT_V2_SOURCES / REPORT_V2_VISUAL_SPEC / REPORT_V2_PDF_MANIFEST，确保即便沙箱文件链接失效，也能依文字资料恢复研究结论和视觉设计。
 - 新一轮查实：S01清欠机制、S02经开区对接、S04秦商科创会客厅、S06医械检查要求、S08欣旺达已有电池护照平台、S09公安打假案例、S11陕西2026-11 AI场景支持方向。
 - 不改变先前所有 hard_gate=unknown；十Agent仍为工作包，不冒称真正启动十个独立持久Agent；产品就绪程度仍须研发核验。
